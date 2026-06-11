@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import AuthLayout from "./AuthLayout";
 import { Field, SelectField } from "./FormField";
 import Button from "../../ui/Button";
-import RolePicker from "../../ui/RoleToggle";
+import RolePicker from "../../ui/RolePicker";
 import SectionLabel from "../../ui/SectionLabel";
 import type { UserRole } from "./types";
 import {

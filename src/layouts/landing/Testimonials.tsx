@@ -44,14 +44,12 @@ const testimonials: Testimonial[] = [
 export default function Testimonials() {
   return (
     <section className="py-24 bg-[#0F172A] relative overflow-hidden">
-      {/* Orange accent blob */}
       <div
         className="absolute -top-32 -right-32 w-96 h-96 rounded-full opacity-5"
         style={{ background: "radial-gradient(circle, #F97316, transparent)" }}
       />
 
       <div className="relative z-10 max-w-[1240px] mx-auto px-6">
-        {/* Header */}
         <div className="text-center mb-16">
           <span className="text-[#F97316] text-xs font-semibold uppercase tracking-[0.2em]">
             Real Stories
@@ -76,7 +74,6 @@ export default function Testimonials() {
           ))}
         </div>
 
-        {/* Rating summary */}
         <div className="mt-16 flex flex-col sm:flex-row items-center justify-center gap-8 pt-12 border-t border-white/10">
           <div className="text-center">
             <div
@@ -132,7 +129,6 @@ export default function Testimonials() {
 function TestimonialCard({ t }: { t: Testimonial }) {
   return (
     <div className="bg-white/5 border border-white/10 p-8 hover:bg-white/8 hover:border-white/20 transition-all duration-200">
-      {/* Role badge */}
       <span
         className="inline-block text-[10px] font-bold uppercase tracking-[0.15em] px-2.5 py-1 mb-6"
         style={{
@@ -143,7 +139,6 @@ function TestimonialCard({ t }: { t: Testimonial }) {
         {t.type === "client" ? "Client" : "Driver"}
       </span>
 
-      {/* Quote mark */}
       <div
         className="text-white/10 text-6xl leading-none mb-2"
         style={{ fontFamily: "Georgia, serif" }}
@@ -153,7 +148,6 @@ function TestimonialCard({ t }: { t: Testimonial }) {
 
       <p className="text-white/70 text-sm leading-relaxed mb-8">{t.quote}</p>
 
-      {/* Author */}
       <div className="flex items-center gap-3 pt-6 border-t border-white/10">
         <div
           className="w-10 h-10 flex items-center justify-center text-white text-xs font-bold flex-shrink-0"

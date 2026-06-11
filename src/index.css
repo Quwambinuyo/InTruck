@@ -1,19 +1,58 @@
 @import "tailwindcss";
+
 @theme {
   --breakpoint-*: initial;
   --breakpoint-sm: 640px;
   --breakpoint-md: 864px;
   --breakpoint-lg: 1056px;
   --breakpoint-xl: 1240px;
---primary: #1E40AF;
---primary-hover: #1D4ED8;
---secondary: #F97316;
---secondary-hover: #EA580C;
---success: #22C55E;
---warning: #EAB308;
---danger: #EF4444;
---background: #F8FAFC;
---surface: #FFFFFF;
---text: #0F172A;
---text-secondary: #64748B;
+  --color-primary: #1e40af;
+  --color-primary-hover: #1d4ed8;
+  --color-secondary: #f97316;
+  --color-secondary-hover: #ea580c;
+  --color-success: #22c55e;
+  --color-warning: #eab308;
+  --color-danger: #ef4444;
+  --color-background: #f8fafc;
+  --color-surface: #ffffff;
+  --color-text: #0f172a;
+  --color-text-secondary: #64748b;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-text);
+    font-family: "Inter", sans-serif;
+  }
+}
+
+@layer utilities {
+  .scroll-smooth {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer utilities {
+  .hide-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: #1e40af transparent;
+  }
+
+  .hide-scroll::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .hide-scroll::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .hide-scroll::-webkit-scrollbar-thumb {
+    background-color: #1e40af;
+    border-radius: 999px;
+  }
 }

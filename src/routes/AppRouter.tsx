@@ -1,52 +1,26 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import Layout from "../layouts/layout/Layout";
+import LayoutWrapper from "../layouts/layout/Index";
+import LandingPage from "../layouts/landing/Landing";
 import Login from "../pages/auth/Login";
 import SignUp from "../pages/auth/SignUp";
+import CustomerDashboard from "../customer/components/CustomerDashboard";
+import MerchantDashboard from "../merchants/components/MerchantDashboard";
 
 export default function AppRouter() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Layout />} />
+        <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route
-          path="/merchant/dashboard"
-          element={<PlaceholderDashboard role="Merchant" />}
-        />
-        <Route
-          path="/customer/dashboard"
-          element={<PlaceholderDashboard role="Customer" />}
-        />
+
+        <Route element={<LayoutWrapper />}>
+          <Route path="/merchant/dashboard" element={<MerchantDashboard />} />
+          <Route path="/customer/dashboard" element={<CustomerDashboard />} />
+        </Route>
+
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
-  );
-}
-
-function PlaceholderDashboard({ role }: { role: string }) {
-  return (
-    <div className="min-h-screen bg-[#0F172A] flex items-center justify-center">
-      <div className="text-center">
-        <div
-          className="text-white text-4xl mb-4 uppercase"
-          style={{
-            fontFamily: "'Barlow Condensed', sans-serif",
-            fontWeight: 900,
-          }}
-        >
-          {role} Dashboard
-        </div>
-        <p className="text-white/50 text-sm mb-6">
-          Coming soon — you're logged in!
-        </p>
-        <a
-          href="/"
-          className="px-6 py-3 bg-[#F97316] text-white text-sm font-bold uppercase tracking-wide"
-        >
-          Back to Home
-        </a>
-      </div>
-    </div>
   );
 }
