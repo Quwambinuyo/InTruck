@@ -42,7 +42,7 @@ export default function LandingFooter() {
                   fontWeight: 800,
                 }}
               >
-                InTruck<span className="text-[#F97316]">X</span>
+                <span className="text-[#F97316]">In</span>Truck
               </span>
             </div>
             <p className="text-white/50 text-sm leading-relaxed mb-6 max-w-xs">

@@ -1,51 +1,48 @@
-import { useState } from "react";
+import { useForm, Controller } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import AuthLayout from "./AuthLayout";
-import RoleToggle from "./RoleToggle";
+import RoleToggle from "../../ui/RoleToggle";
 import { Field } from "./FormField";
-import type { LoginForm, UserRole } from "./types";
+import Button from "../../ui/Button";
+import type { UserRole } from "./types";
+import { rules } from "../../utils/utils";
 
-const INITIAL: LoginForm = { email: "", password: "", role: "customer" };
-
-type FieldErrors = Partial<Record<keyof LoginForm, string>>;
-
-function validate(form: LoginForm): FieldErrors {
-  const errs: FieldErrors = {};
-  if (!form.email) errs.email = "Email is required.";
-  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
-    errs.email = "Enter a valid email address.";
-  if (!form.password) errs.password = "Password is required.";
-  return errs;
-}
+type LoginForm = {
+  email: string;
+  password: string;
+  role: UserRole;
+};
 
 export default function Login() {
   const navigate = useNavigate();
-  const [form, setForm] = useState<LoginForm>(INITIAL);
-  const [errors, setErrors] = useState<FieldErrors>({});
-  const [loading, setLoading] = useState(false);
-  const [globalError, setGlobalError] = useState("");
 
-  function set<K extends keyof LoginForm>(key: K, value: LoginForm[K]) {
-    setForm((prev) => ({ ...prev, [key]: value }));
-    if (errors[key]) setErrors((prev) => ({ ...prev, [key]: undefined }));
-    if (globalError) setGlobalError("");
-  }
+  const {
+    register,
+    handleSubmit,
+    control,
+    watch,
+    formState: { errors, isSubmitting },
+  } = useForm<LoginForm>({
+    defaultValues: {
+      email: "",
+      password: "",
+      role: "customer",
+    },
+  });
 
-  async function handleSubmit() {
-    const errs = validate(form);
-    if (Object.keys(errs).length) {
-      setErrors(errs);
-      return;
-    }
-    setLoading(true);
-    // Simulate API call
+  const role = watch("role");
+
+  async function onSubmit(data: LoginForm) {
     await new Promise((r) => setTimeout(r, 1200));
-    setLoading(false);
-    // On success → navigate based on role
     navigate(
-      form.role === "merchant" ? "/merchant/dashboard" : "/customer/dashboard",
+      data.role === "merchant" ? "/merchant/dashboard" : "/customer/dashboard",
     );
   }
+
+  const getButtonText = () => {
+    if (isSubmitting) return "Signing in…";
+    return `Sign in as ${role === "merchant" ? "Merchant" : "Customer"}`;
+  };
 
   return (
     <AuthLayout
@@ -53,7 +50,6 @@ export default function Login() {
       subheading="Log in to manage your jobs, track deliveries, and connect with Nigeria's largest InTrucking network."
       panelStat={{ value: "48,000+", label: "Trips completed this year" }}
     >
-      {/* Page heading */}
       <div className="mb-8">
         <h1
           className="text-[#0F172A] uppercase leading-none mb-1"
@@ -76,36 +72,37 @@ export default function Login() {
         </p>
       </div>
 
-      {/* Role toggle */}
-      <RoleToggle
-        value={form.role}
-        onChange={(r: UserRole) => set("role", r)}
-        label="Signing in as"
+      <Controller
+        name="role"
+        control={control}
+        render={({ field }) => (
+          <RoleToggle
+            value={field.value}
+            onChange={(r: UserRole) => field.onChange(r)}
+            label="Signing in as"
+          />
+        )}
       />
 
-      {/* Fields */}
       <div className="flex flex-col gap-4 mb-2">
         <Field
           label="Email address"
           type="email"
           placeholder="you@example.com"
-          value={form.email}
-          onChange={(e) => set("email", e.target.value)}
-          error={errors.email}
           autoComplete="email"
+          error={errors.email?.message}
+          {...register("email", rules.email)}
         />
         <Field
           label="Password"
           type="password"
           placeholder="••••••••"
-          value={form.password}
-          onChange={(e) => set("password", e.target.value)}
-          error={errors.password}
           autoComplete="current-password"
+          error={errors.password?.message}
+          {...register("password", rules.loginPassword)}
         />
       </div>
 
-      {/* Forgot */}
       <div className="flex justify-end mb-6">
         <Link
           to="/forgot-password"
@@ -115,31 +112,14 @@ export default function Login() {
         </Link>
       </div>
 
-      {/* Global error */}
-      {globalError && (
-        <div className="mb-4 px-4 py-3 bg-[#EF4444]/10 border border-[#EF4444]/30 text-[#EF4444] text-sm">
-          {globalError}
-        </div>
-      )}
-
-      {/* Submit */}
-      <button
-        type="button"
-        onClick={handleSubmit}
-        disabled={loading}
-        className="w-full py-4 bg-[#1E40AF] hover:bg-[#1D4ED8] disabled:opacity-60 text-white font-bold text-sm uppercase tracking-wide transition-all duration-150 hover:shadow-lg hover:shadow-blue-500/25 flex items-center justify-center gap-2"
+      <Button
+        onClick={handleSubmit(onSubmit)}
+        isLoading={isSubmitting}
+        variant={role === "merchant" ? "merchant" : "customer"}
       >
-        {loading ? (
-          <>
-            <Spinner />
-            Signing in…
-          </>
-        ) : (
-          `Sign in as ${form.role === "merchant" ? "Merchant" : "Customer"}`
-        )}
-      </button>
+        {getButtonText()}
+      </Button>
 
-      {/* Divider */}
       <div className="flex items-center gap-3 my-6">
         <div className="flex-1 h-px bg-slate-200" />
         <span className="text-[#94A3B8] text-xs uppercase tracking-widest">
@@ -148,7 +128,6 @@ export default function Login() {
         <div className="flex-1 h-px bg-slate-200" />
       </div>
 
-      {/* Google SSO placeholder */}
       <button
         type="button"
         className="w-full py-3.5 border-2 border-slate-200 hover:border-slate-300 bg-white text-[#0F172A] text-sm font-semibold flex items-center justify-center gap-3 transition-colors"
@@ -157,7 +136,6 @@ export default function Login() {
         Continue with Google
       </button>
 
-      {/* Footer note */}
       <p className="text-center text-[#94A3B8] text-xs mt-8 leading-relaxed">
         By signing in you agree to InTruck's{" "}
         <Link to="/terms" className="underline hover:text-[#64748B]">
@@ -170,27 +148,6 @@ export default function Login() {
         .
       </p>
     </AuthLayout>
-  );
-}
-
-function Spinner() {
-  return (
-    <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none">
-      <circle
-        cx="12"
-        cy="12"
-        r="10"
-        stroke="currentColor"
-        strokeWidth="3"
-        strokeOpacity="0.25"
-      />
-      <path
-        d="M12 2a10 10 0 0 1 10 10"
-        stroke="currentColor"
-        strokeWidth="3"
-        strokeLinecap="round"
-      />
-    </svg>
   );
 }
 

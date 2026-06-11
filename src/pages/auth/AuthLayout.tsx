@@ -15,10 +15,8 @@ export default function AuthLayout({
   panelStat,
 }: AuthLayoutProps) {
   return (
-    <div className="min-h-screen flex flex-col lg:flex-row bg-[#0F172A]">
-      {/* ── Left panel ── */}
-      <div className="hidden lg:flex lg:w-[42%] xl:w-[38%] flex-col justify-between relative overflow-hidden p-12 bg-[#0F172A]">
-        {/* Grid texture */}
+    <div className="h-screen flex flex-col lg:flex-row bg-[#0F172A] overflow-hidden">
+      <div className="hidden lg:flex lg:w-[42%] xl:w-[38%] flex-col justify-between relative overflow-hidden p-12 bg-[#0F172A] flex-shrink-0">
         <div
           className="absolute inset-0 opacity-[0.04]"
           style={{
@@ -28,7 +26,6 @@ export default function AuthLayout({
           }}
         />
 
-        {/* Orange diagonal accent */}
         <div
           className="absolute bottom-0 right-0 w-full h-full opacity-10 pointer-events-none"
           style={{
@@ -36,20 +33,17 @@ export default function AuthLayout({
           }}
         />
 
-        {/* Truck silhouette watermark */}
         <div className="absolute bottom-16 right-0 opacity-[0.06] pointer-events-none select-none">
           <PanelTruckSVG />
         </div>
 
-        {/* Content */}
         <div className="relative z-10">
-          {/* Logo */}
           <Link to="/" className="flex items-center gap-2.5 group w-fit">
             <div className="w-8 h-8 bg-[#F97316] flex items-center justify-center rotate-3 group-hover:rotate-0 transition-transform duration-200">
               <TruckIcon className="w-5 h-5 text-white -rotate-3 group-hover:rotate-0 transition-transform duration-200" />
             </div>
             <span
-              className="text-white text-2xl "
+              className="text-white text-2xl"
               style={{
                 fontFamily: "'Barlow Condensed', sans-serif",
                 fontWeight: 800,
@@ -82,7 +76,6 @@ export default function AuthLayout({
           </p>
         </div>
 
-        {/* Stat */}
         <div className="relative z-10 border-t border-white/10 pt-8">
           <div
             className="text-white text-4xl"
@@ -99,10 +92,8 @@ export default function AuthLayout({
         </div>
       </div>
 
-      {/* ── Right panel (form area) ── */}
-      <div className="flex-1 bg-[#F8FAFC] flex flex-col">
-        {/* Mobile logo */}
-        <div className="lg:hidden flex items-center gap-2.5 px-6 pt-6">
+      <div className="flex-1 bg-[#F8FAFC] flex flex-col min-h-0">
+        <div className="lg:hidden flex items-center gap-2.5 px-6 pt-6 flex-shrink-0">
           <Link to="/" className="flex items-center gap-2.5">
             <div className="w-7 h-7 bg-[#F97316] flex items-center justify-center">
               <TruckIcon className="w-4 h-4 text-white" />
@@ -119,9 +110,10 @@ export default function AuthLayout({
           </Link>
         </div>
 
-        {/* Form scroll container */}
-        <div className="flex-1 flex items-start lg:items-center justify-center px-6 py-10 lg:py-8 overflow-y-auto">
-          <div className="w-full max-w-[460px]">{children}</div>
+        <div className="flex-1 overflow-y-auto px-6 py-10 lg:py-8">
+          <div className="w-full max-w-[640px] mx-auto lg:my-auto">
+            {children}
+          </div>
         </div>
       </div>
     </div>
