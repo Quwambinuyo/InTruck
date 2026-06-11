@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
@@ -71,3 +72,7 @@ export default defineConfig([
   },
 ])
 ```
+=======
+# InTruck
+A modern logistics and fleet management platform connecting truck owners, drivers, and businesses for seamless transportation services.
+>>>>>>> 45d1ad323fd2a1891b8dae02fa3d5def29012568
