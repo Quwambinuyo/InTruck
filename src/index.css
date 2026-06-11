@@ -1,0 +1,19 @@
+@import "tailwindcss";
+@theme {
+  --breakpoint-*: initial;
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 864px;
+  --breakpoint-lg: 1056px;
+  --breakpoint-xl: 1240px;
+--primary: #1E40AF;
+--primary-hover: #1D4ED8;
+--secondary: #F97316;
+--secondary-hover: #EA580C;
+--success: #22C55E;
+--warning: #EAB308;
+--danger: #EF4444;
+--background: #F8FAFC;
+--surface: #FFFFFF;
+--text: #0F172A;
+--text-secondary: #64748B;
+}
