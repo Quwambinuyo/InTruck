@@ -10,6 +10,7 @@ import {
   FaMoneyBillWave,
   FaClipboardList,
   FaUsers,
+  FaTimes,
 } from "react-icons/fa";
 
 const customerLinks: {
@@ -130,9 +131,16 @@ export const MobileSidebarWrapper = ({ onClose }: { onClose: () => void }) => {
     <div className="fixed inset-0 z-50 md:hidden">
       <div className="absolute inset-0 bg-black/40" onClick={onClose} />
 
-      <div className="absolute left-0 top-0 h-full w-[260px] bg-white shadow-xl">
+      <div className="absolute left-0 top-0 h-full w-[260px] bg-white shadow-xl flex flex-col">
         <Sidebar />
       </div>
+
+      <button
+        className="absolute top-2 right-3 rounded-full h-[42px] w-[42px] bg-white flex items-center justify-center shadow-md"
+        onClick={onClose}
+      >
+        <FaTimes color="#0f172a" size={20} />
+      </button>
     </div>
   );
 };

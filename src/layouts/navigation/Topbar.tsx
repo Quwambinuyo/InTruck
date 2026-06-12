@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { IoMenuOutline, IoNotificationsOutline } from "react-icons/io5";
 import { AiOutlineClose } from "react-icons/ai";
 import { FiChevronDown } from "react-icons/fi";
+import { MobileSidebarWrapper } from "./Sidebar";
 
 const dummyUser = {
   firstName: "John",
@@ -66,35 +67,39 @@ export const MobileTopbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <nav className="fixed bg-white px-4 sm:px-8 md:hidden top-0 left-0 z-10 w-full h-[60px] sm:h-[63px] flex items-center">
-      <div className="flex items-center justify-between w-full">
-        <Link
-          to=""
-          className="inline-flex items-center justify-center gap-1 rounded-[20px] h-[50px] w-[100px]"
-        >
-          <span className="font-poppins text-lg font-medium text-[#000000]">
-            InTruck
-          </span>
-        </Link>
-
-        <div className="flex items-center gap-4">
-          <button className="text-[#06060699] relative p-1">
-            <IoNotificationsOutline size={22} />
-            <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-          </button>
-
-          <button
-            className="text-primary-purple"
-            onClick={() => setMenuOpen((prev) => !prev)}
+    <>
+      <nav className="fixed bg-white px-4 sm:px-8 md:hidden top-0 left-0 z-10 w-full h-[60px] sm:h-[63px] flex items-center">
+        <div className="flex items-center justify-between w-full">
+          <Link
+            to=""
+            className="inline-flex items-center justify-center gap-1 rounded-[20px] h-[50px] w-[100px]"
           >
-            {menuOpen ? (
-              <AiOutlineClose size={24} />
-            ) : (
-              <IoMenuOutline size={32} />
-            )}
-          </button>
+            <span className="font-poppins text-lg font-medium text-[#000000]">
+              InTruck
+            </span>
+          </Link>
+
+          <div className="flex items-center gap-4">
+            <button className="text-[#06060699] relative p-1">
+              <IoNotificationsOutline size={22} />
+              <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+            </button>
+
+            <button
+              className="text-primary-purple"
+              onClick={() => setMenuOpen((prev) => !prev)}
+            >
+              {menuOpen ? (
+                <AiOutlineClose size={24} />
+              ) : (
+                <IoMenuOutline size={32} />
+              )}
+            </button>
+          </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+
+      {menuOpen && <MobileSidebarWrapper onClose={() => setMenuOpen(false)} />}
+    </>
   );
 };
