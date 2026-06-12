@@ -13,8 +13,8 @@ import {
   TextAreaField,
   SelectField,
   TruckSelectCard,
-} from "../../pages/auth/FormField";
-import Button from "../../ui/Button";
+} from "../../../pages/auth/FormField";
+import Button from "../../../ui/Button";
 
 const TRUCK_TYPES = [
   { id: "flatbed", label: "Flatbed", desc: "Open deck, heavy loads" },

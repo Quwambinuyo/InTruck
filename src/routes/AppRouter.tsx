@@ -3,7 +3,12 @@ import LayoutWrapper from "../layouts/layout/Index";
 import LandingPage from "../layouts/landing/Landing";
 import Login from "../pages/auth/Login";
 import SignUp from "../pages/auth/SignUp";
-import { CustomerDashboard, PostJob } from "../customer/components";
+import {
+  CustomerDashboard,
+  MyJobs,
+  PostJob,
+  TrackDeliveries,
+} from "../customer/components";
 import MerchantDashboard from "../merchants/components/MerchantDashboard";
 
 export default function AppRouter() {
@@ -18,6 +23,8 @@ export default function AppRouter() {
           <Route path="/merchant/dashboard" element={<MerchantDashboard />} />
           <Route path="/customer/dashboard" element={<CustomerDashboard />} />
           <Route path="/customer/post-job" element={<PostJob />} />
+          <Route path="/customer/jobs" element={<MyJobs />} />
+          <Route path="/customer/track" element={<TrackDeliveries />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />

@@ -30,7 +30,7 @@ const Badge = ({ children, tone = "purple", className = "" }: BadgeProps) => {
 
   return (
     <span
-      className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full border text-[10px] font-bold uppercase tracking-wider ${
+      className={`inline-flex items-center capitalize gap-1 px-2.5 py-1 rounded-full border text-[10px] font-bold  tracking-wider ${
         map[tone]
       } ${className}`}
     >

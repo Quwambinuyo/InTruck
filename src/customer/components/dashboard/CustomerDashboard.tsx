@@ -9,9 +9,9 @@ import {
   FaArrowRight,
   FaPlus,
 } from "react-icons/fa";
-import StatCard from "../../ui/StatCard";
-import Button from "../../ui/Button";
-import StatusPill from "../../ui/StatusPill";
+import StatCard from "../../../ui/StatCard";
+import Button from "../../../ui/Button";
+import StatusPill from "../../../ui/StatusPill";
 
 const DELIVERIES = [
   {
