@@ -26,7 +26,7 @@ const services: Service[] = [
     description:
       "Need a fleet for a project? Rent trucks by the day, week, or month. No ownership headaches, just results.",
     tag: "Rental",
-    accent: "var(--color-secondary)",
+    accent: "var(--color-primary)",
   },
   {
     icon: <DeliveryIcon />,

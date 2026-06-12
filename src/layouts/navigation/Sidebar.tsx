@@ -126,15 +126,18 @@ export default Sidebar;
 
 export const MobileSidebarWrapper = ({ onClose }: { onClose: () => void }) => {
   return (
-    <div className="fixed inset-0 z-50 md:hidden">
-      <div className="absolute inset-0 bg-black/60" onClick={onClose} />
+    <div className="fixed inset-0 z-[9999] md:hidden isolate">
+      <div
+        className="absolute inset-0 bg-black/60 z-[9998]"
+        onClick={onClose}
+      />
 
-      <div className="absolute left-0 top-0 h-full w-[260px] bg-[var(--color-primary)] flex flex-col">
+      <div className="absolute left-0 top-0 h-full w-[260px] bg-[var(--color-primary)] flex flex-col z-[9999] shadow-2xl">
         <Sidebar />
       </div>
 
       <button
-        className="absolute top-3 right-3 rounded-full h-[42px] w-[42px] bg-white flex items-center justify-center shadow-md"
+        className="absolute top-3 right-3 z-[10000] rounded-full h-[42px] w-[42px] bg-white flex items-center justify-center shadow-md"
         onClick={onClose}
       >
         <FaTimes color="#000" size={20} />

@@ -86,3 +86,11 @@
     border-radius: 999px;
   }
 }
+
+.leaflet-pane,
+.leaflet-top,
+.leaflet-bottom,
+.leaflet-control,
+.leaflet-container {
+  z-index: 1 !important;
+}
