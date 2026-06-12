@@ -61,7 +61,7 @@ const PostJob = () => {
   const [pricingMode, setPricingMode] = useState<PricingMode>("open");
   const [cargoType, setCargoType] = useState("");
   const [selectOpen, setSelectOpen] = useState(false);
-  const [pricingOpen, setPricingOpen] = useState(false);
+  // const [pricingOpen, setPricingOpen] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
   if (submitted) {

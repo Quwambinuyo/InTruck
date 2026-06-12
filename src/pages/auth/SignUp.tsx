@@ -1,5 +1,6 @@
 import { useForm, Controller } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
 import AuthLayout from "./AuthLayout";
 import { Field, SelectField } from "./FormField";
 import Button from "../../ui/Button";
@@ -29,6 +30,8 @@ type SignUpForm = {
 
 export default function SignUp() {
   const navigate = useNavigate();
+  const [businessTypeOpen, setBusinessTypeOpen] = useState(false);
+  const [stateOpen, setStateOpen] = useState(false);
 
   const {
     register,
@@ -197,6 +200,8 @@ export default function SignUp() {
                       onChange={field.onChange}
                       error={errors.businessType?.message}
                       placeholder="Select type"
+                      open={businessTypeOpen}
+                      setOpen={setBusinessTypeOpen}
                     />
                   )}
                 />
@@ -213,6 +218,8 @@ export default function SignUp() {
                       onChange={field.onChange}
                       error={errors.state?.message}
                       placeholder="Select state"
+                      open={stateOpen}
+                      setOpen={setStateOpen}
                     />
                   )}
                 />

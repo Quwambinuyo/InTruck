@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FaTruck, FaMapMarkerAlt, FaCalendarAlt } from "react-icons/fa";
 import StatusPill from "../../../ui/StatusPill";
+import FilterChip from "../../../ui/FilterChip";
 import TrackDeliveryDrawer from "./TrackDeliveryDrawer";
 
 type DeliveryStatus = "pending" | "in_transit" | "delivered" | "cancelled";
@@ -61,7 +62,9 @@ const MOCK_DELIVERIES: Delivery[] = [
   },
 ];
 
-const FILTERS: (DeliveryStatus | "all")[] = [
+type Filter = DeliveryStatus | "all";
+
+const FILTERS: Filter[] = [
   "all",
   "pending",
   "in_transit",
@@ -69,16 +72,8 @@ const FILTERS: (DeliveryStatus | "all")[] = [
   "cancelled",
 ];
 
-const filterLabel: Record<string, string> = {
-  all: "All",
-  pending: "Pending",
-  in_transit: "In Transit",
-  delivered: "Delivered",
-  cancelled: "Cancelled",
-};
-
 const TrackDeliveries = () => {
-  const [filter, setFilter] = useState<DeliveryStatus | "all">("all");
+  const [filter, setFilter] = useState<Filter>("all");
   const [selected, setSelected] = useState<Delivery | null>(null);
 
   const filtered =
@@ -97,28 +92,14 @@ const TrackDeliveries = () => {
         </p>
       </div>
 
-      <div className="flex gap-2 overflow-x-auto pb-0.5">
-        {FILTERS.map((f) => (
-          <button
-            key={f}
-            onClick={() => setFilter(f)}
-            className={`px-4 py-2 zabalBoldFont rounded-full text-[12px] border whitespace-nowrap transition-colors ${
-              filter === f
-                ? "bg-black text-white border-black"
-                : "bg-white text-black/50 border-black/[0.08] hover:border-black/20"
-            }`}
-          >
-            {filterLabel[f]}
-          </button>
-        ))}
-      </div>
+      <FilterChip options={FILTERS} value={filter} onChange={setFilter} />
 
       <div className="space-y-3">
         {filtered.map((d) => (
           <div
             key={d.id}
             onClick={() => setSelected(d)}
-            className="bg-white border border-black/[0.08] rounded-2xl p-4 space-y-3 cursor-pointer hover:border-black/20 transition-colors"
+            className="bg-white border border-black/[0.08] rounded-2xl p-4 space-y-3 cursor-pointer hover:border-black/20 transition"
           >
             <div className="flex items-start justify-between">
               <div>
@@ -135,14 +116,17 @@ const TrackDeliveries = () => {
                 <FaMapMarkerAlt size={11} />
                 <span className="truncate">{d.pickup}</span>
               </div>
+
               <div className="flex items-center gap-1.5">
                 <FaMapMarkerAlt size={11} />
                 <span className="truncate">{d.dropoff}</span>
               </div>
+
               <div className="flex items-center gap-1.5">
                 <FaCalendarAlt size={11} />
                 <span>{d.date}</span>
               </div>
+
               <div className="flex items-center gap-1.5">
                 <FaTruck size={11} />
                 <span>{d.truck}</span>
