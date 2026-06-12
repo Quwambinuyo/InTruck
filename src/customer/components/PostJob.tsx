@@ -66,7 +66,7 @@ const PostJob = () => {
 
   if (submitted) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] text-center space-y-4 px-6">
+      <div className="flex flex-col items-center justify-center min-h-[60vh] text-center space-y-4 ">
         <div className="w-16 h-16 rounded-full bg-black flex items-center justify-center">
           <FaCheckCircle className="text-white text-2xl" />
         </div>
@@ -86,12 +86,12 @@ const PostJob = () => {
   }
 
   return (
-    <div className="w-full max-w-full overflow-x-hidden space-y-4 px-4 sm:px-0 pb-20">
+    <div className="w-full max-w-full overflow-x-hidden space-y-4  pb-5">
       <div className="flex items-center justify-between pt-1">
         <div>
           <h2 className="text-lg font-black text-black">Post a haulage job</h2>
           <p className="text-xs text-black/40 mt-0.5">
-            Fill in the details — drivers will bid or confirm instantly
+            Fill in the details drivers will bid or confirm instantly
           </p>
         </div>
       </div>
