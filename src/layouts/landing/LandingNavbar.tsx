@@ -26,6 +26,7 @@ export default function LandingNavbar() {
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
     window.addEventListener("scroll", onScroll, { passive: true });
+
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
@@ -128,6 +129,32 @@ export default function LandingNavbar() {
             </li>
           ))}
         </ul>
+
+        <div className="flex flex-col gap-2 px-6 pb-5 pt-2 border-t border-white/10">
+          <Button
+            variant="customer"
+            fullWidth
+            onClick={() => {
+              setMenuOpen(false);
+              navigate("/login");
+            }}
+            className="py-2.5 bg-transparent hover:bg-white/10 hover:shadow-none text-white/80 hover:text-white text-sm font-medium normal-case tracking-normal"
+          >
+            Sign In
+          </Button>
+
+          <Button
+            variant="merchant"
+            fullWidth
+            onClick={() => {
+              setMenuOpen(false);
+              navigate("/signup");
+            }}
+            className="py-2.5 text-sm"
+          >
+            Get Started
+          </Button>
+        </div>
       </div>
     </header>
   );

@@ -110,59 +110,67 @@ function LiveMap() {
 
 const CustomerDashboard = () => {
   return (
-    <div className="space-y-6">
+    <div className="w-full max-w-full overflow-x-hidden space-y-6 ">
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-semibold text-black">Overview</h2>
 
-        <button className="inline-flex items-center gap-2 rounded-xl bg-black px-5 py-2.5 text-sm font-semibold text-white hover:bg-black/80 transition">
+        <button className="inline-flex items-center gap-2 rounded-xl bg-black px-4 py-2 text-sm font-semibold text-white hover:bg-black/80 transition">
           <FaPlus size={12} />
           Book a Truck
         </button>
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
-        <StatCard
-          label="Active Deliveries"
-          value="12"
-          delta="8% this week"
-          trend="up"
-          icon={<FaTruck size={15} />}
-          sparkline={[7, 9, 8, 11, 10, 12, 12]}
-        />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div className="min-w-0 overflow-hidden">
+          <StatCard
+            label="Active Deliveries"
+            value="12"
+            delta="8% this week"
+            trend="up"
+            icon={<FaTruck size={15} />}
+            sparkline={[7, 9, 8, 11, 10, 12, 12]}
+          />
+        </div>
 
-        <StatCard
-          label="Wallet Balance"
-          value="₦450,000"
-          trend="flat"
-          icon={<FaWallet size={15} />}
-          footer={
-            <div className="mt-2">
-              <Button
-                variant="customer"
-                fullWidth={false}
-                className="!py-1.5 px-3 text-xs rounded-lg"
-              >
-                Fund Wallet
-              </Button>
-            </div>
-          }
-        />
+        <div className="min-w-0 overflow-hidden">
+          <StatCard
+            label="Wallet Balance"
+            value="₦450,000"
+            trend="flat"
+            icon={<FaWallet size={15} />}
+            footer={
+              <div className="mt-2">
+                <Button
+                  variant="customer"
+                  fullWidth={false}
+                  className="!py-1.5 px-3 text-xs rounded-lg"
+                >
+                  Fund Wallet
+                </Button>
+              </div>
+            }
+          />
+        </div>
 
-        <StatCard
-          label="Total Orders"
-          value="54"
-          delta="3 this month"
-          trend="up"
-          icon={<FaMapMarkerAlt size={15} />}
-          sparkline={[40, 44, 46, 48, 50, 52, 54]}
-        />
+        <div className="min-w-0 overflow-hidden">
+          <StatCard
+            label="Total Orders"
+            value="54"
+            delta="3 this month"
+            trend="up"
+            icon={<FaMapMarkerAlt size={15} />}
+            sparkline={[40, 44, 46, 48, 50, 52, 54]}
+          />
+        </div>
 
-        <StatCard
-          label="Pending Requests"
-          value="4"
-          trend="flat"
-          icon={<FaClock size={15} />}
-        />
+        <div className="min-w-0 overflow-hidden">
+          <StatCard
+            label="Pending Requests"
+            value="4"
+            trend="flat"
+            icon={<FaClock size={15} />}
+          />
+        </div>
       </div>
 
       <div className="grid gap-4 lg:grid-cols-5">
@@ -180,7 +188,7 @@ const CustomerDashboard = () => {
             </button>
           </div>
 
-          <div className="h-[320px]">
+          <div className="h-[280px] sm:h-[320px]">
             <LiveMap />
           </div>
         </div>
@@ -213,10 +221,12 @@ const CustomerDashboard = () => {
             ].map((a) => (
               <button
                 key={a.label}
-                className="rounded-xl border border-black/10 p-4 text-left hover:bg-black/5 transition"
+                className="rounded-xl border border-black/10 p-3 text-left hover:bg-black/5 transition"
               >
                 <span className="text-black mb-2 block">{a.icon}</span>
-                <p className="text-sm font-semibold text-black">{a.label}</p>
+                <p className="text-sm font-semibold text-black leading-tight">
+                  {a.label}
+                </p>
                 <p className="text-xs text-black/50 mt-0.5">{a.desc}</p>
               </button>
             ))}
@@ -224,7 +234,7 @@ const CustomerDashboard = () => {
         </div>
       </div>
 
-      <div className="rounded-2xl border border-black/10 bg-white p-6">
+      <div className="rounded-2xl border border-black/10 bg-white p-4 sm:p-6">
         <div className="flex items-center justify-between mb-5">
           <h3 className="font-semibold text-black">Active Deliveries</h3>
 
@@ -237,19 +247,27 @@ const CustomerDashboard = () => {
           {DELIVERIES.map((d) => (
             <div
               key={d.id}
-              className="flex flex-col sm:flex-row sm:items-center gap-4 border border-black/10 rounded-xl p-4"
+              className="flex flex-col gap-3 border border-black/10 rounded-xl p-4"
             >
-              <div className="flex-1">
-                <div className="flex items-center gap-2">
-                  <p className="font-semibold text-black">{d.route}</p>
-                  <span className="text-xs bg-black/5 text-black/60 px-2 py-0.5 rounded-full">
-                    {d.id}
-                  </span>
+              <div className="flex items-start justify-between gap-2">
+                <div className="min-w-0">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <p className="font-semibold text-black text-sm">
+                      {d.route}
+                    </p>
+                    <span className="text-xs bg-black/5 text-black/60 px-2 py-0.5 rounded-full whitespace-nowrap">
+                      {d.id}
+                    </span>
+                  </div>
+                  <p className="text-xs text-black/50 mt-0.5">{d.truck}</p>
                 </div>
-                <p className="text-sm text-black/50 mt-0.5">{d.truck}</p>
+
+                <button className="shrink-0 bg-black text-white px-3 py-1.5 rounded-lg text-xs hover:bg-black/80">
+                  Track
+                </button>
               </div>
 
-              <div className="w-full sm:max-w-xs">
+              <div>
                 <div className="flex justify-between text-xs text-black/50 mb-1.5">
                   <span>{d.status}</span>
                   <span>{d.progress}%</span>
@@ -262,56 +280,56 @@ const CustomerDashboard = () => {
                   />
                 </div>
               </div>
-
-              <button className="bg-black text-white px-4 py-1.5 rounded-lg text-sm hover:bg-black/80">
-                Track
-              </button>
             </div>
           ))}
         </div>
       </div>
 
-      <div className="rounded-2xl border border-black/10 bg-white p-6">
+      <div className="rounded-2xl border border-black/10 bg-white p-4 sm:p-6">
         <div className="flex items-center justify-between mb-5">
           <h3 className="font-semibold text-black">Recent Orders</h3>
-
           <button className="text-sm text-black hover:underline">
             View all
           </button>
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="text-left text-xs uppercase tracking-wide text-black/50 border-b border-black/10">
-                <th className="pb-3">Order</th>
-                <th className="pb-3">Service</th>
-                <th className="pb-3 hidden sm:table-cell">Date</th>
-                <th className="pb-3">Amount</th>
-                <th className="pb-3">Status</th>
-              </tr>
-            </thead>
+        <div className="overflow-x-auto -mx-4 sm:mx-0">
+          <div className="min-w-[520px] px-4 sm:px-0">
+            <div
+              className="grid text-left text-xs uppercase tracking-wide text-black/50 border-b border-black/10 pb-3"
+              style={{ gridTemplateColumns: "1fr 2fr 1.5fr 1.2fr 1fr" }}
+            >
+              <span>Order</span>
+              <span>Service</span>
+              <span>Date</span>
+              <span>Amount</span>
+              <span>Status</span>
+            </div>
 
-            <tbody className="divide-y divide-black/5">
+            <div className="divide-y divide-black/5">
               {ORDERS.map((o) => (
-                <tr key={o.id} className="hover:bg-black/5">
-                  <td className="py-3.5 font-mono text-xs text-black/60">
+                <div
+                  key={o.id}
+                  className="grid items-center py-3.5 hover:bg-black/5 rounded-lg px-0.5"
+                  style={{ gridTemplateColumns: "1fr 2fr 1.5fr 1.2fr 1fr" }}
+                >
+                  <span className="font-mono text-xs text-black/60">
                     {o.id}
-                  </td>
-                  <td className="py-3.5 font-medium text-black">{o.service}</td>
-                  <td className="py-3.5 text-black/50 hidden sm:table-cell">
-                    {o.date}
-                  </td>
-                  <td className="py-3.5 font-semibold text-black">
+                  </span>
+                  <span className="font-medium text-black text-sm">
+                    {o.service}
+                  </span>
+                  <span className="text-black/50 text-sm">{o.date}</span>
+                  <span className="font-semibold text-black text-sm">
                     {o.amount}
-                  </td>
-                  <td className="py-3.5">
+                  </span>
+                  <span>
                     <StatusPill status={o.status} />
-                  </td>
-                </tr>
+                  </span>
+                </div>
               ))}
-            </tbody>
-          </table>
+            </div>
+          </div>
         </div>
       </div>
     </div>

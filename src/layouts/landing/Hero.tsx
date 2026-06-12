@@ -113,7 +113,7 @@ export default function Hero() {
               onClick={() => navigate("/signup")}
               variant="merchant"
               fullWidth={false}
-              className="border w-[200px] border-white/20 hover:border-white/50 bg-white/25 backdrop-blur-sm"
+              className="border md:w-[200px] w-full border-white/20 hover:border-white/50 bg-white/25 backdrop-blur-sm"
             >
               Find a Driver
             </Button>
@@ -121,7 +121,7 @@ export default function Hero() {
               onClick={() => navigate("/signup")}
               variant="customer"
               fullWidth={false}
-              className="border w-[200px] border-white/20 hover:border-white/50 bg-white/5 backdrop-blur-sm"
+              className="border w-full md:w-[200px] border-white/20 hover:border-white/50 bg-white/5 backdrop-blur-sm"
             >
               I'm a Driver
             </Button>
@@ -129,7 +129,7 @@ export default function Hero() {
               onClick={() => navigate("/signup")}
               variant="customer"
               fullWidth={false}
-              className="border w-[200px] border-[--color-primary] hover:border-[--color-primary-hover] bg-[--color-primary]/40 hover:bg-[--color-primary]/60"
+              className="border w-full md:w-[200px] border-[--color-primary] hover:border-[--color-primary-hover] bg-[--color-primary]/40 hover:bg-[--color-primary]/60"
             >
               Browse Fleet
             </Button>
@@ -160,7 +160,7 @@ export default function Hero() {
           </div>
         </div>
       </div>
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 animate-bounce">
+      <div className="absolute bottom-2 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 animate-bounce">
         <span className="text-white/30 text-xs tracking-widest uppercase">
           Scroll
         </span>
