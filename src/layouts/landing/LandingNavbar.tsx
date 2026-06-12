@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import Button from "../../ui/Button";
 
 const navLinks = [
   { label: "Services", href: "#services" },
@@ -20,6 +21,7 @@ function TruckIcon({ className }: { className?: string }) {
 export default function LandingNavbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -31,23 +33,23 @@ export default function LandingNavbar() {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-[#0F172A]/95 backdrop-blur-md shadow-lg shadow-black/20"
+          ? "bg-[--color-text]/95 backdrop-blur-md shadow-lg shadow-black/20"
           : "bg-transparent"
       }`}
     >
       <nav className="max-w-[1240px] mx-auto px-6 h-16 flex items-center justify-between">
         <a href="#" className="flex items-center gap-2.5 group">
-          <div className="w-8 h-8 bg-[#F97316] flex items-center justify-center rotate-3 group-hover:rotate-0 transition-transform duration-200">
+          <div className="w-8 h-8 bg-[--color-secondary] flex items-center justify-center rotate-3 group-hover:rotate-0 transition-transform duration-200">
             <TruckIcon className="w-5 h-5 text-white -rotate-3 group-hover:rotate-0 transition-transform duration-200" />
           </div>
           <span
-            className="font-display text-2xl font-900 tracking-tight text-white uppercase"
+            className="text-2xl tracking-tight text-white uppercase"
             style={{
               fontFamily: "'Barlow Condensed', sans-serif",
               fontWeight: 800,
             }}
           >
-            <span className="text-[#F97316]">In</span>Truck
+            <span className="text-[--color-secondary]">In</span>Truck
           </span>
         </a>
 
@@ -65,18 +67,22 @@ export default function LandingNavbar() {
         </ul>
 
         <div className="hidden md:flex items-center gap-3">
-          <Link
-            to="/login"
-            className="px-4 py-2 text-sm font-medium text-white/80 hover:text-white transition-colors"
+          <Button
+            variant="customer"
+            fullWidth={false}
+            onClick={() => navigate("/login")}
+            className="py-2 px-4 bg-transparent hover:bg-white/10 hover:shadow-none text-white/80 hover:text-white text-sm font-medium normal-case tracking-normal"
           >
             Sign In
-          </Link>
-          <Link
-            to="/signup"
-            className="px-5 py-2 bg-[#F97316] hover:bg-[#EA580C] text-white text-sm font-semibold transition-colors"
+          </Button>
+          <Button
+            variant="merchant"
+            fullWidth={false}
+            onClick={() => navigate("/signup")}
+            className="py-2 px-5 text-sm"
           >
             Get Started
-          </Link>
+          </Button>
         </div>
 
         <button
@@ -99,7 +105,7 @@ export default function LandingNavbar() {
       <div
         className={`md:hidden transition-all duration-300 overflow-hidden ${
           menuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
-        } bg-[#0F172A]/98 backdrop-blur-md`}
+        } bg-[--color-text]/98 backdrop-blur-md`}
       >
         <ul className="flex flex-col px-6 py-4 gap-1 border-t border-white/10">
           {navLinks.map((link) => (
@@ -114,20 +120,28 @@ export default function LandingNavbar() {
             </li>
           ))}
           <li className="pt-3 flex flex-col gap-2 border-t border-white/10 mt-2">
-            <Link
-              to="/login"
-              onClick={() => setMenuOpen(false)}
-              className="px-3 py-2.5 text-white/70 hover:text-white text-sm font-medium"
+            <Button
+              variant="customer"
+              fullWidth={false}
+              onClick={() => {
+                setMenuOpen(false);
+                navigate("/login");
+              }}
+              className="justify-start px-3 py-2.5 bg-transparent hover:bg-white/10 hover:shadow-none text-white/70 hover:text-white text-sm font-medium normal-case tracking-normal"
             >
               Sign In
-            </Link>
-            <Link
-              to="/signup"
-              onClick={() => setMenuOpen(false)}
-              className="px-4 py-2.5 bg-[#F97316] text-white text-sm font-semibold text-center"
+            </Button>
+            <Button
+              variant="merchant"
+              fullWidth
+              onClick={() => {
+                setMenuOpen(false);
+                navigate("/signup");
+              }}
+              className="py-2.5 text-sm"
             >
               Get Started
-            </Link>
+            </Button>
           </li>
         </ul>
       </div>

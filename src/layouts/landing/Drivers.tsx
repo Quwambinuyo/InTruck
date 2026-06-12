@@ -1,3 +1,6 @@
+import React from "react";
+import Button from "../../ui/Button";
+
 type Perk = {
   icon: React.ReactNode;
   title: string;
@@ -29,16 +32,31 @@ const perks: Perk[] = [
 
 export default function Drivers() {
   return (
-    <section id="drivers" className="py-24 bg-[#F8FAFC]">
-      <div className="max-w-[1240px] mx-auto px-6">
+    <section
+      id="drivers"
+      className="py-24 bg-[--color-background] relative overflow-hidden"
+    >
+      <div
+        className="absolute inset-0 z-0 opacity-[0.03]"
+        style={{
+          backgroundImage:
+            "linear-gradient(#000 1px, transparent 1px), linear-gradient(90deg, #000 1px, transparent 1px)",
+          backgroundSize: "60px 60px",
+        }}
+      />
+
+      <div className="relative z-10 max-w-[1240px] mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          {/* Left: Text */}
           <div>
-            <span className="text-[#F97316] text-xs font-semibold uppercase tracking-[0.2em]">
-              For Drivers
-            </span>
+            <div className="flex items-center gap-3 mb-4">
+              <span className="w-10 h-0.5 bg-[--color-text]" />
+              <span className="text-[--color-text] text-xs font-semibold uppercase tracking-[0.2em]">
+                For Drivers
+              </span>
+            </div>
+
             <h2
-              className="text-[#0F172A] mt-2 mb-6 uppercase leading-none"
+              className="text-[--color-text] mt-2 mb-6 uppercase leading-none"
               style={{
                 fontFamily: "'Barlow Condensed', sans-serif",
                 fontWeight: 900,
@@ -47,33 +65,35 @@ export default function Drivers() {
             >
               Your truck.
               <br />
-              <span className="text-[#1E40AF]">Your terms.</span>
+              <span className="text-[--color-primary]">Your terms.</span>
               <br />
               Your income.
             </h2>
-            <p className="text-[#64748B] text-base leading-relaxed mb-8 max-w-lg">
+
+            <p className="text-[--color-text-secondary] text-base leading-relaxed mb-8 max-w-lg">
               Stop waiting for middlemen to call you. InTruck lets you build
               your own client base, earn consistently, and grow your business —
               all from your phone.
             </p>
 
             <div className="flex flex-wrap gap-3 mb-12">
-              <a
-                href="#"
-                className="px-7 py-3.5 bg-[#1E40AF] hover:bg-[#1D4ED8] text-white text-sm font-bold uppercase tracking-wide transition-all duration-200 hover:shadow-lg hover:shadow-blue-500/25"
+              <Button
+                fullWidth={false}
+                className="px-7 !py-3.5 text-black bg-black"
               >
                 Register as a Driver
-              </a>
-              <a
-                href="#"
-                className="px-7 py-3.5 border border-[#0F172A]/20 hover:border-[#0F172A]/50 text-[#0F172A] text-sm font-bold uppercase tracking-wide transition-all duration-200"
+              </Button>
+
+              <Button
+                variant="customer"
+                fullWidth={false}
+                className="px-7 !py-3.5 tex-black !bg-black/90 border border-[--color-text]/20 hover:border-[--color-text]/50 !text-[--color-text] hover:!bg-[--color-text] hover:!text-white"
               >
                 See Driver FAQ
-              </a>
+              </Button>
             </div>
 
-            {/* Trust badges */}
-            <div className="flex flex-wrap gap-6 pt-6 border-t border-slate-200">
+            <div className="flex flex-wrap gap-8 pt-6 border-t border-black/10">
               {[
                 { label: "Verified Drivers", value: "2,400+" },
                 { label: "Avg. Monthly Earnings", value: "₦380k" },
@@ -81,7 +101,7 @@ export default function Drivers() {
               ].map((stat) => (
                 <div key={stat.label}>
                   <div
-                    className="text-[#0F172A] text-2xl"
+                    className="text-[--color-text] text-2xl"
                     style={{
                       fontFamily: "'Barlow Condensed', sans-serif",
                       fontWeight: 800,
@@ -89,7 +109,8 @@ export default function Drivers() {
                   >
                     {stat.value}
                   </div>
-                  <div className="text-[#64748B] text-xs uppercase tracking-widest mt-0.5">
+
+                  <div className="text-[--color-text-secondary] text-xs uppercase tracking-widest mt-0.5">
                     {stat.label}
                   </div>
                 </div>
@@ -97,18 +118,23 @@ export default function Drivers() {
             </div>
           </div>
 
-          {/* Right: Perks grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {perks.map((perk) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-0 border border-black/10">
+            {perks.map((perk, i) => (
               <div
                 key={perk.title}
-                className="bg-white border border-slate-100 p-6 hover:border-[#1E40AF]/30 hover:shadow-md transition-all duration-200"
+                className={`group relative p-8 bg-white hover:bg-[--color-text] transition-colors duration-300 overflow-hidden
+                  ${i % 2 === 0 ? "border-r border-black/10" : ""}
+                  ${i < 2 ? "border-b border-black/10" : ""}
+                `}
               >
-                <div className="w-10 h-10 bg-[#1E40AF]/10 flex items-center justify-center mb-4 text-[#1E40AF]">
+                <div className="absolute top-0 left-0 h-1 w-0 group-hover:w-full transition-all duration-500 bg-[--color-primary]" />
+
+                <div className="w-10 h-10 border border-black/10 flex items-center justify-center mb-6 text-[--color-text] transition-colors duration-300">
                   {perk.icon}
                 </div>
+
                 <h3
-                  className="text-[#0F172A] text-lg uppercase mb-2"
+                  className="text-[--color-text] text-lg uppercase mb-2 transition-colors duration-300"
                   style={{
                     fontFamily: "'Barlow Condensed', sans-serif",
                     fontWeight: 700,
@@ -116,7 +142,8 @@ export default function Drivers() {
                 >
                   {perk.title}
                 </h3>
-                <p className="text-[#64748B] text-sm leading-relaxed">
+
+                <p className="text-[--color-text-secondary] text-sm leading-relaxed transition-colors duration-300">
                   {perk.desc}
                 </p>
               </div>
@@ -135,6 +162,7 @@ function MoneyIcon() {
     </svg>
   );
 }
+
 function CalendarIcon() {
   return (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -142,6 +170,7 @@ function CalendarIcon() {
     </svg>
   );
 }
+
 function ShieldIcon() {
   return (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -149,6 +178,7 @@ function ShieldIcon() {
     </svg>
   );
 }
+
 function MapIcon() {
   return (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">

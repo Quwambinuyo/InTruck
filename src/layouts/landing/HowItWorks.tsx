@@ -48,18 +48,21 @@ function StepItem({
   step,
   isLast,
   accent,
+  textColor,
 }: {
   step: Step;
   isLast: boolean;
   accent: string;
+  textColor: string;
 }) {
   return (
     <div className="flex gap-5">
       <div className="flex flex-col items-center">
         <div
-          className="w-10 h-10 flex items-center justify-center flex-shrink-0 text-white text-sm font-bold"
+          className="w-10 h-10 flex items-center justify-center flex-shrink-0 text-sm font-bold"
           style={{
             backgroundColor: accent,
+            color: textColor,
             fontFamily: "'Barlow Condensed', sans-serif",
             fontWeight: 800,
             fontSize: "1rem",
@@ -67,6 +70,7 @@ function StepItem({
         >
           {step.num}
         </div>
+
         {!isLast && (
           <div
             className="w-0.5 flex-1 min-h-8 my-1"
@@ -74,6 +78,7 @@ function StepItem({
           />
         )}
       </div>
+
       <div className="pb-10">
         <h3
           className="text-white text-xl uppercase mb-2"
@@ -84,6 +89,7 @@ function StepItem({
         >
           {step.title}
         </h3>
+
         <p className="text-white/50 text-sm leading-relaxed">{step.desc}</p>
       </div>
     </div>
@@ -96,22 +102,46 @@ export default function HowItWorks() {
   return (
     <section
       id="how-it-works"
-      className="py-24 bg-[#0F172A] overflow-hidden relative"
+      className="py-24 overflow-hidden relative bg-[--color-text]"
     >
       <div
-        className="absolute inset-0 opacity-[0.03]"
+        className="absolute inset-0 z-0"
+        style={{
+          background: `linear-gradient(125deg, var(--color-text) 55%, var(--color-primary) 55%)`,
+        }}
+      />
+
+      <div
+        className="absolute z-0"
+        style={{
+          top: 0,
+          right: 0,
+          width: "45%",
+          height: "100%",
+          background: `linear-gradient(125deg, transparent 0%, transparent 45%, white 45%, white 100%)`,
+          opacity: 0.07,
+        }}
+      />
+
+      <div
+        className="absolute inset-0 z-0 opacity-5"
         style={{
           backgroundImage:
             "linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)",
-          backgroundSize: "40px 40px",
+          backgroundSize: "60px 60px",
         }}
       />
 
       <div className="relative z-10 max-w-[1240px] mx-auto px-6">
         <div className="text-center mb-20">
-          <span className="text-[#F97316] text-xs font-semibold uppercase tracking-[0.2em]">
-            Simple Process
-          </span>
+          <div className="flex items-center justify-center gap-3 mb-3">
+            <span className="w-10 h-0.5 bg-[--color-secondary]" />
+            <span className="text-[--color-secondary] text-xs font-semibold uppercase tracking-[0.2em]">
+              Simple Process
+            </span>
+            <span className="w-10 h-0.5 bg-[--color-secondary]" />
+          </div>
+
           <h2
             className="text-white mt-2 uppercase leading-none"
             style={{
@@ -122,16 +152,17 @@ export default function HowItWorks() {
           >
             Up and running
             <br />
-            <span className="text-[#F97316]">in three steps.</span>
+            <span className="text-[--color-secondary]">in three steps.</span>
           </h2>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20">
           <div>
             <div className="flex items-center gap-3 mb-10">
-              <div className="w-8 h-8 bg-[#1E40AF] flex items-center justify-center text-white">
+              <div className="w-8 h-8 bg-[--color-primary] flex items-center justify-center text-white">
                 <FaBuilding className="w-4 h-4" />
               </div>
+
               <span
                 className="text-white text-xl uppercase"
                 style={{
@@ -142,13 +173,15 @@ export default function HowItWorks() {
                 For Clients
               </span>
             </div>
+
             <div className="flex flex-col gap-0">
               {clientSteps.map((step, i) => (
                 <StepItem
                   key={step.num}
                   step={step}
                   isLast={i === clientSteps.length - 1}
-                  accent="#1E40AF"
+                  accent="var(--color-primary)"
+                  textColor="#ffffff"
                 />
               ))}
             </div>
@@ -156,9 +189,10 @@ export default function HowItWorks() {
 
           <div>
             <div className="flex items-center gap-3 mb-10">
-              <div className="w-8 h-8 bg-[#F97316] flex items-center justify-center text-white">
+              <div className="w-8 h-8 bg-[--color-secondary] flex items-center justify-center text-white">
                 <FaTruck className="w-4 h-4" />
               </div>
+
               <span
                 className="text-white text-xl uppercase"
                 style={{
@@ -169,13 +203,15 @@ export default function HowItWorks() {
                 For Drivers
               </span>
             </div>
+
             <div className="flex flex-col gap-0">
               {driverSteps.map((step, i) => (
                 <StepItem
                   key={step.num}
                   step={step}
                   isLast={i === driverSteps.length - 1}
-                  accent="#F97316"
+                  accent="var(--color-secondary)"
+                  textColor="#000000"
                 />
               ))}
             </div>
@@ -187,15 +223,17 @@ export default function HowItWorks() {
             Whether you're moving 5 tons or 500, InTruck has the drivers and the
             fleet to get it done.
           </p>
+
           <div className="flex gap-3">
             <Button
               onClick={() => navigate("/signup")}
               variant="merchant"
-              className="w-[200px]"
+              className="w-[200px] bg-black/30"
               fullWidth={false}
             >
               Post a Job
             </Button>
+
             <Button
               onClick={() => navigate("/signup")}
               variant="customer"

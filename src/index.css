@@ -6,17 +6,47 @@
   --breakpoint-md: 864px;
   --breakpoint-lg: 1056px;
   --breakpoint-xl: 1240px;
-  --color-primary: #1e40af;
-  --color-primary-hover: #1d4ed8;
-  --color-secondary: #f97316;
-  --color-secondary-hover: #ea580c;
+  --color-primary: #1a1a1a;
+  --color-primary-hover: #000000;
+  --color-secondary: #ffffff;
+  --color-secondary-hover: #e5e5e5;
   --color-success: #22c55e;
   --color-warning: #eab308;
   --color-danger: #ef4444;
   --color-background: #f8fafc;
   --color-surface: #ffffff;
-  --color-text: #0f172a;
-  --color-text-secondary: #64748b;
+  --color-text: #000000;
+  --color-text-secondary: #454040;
+}
+
+@font-face {
+  font-family: "ZabalRegular";
+  src: url(/public/ZabalDEMO-Regular.otf);
+}
+@font-face {
+  font-family: "ZabalMedium";
+  src: url(/public/ZabalDEMO-Medium.otf);
+}
+@font-face {
+  font-family: "ZabalSemiBold";
+  src: url(/public//ZabalDEMO-SemiBold.otf);
+}
+@font-face {
+  font-family: "ZabalBold";
+  src: url(/public/ZabalDEMO-Bold.otf);
+}
+
+.zabalRegFont {
+  font-family: "ZabalRegular", sans-serif;
+}
+.zabalMedFont {
+  font-family: "ZabalMedium", sans-serif;
+}
+.zabalSemiboldFont {
+  font-family: "ZabalSemiBold", sans-serif;
+}
+.zabalBoldFont {
+  font-family: "ZabalBold", sans-serif;
 }
 
 @layer base {
@@ -27,7 +57,7 @@
   body {
     background-color: var(--color-background);
     color: var(--color-text);
-    font-family: "Inter", sans-serif;
+    font-family: "ZabalRegular", sans-serif;
   }
 }
 

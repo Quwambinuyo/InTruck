@@ -12,7 +12,7 @@ type SubmitButtonProps = {
   className?: string;
 };
 
-export default function SubmitButton({
+export default function Button({
   children,
   isLoading = false,
   disabled = false,
@@ -24,9 +24,9 @@ export default function SubmitButton({
 }: SubmitButtonProps) {
   const getVariantClasses = () => {
     if (variant === "merchant") {
-      return "bg-[#F97316] hover:bg-[#EA580C] hover:shadow-orange-500/25";
+      return "bg-[--color-secondary] hover:bg-[--color-secondary-hover] hover:shadow-[--color-secondary]/50";
     }
-    return "bg-[#1E40AF] hover:bg-[#1D4ED8] hover:shadow-blue-500/25";
+    return "bg-[--color-primary] hover:bg-[--color-primary-hover] hover:shadow-[--color-primary]/50";
   };
 
   const widthClass = fullWidth ? "w-full" : "";
@@ -36,7 +36,7 @@ export default function SubmitButton({
       <button
         type="button"
         disabled
-        className={`${widthClass} py-4 bg-[#94A3B8] disabled:opacity-60 text-white font-bold text-sm uppercase tracking-wide flex items-center justify-center gap-2 cursor-not-allowed ${className}`}
+        className={`${widthClass} py-4 bg-[--color-text-secondary] disabled:opacity-60 text-white font-bold text-sm uppercase tracking-wide flex items-center justify-center gap-2 cursor-not-allowed ${className}`}
       >
         <Spinner />
         {children}

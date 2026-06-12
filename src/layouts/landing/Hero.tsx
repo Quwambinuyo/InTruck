@@ -14,17 +14,17 @@ function BigTruckSVG() {
       <path d="M570 190 L570 360 L730 360 L730 250 L680 190 Z" />
       <path
         d="M585 200 L630 200 L670 245 L585 245 Z"
-        fill="#0F172A"
+        fill="var(--color-text)"
         opacity="0.5"
       />
       <circle cx="120" cy="370" r="60" />
-      <circle cx="120" cy="370" r="28" fill="#0F172A" opacity="0.6" />
+      <circle cx="120" cy="370" r="28" fill="var(--color-text)" opacity="0.6" />
       <circle cx="280" cy="370" r="60" />
-      <circle cx="280" cy="370" r="28" fill="#0F172A" opacity="0.6" />
+      <circle cx="280" cy="370" r="28" fill="var(--color-text)" opacity="0.6" />
       <circle cx="630" cy="370" r="60" />
-      <circle cx="630" cy="370" r="28" fill="#0F172A" opacity="0.6" />
+      <circle cx="630" cy="370" r="28" fill="var(--color-text)" opacity="0.6" />
       <circle cx="720" cy="370" r="50" />
-      <circle cx="720" cy="370" r="22" fill="#0F172A" opacity="0.6" />
+      <circle cx="720" cy="370" r="22" fill="var(--color-text)" opacity="0.6" />
       <rect x="660" y="120" width="16" height="80" rx="4" />
       <rect x="735" y="260" width="30" height="5" rx="2" />
       <rect x="735" y="275" width="30" height="5" rx="2" />
@@ -35,7 +35,7 @@ function BigTruckSVG() {
         width="20"
         height="12"
         rx="2"
-        fill="#F97316"
+        fill="var(--color-secondary)"
         opacity="0.8"
       />
     </svg>
@@ -46,11 +46,11 @@ export default function Hero() {
   const navigate = useNavigate();
 
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden bg-[#0F172A]">
+    <section className="relative min-h-screen flex items-center overflow-hidden bg-[--color-text]">
       <div
         className="absolute inset-0 z-0"
         style={{
-          background: "linear-gradient(125deg, #0F172A 55%, #1E40AF 55%)",
+          background: `linear-gradient(125deg, var(--color-text) 55%, var(--color-text) 55%)`,
         }}
       />
       <div
@@ -60,8 +60,7 @@ export default function Hero() {
           right: 0,
           width: "45%",
           height: "100%",
-          background:
-            "linear-gradient(125deg, transparent 0%, transparent 45%, #F97316 45%, #EA580C 100%)",
+          background: `linear-gradient(125deg, transparent 0%, transparent 45%, white 45%, white 100%)`,
           opacity: 0.12,
         }}
       />
@@ -69,7 +68,7 @@ export default function Hero() {
         className="absolute inset-0 z-0 opacity-5"
         style={{
           backgroundImage:
-            "linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)",
+            "linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 5px)",
           backgroundSize: "60px 60px",
         }}
       />
@@ -79,8 +78,8 @@ export default function Hero() {
       <div className="relative z-10 max-w-[1240px] mx-auto px-6 pt-24 pb-16 w-full">
         <div className="max-w-3xl">
           <div className="flex items-center gap-3 mb-6">
-            <span className="w-10 h-0.5 bg-[#F97316]" />
-            <span className="text-[#F97316] text-xs font-semibold uppercase tracking-[0.2em]">
+            <span className="w-10 h-0.5 bg-[--color-secondary]" />
+            <span className="text-[--color-secondary] text-xs font-semibold uppercase tracking-[0.2em]">
               Nigeria's #1 Trucking Platform
             </span>
           </div>
@@ -95,7 +94,7 @@ export default function Hero() {
           >
             Move anything.
             <br />
-            <span className="text-[#F97316]">Anywhere.</span>
+            <span className="text-[--color-secondary]">Anywhere.</span>
             <br />
             On demand.
           </h1>
@@ -114,7 +113,7 @@ export default function Hero() {
               onClick={() => navigate("/signup")}
               variant="merchant"
               fullWidth={false}
-              className="w-[200px]"
+              className="border w-[200px] border-white/20 hover:border-white/50 bg-white/25 backdrop-blur-sm"
             >
               Find a Driver
             </Button>
@@ -130,7 +129,7 @@ export default function Hero() {
               onClick={() => navigate("/signup")}
               variant="customer"
               fullWidth={false}
-              className="border w-[200px] border-[#1E40AF] hover:border-[#1D4ED8] bg-[#1E40AF]/40 hover:bg-[#1E40AF]/60"
+              className="border w-[200px] border-[--color-primary] hover:border-[--color-primary-hover] bg-[--color-primary]/40 hover:bg-[--color-primary]/60"
             >
               Browse Fleet
             </Button>

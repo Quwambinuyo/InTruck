@@ -1,3 +1,5 @@
+import React from "react";
+
 type Service = {
   icon: React.ReactNode;
   title: string;
@@ -15,7 +17,7 @@ const services: Service[] = [
     description:
       "Browse verified trucks for sale — tippers, flatbeds, tankers, mixers. Inspected, documented, and ready to earn.",
     tag: "Purchase",
-    accent: "#1E40AF",
+    accent: "var(--color-primary)",
   },
   {
     icon: <RentIcon />,
@@ -24,7 +26,7 @@ const services: Service[] = [
     description:
       "Need a fleet for a project? Rent trucks by the day, week, or month. No ownership headaches, just results.",
     tag: "Rental",
-    accent: "#F97316",
+    accent: "var(--color-secondary)",
   },
   {
     icon: <DeliveryIcon />,
@@ -33,7 +35,7 @@ const services: Service[] = [
     description:
       "Get sand, stone, granite, laterite, gravel — any bulk material — delivered on your schedule by rated drivers.",
     tag: "Logistics",
-    accent: "#22C55E",
+    accent: "var(--color-success)",
   },
   {
     icon: <DriverIcon />,
@@ -42,21 +44,20 @@ const services: Service[] = [
     description:
       "Post a job and receive bids from licensed, background-checked drivers within your region. Pay securely in-app.",
     tag: "Drivers",
-    accent: "#EAB308",
+    accent: "var(--color-warning)",
   },
 ];
 
 export default function Services() {
   return (
-    <section id="services" className="py-24 bg-[#F8FAFC]">
+    <section id="services" className="py-24 bg-[--color-background]">
       <div className="max-w-[1240px] mx-auto px-6">
-        {/* Header */}
         <div className="mb-16">
-          <span className="text-[#F97316] text-xs font-semibold uppercase tracking-[0.2em]">
+          <span className="text-[--color-secondary] text-xs font-semibold uppercase tracking-[0.2em]">
             What We Offer
           </span>
           <h2
-            className="text-[#0F172A] mt-2 uppercase leading-none"
+            className="text-[--color-text] mt-2 uppercase leading-none"
             style={{
               fontFamily: "'Barlow Condensed', sans-serif",
               fontWeight: 900,
@@ -65,11 +66,12 @@ export default function Services() {
           >
             One platform.
             <br />
-            <span className="text-[#1E40AF]">Every InTrucking need.</span>
+            <span className="text-[--color-primary]">
+              Every InTrucking need.
+            </span>
           </h2>
         </div>
 
-        {/* Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {services.map((service) => (
             <ServiceCard key={service.title} service={service} />
@@ -82,14 +84,12 @@ export default function Services() {
 
 function ServiceCard({ service }: { service: Service }) {
   return (
-    <div className="group relative bg-white border border-slate-100 p-8 hover:shadow-xl hover:shadow-slate-200/80 transition-all duration-300 hover:-translate-y-1 overflow-hidden">
-      {/* Accent top bar */}
+    <div className="group relative bg-[--color-surface] border border-slate-100 p-8 hover:shadow-xl hover:shadow-slate-200/80 transition-all duration-300 hover:-translate-y-1 overflow-hidden">
       <div
         className="absolute top-0 left-0 right-0 h-1"
         style={{ backgroundColor: service.accent }}
       />
 
-      {/* Tag */}
       <span
         className="inline-block text-[10px] font-bold uppercase tracking-[0.18em] px-2.5 py-1 mb-6"
         style={{
@@ -108,11 +108,11 @@ function ServiceCard({ service }: { service: Service }) {
           <div style={{ color: service.accent }}>{service.icon}</div>
         </div>
         <div className="flex-1">
-          <p className="text-[#64748B] text-xs uppercase tracking-widest font-medium mb-0.5">
+          <p className="text-[--color-text-secondary] text-xs uppercase tracking-widest font-medium mb-0.5">
             {service.subtitle}
           </p>
           <h3
-            className="text-[#0F172A] mb-3 uppercase"
+            className="text-[--color-text] mb-3 uppercase"
             style={{
               fontFamily: "'Barlow Condensed', sans-serif",
               fontWeight: 800,
@@ -121,7 +121,7 @@ function ServiceCard({ service }: { service: Service }) {
           >
             {service.title}
           </h3>
-          <p className="text-[#64748B] text-sm leading-relaxed">
+          <p className="text-[--color-text-secondary] text-sm leading-relaxed">
             {service.description}
           </p>
         </div>
@@ -144,7 +144,6 @@ function ServiceCard({ service }: { service: Service }) {
         </svg>
       </a>
 
-      {/* Hover corner accent */}
       <div
         className="absolute bottom-0 right-0 w-20 h-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
         style={{
@@ -162,6 +161,7 @@ function ShoppingTruckIcon() {
     </svg>
   );
 }
+
 function RentIcon() {
   return (
     <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
@@ -169,6 +169,7 @@ function RentIcon() {
     </svg>
   );
 }
+
 function DeliveryIcon() {
   return (
     <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
@@ -176,6 +177,7 @@ function DeliveryIcon() {
     </svg>
   );
 }
+
 function DriverIcon() {
   return (
     <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
