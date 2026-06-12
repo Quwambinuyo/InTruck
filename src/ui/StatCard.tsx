@@ -30,13 +30,13 @@ const StatCard = ({
   const trendArrow = trend === "up" ? "▲" : trend === "down" ? "▼" : "–";
 
   return (
-    <div className="bg-white border border-black/10 rounded-2xl p-5 shadow-sm">
-      <div className="flex items-start justify-between">
-        <p className="text-[10px] font-bold uppercase tracking-widest text-black/50">
+    <div className="bg-white border border-black/10 rounded-2xl p-4 shadow-sm min-w-0 overflow-hidden w-full">
+      <div className="flex items-start justify-between gap-1">
+        <p className="text-[10px] font-bold uppercase tracking-widest text-black/50 leading-tight">
           {label}
         </p>
 
-        <div className="flex items-center gap-2 flex-shrink-0">
+        <div className="flex items-center gap-1.5 flex-shrink-0">
           {icon && <span className="text-black">{icon}</span>}
 
           {tooltip && (
@@ -54,14 +54,14 @@ const StatCard = ({
         </div>
       </div>
 
-      <p className="mt-2 text-3xl font-black text-black leading-none">
+      <p className="mt-2 text-2xl font-black text-black leading-none truncate">
         {value}
       </p>
 
-      <div className="flex items-center justify-between mt-3">
+      <div className="flex items-center justify-between mt-3 gap-2 min-w-0">
         {delta ? (
           <span
-            className="text-xs font-semibold flex items-center gap-1"
+            className="text-xs font-semibold flex items-center gap-1 shrink-0"
             style={{ color: trendColor }}
           >
             <span>{trendArrow}</span> {delta}
@@ -71,10 +71,12 @@ const StatCard = ({
         )}
 
         {sparkline && (
-          <Sparkline
-            data={sparkline}
-            stroke={trend === "down" ? "#000000" : "#000000"}
-          />
+          <div className="min-w-0 flex-1 max-w-[80px]">
+            <Sparkline
+              data={sparkline}
+              stroke={trend === "down" ? "#000000" : "#000000"}
+            />
+          </div>
         )}
       </div>
 

@@ -1,6 +1,5 @@
 interface SparklineProps {
   data?: number[];
-  width?: number;
   height?: number;
   stroke?: string;
   fill?: boolean;
@@ -8,13 +7,13 @@ interface SparklineProps {
 
 const Sparkline = ({
   data = [],
-  width = 92,
   height = 28,
   stroke = "#7C3AED",
   fill = true,
 }: SparklineProps) => {
   if (!data.length) return null;
 
+  const width = 92;
   const max = Math.max(...data);
   const min = Math.min(...data);
   const range = max - min || 1;
@@ -37,7 +36,12 @@ const Sparkline = ({
     : null;
 
   return (
-    <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`}>
+    <svg
+      width="100%"
+      height={height}
+      viewBox={`0 0 ${width} ${height}`}
+      preserveAspectRatio="none"
+    >
       {fill && area && <path d={area} fill={stroke} opacity="0.10" />}
       <path
         d={d}
