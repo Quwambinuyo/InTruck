@@ -86,7 +86,7 @@ export default function SignUp() {
       <div className="w-full max-w-[600px] mx-auto">
         <div className="mb-8">
           <h1
-            className="text-[#0F172A] uppercase leading-none mb-2"
+            className="text-black uppercase leading-none mb-2"
             style={{
               fontFamily: "'Barlow Condensed', sans-serif",
               fontWeight: 900,
@@ -96,11 +96,12 @@ export default function SignUp() {
           >
             Create account
           </h1>
-          <p className="text-[#64748B] text-sm">
+
+          <p className="text-black/60 text-sm">
             Already have an account?{" "}
             <Link
               to="/login"
-              className="text-[#F97316] font-semibold hover:text-[#EA6C00] transition-colors"
+              className="text-black font-semibold hover:text-black/70 transition-colors"
             >
               Sign in →
             </Link>
@@ -119,23 +120,25 @@ export default function SignUp() {
         />
 
         {isMerchant && (
-          <div className="flex items-start gap-3 px-4 py-3 bg-[#FFF7ED] border-l-4 border-[#F97316] mb-6">
+          <div className="flex items-start gap-3 px-4 py-3 bg-black text-white mb-6">
             <svg
-              className="w-4 h-4 text-[#F97316] flex-shrink-0 mt-0.5"
+              className="w-4 h-4 text-white flex-shrink-0 mt-0.5"
               viewBox="0 0 24 24"
               fill="currentColor"
             >
               <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
             </svg>
-            <p className="text-[#9A3412] text-xs leading-relaxed font-medium">
+
+            <p className="text-white/80 text-xs leading-relaxed font-medium">
               Merchant accounts are verified within 24 hrs. Have your CAC or
               NAFDAC number ready.
             </p>
           </div>
         )}
 
-        <div className="bg-white border border-slate-200 p-5 mb-4">
+        <div className="bg-white border border-black/10 p-5 mb-4">
           <SectionLabel>Personal details</SectionLabel>
+
           <div className="flex flex-col gap-4 mt-4">
             <Field
               label="Full name"
@@ -145,6 +148,7 @@ export default function SignUp() {
               error={errors.fullName?.message}
               {...register("fullName", rules.fullName)}
             />
+
             <div className="grid grid-cols-2 gap-4">
               <Field
                 label="Email address"
@@ -154,6 +158,7 @@ export default function SignUp() {
                 error={errors.email?.message}
                 {...register("email", rules.email)}
               />
+
               <Field
                 label="Phone number"
                 type="tel"
@@ -167,8 +172,9 @@ export default function SignUp() {
         </div>
 
         {isMerchant && (
-          <div className="bg-white border border-slate-200 p-5 mb-4">
+          <div className="bg-white border border-black/10 p-5 mb-4">
             <SectionLabel>Business details</SectionLabel>
+
             <div className="flex flex-col gap-4 mt-4">
               <Field
                 label="Business name"
@@ -177,6 +183,7 @@ export default function SignUp() {
                 error={errors.businessName?.message}
                 {...register("businessName", rules.businessName(isMerchant))}
               />
+
               <div className="grid grid-cols-2 gap-4">
                 <Controller
                   name="businessType"
@@ -193,6 +200,7 @@ export default function SignUp() {
                     />
                   )}
                 />
+
                 <Controller
                   name="state"
                   control={control}
@@ -213,8 +221,9 @@ export default function SignUp() {
           </div>
         )}
 
-        <div className="bg-white border border-slate-200 p-5 mb-5">
+        <div className="bg-white border border-black/10 p-5 mb-5">
           <SectionLabel>Security</SectionLabel>
+
           <div className="flex flex-col gap-4 mt-4">
             <div>
               <Field
@@ -225,20 +234,22 @@ export default function SignUp() {
                 error={errors.password?.message}
                 {...register("password", rules.password)}
               />
+
               {password && (
                 <div className="mt-2.5">
                   <div className="flex gap-1 mb-1.5">
                     {[1, 2, 3, 4].map((i) => (
                       <div
                         key={i}
-                        className="h-1 flex-1 transition-all duration-300"
+                        className="h-1 flex-1"
                         style={{
                           backgroundColor:
-                            i <= strength ? strengthColor : "#E2E8F0",
+                            i <= strength ? strengthColor : "#E5E5E5",
                         }}
                       />
                     ))}
                   </div>
+
                   <p
                     className="text-xs font-medium"
                     style={{ color: strengthColor }}
@@ -248,6 +259,7 @@ export default function SignUp() {
                 </div>
               )}
             </div>
+
             <Field
               label="Confirm password"
               type="password"
@@ -262,9 +274,9 @@ export default function SignUp() {
         <label className="flex items-start gap-3 cursor-pointer mb-6 group">
           <div className="relative mt-0.5 flex-shrink-0">
             <input type="checkbox" className="sr-only peer" />
-            <div className="w-4 h-4 border-2 border-slate-300 peer-checked:border-[#F97316] peer-checked:bg-[#F97316] transition-all" />
+            <div className="w-4 h-4 border-2 border-black/30 peer-checked:border-black peer-checked:bg-black transition-all" />
             <svg
-              className="absolute inset-0 w-4 h-4 text-white opacity-0 peer-checked:opacity-100 pointer-events-none transition-opacity"
+              className="absolute inset-0 w-4 h-4 text-white opacity-0 peer-checked:opacity-100 pointer-events-none"
               viewBox="0 0 16 16"
               fill="none"
             >
@@ -277,19 +289,14 @@ export default function SignUp() {
               />
             </svg>
           </div>
-          <span className="text-[#64748B] text-xs leading-relaxed">
+
+          <span className="text-black/60 text-xs leading-relaxed">
             I agree to InTruck's{" "}
-            <Link
-              to="/terms"
-              className="text-[#0F172A] font-semibold underline underline-offset-2"
-            >
+            <Link to="/terms" className="text-black font-semibold underline">
               Terms of Service
             </Link>{" "}
             and{" "}
-            <Link
-              to="/privacy"
-              className="text-[#0F172A] font-semibold underline underline-offset-2"
-            >
+            <Link to="/privacy" className="text-black font-semibold underline">
               Privacy Policy
             </Link>
             {isMerchant && ", and consent to business verification checks"}.
@@ -300,21 +307,22 @@ export default function SignUp() {
           onClick={handleSubmit(onSubmit)}
           isLoading={isSubmitting}
           variant={isMerchant ? "merchant" : "customer"}
+          className="bg-primary"
         >
           {getButtonText()}
         </Button>
 
         <div className="flex items-center gap-3 my-5">
-          <div className="flex-1 h-px bg-slate-200" />
-          <span className="text-[#CBD5E1] text-[10px] uppercase tracking-[0.2em] font-semibold">
+          <div className="flex-1 h-px bg-black/10" />
+          <span className="text-black/40 text-[10px] uppercase tracking-[0.2em] font-semibold">
             or continue with
           </span>
-          <div className="flex-1 h-px bg-slate-200" />
+          <div className="flex-1 h-px bg-black/10" />
         </div>
 
         <button
           type="button"
-          className="w-full py-3.5 border-2 border-slate-200 hover:border-slate-300 hover:bg-slate-50 bg-white text-[#0F172A] text-sm font-semibold flex items-center justify-center gap-3 transition-all duration-150"
+          className="w-full py-3.5 border-2 border-black/10 hover:border-black/30 hover:bg-black/5 bg-white text-black text-sm font-semibold flex items-center justify-center gap-3 transition-all duration-150"
         >
           <GoogleIcon />
           Sign up with Google

@@ -2,14 +2,12 @@ import type { ReactNode } from "react";
 import Sparkline from "./Sparkline";
 
 type Trend = "up" | "down" | "flat";
-type Accent = "purple" | "teal" | "gold" | "crit";
 
 interface StatCardProps {
   label: string;
   value: string | number;
   delta?: string;
   trend?: Trend;
-  accent?: Accent;
   icon?: ReactNode;
   sparkline?: number[];
   footer?: ReactNode;
@@ -21,100 +19,49 @@ const StatCard = ({
   value,
   delta,
   trend = "flat",
-  accent = "purple",
   icon,
   sparkline,
   footer,
   tooltip,
 }: StatCardProps) => {
-  const accentClass: Record<Accent, string> = {
-    purple: "kpi bg-white rounded-2xl p-5 shadow-sm border border-slate-100",
-    teal: "kpi kpi-teal bg-white rounded-2xl p-5 shadow-sm border border-slate-100",
-    gold: "kpi kpi-gold bg-white rounded-2xl p-5 shadow-sm border border-slate-100",
-    crit: "kpi kpi-crit bg-white rounded-2xl p-5 shadow-sm border border-slate-100",
-  };
-
   const trendColor =
-    trend === "up" ? "#059669" : trend === "down" ? "#DC2626" : "#888888";
+    trend === "up" ? "#000000" : trend === "down" ? "#000000" : "#64748B";
+
   const trendArrow = trend === "up" ? "▲" : trend === "down" ? "▼" : "–";
 
   return (
-    <div className={accentClass[accent]}>
+    <div className="bg-white border border-black/10 rounded-2xl p-5 shadow-sm">
       <div className="flex items-start justify-between">
-        <p className="text-xs font-semibold tracking-wider uppercase text-muted">
+        <p className="text-[10px] font-bold uppercase tracking-widest text-black/50">
           {label}
         </p>
-        <div className="flex items-center gap-1.5 flex-shrink-0">
-          {icon && <span className="text-silver">{icon}</span>}
+
+        <div className="flex items-center gap-2 flex-shrink-0">
+          {icon && <span className="text-black">{icon}</span>}
+
           {tooltip && (
-            <span
-              className="relative flex-shrink-0 group"
-              style={{ display: "inline-flex" }}
-            >
-              <span
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  width: 16,
-                  height: 16,
-                  borderRadius: "50%",
-                  background: "rgba(124,58,237,0.12)",
-                  color: "#7C3AED",
-                  fontSize: 10,
-                  fontWeight: 700,
-                  cursor: "default",
-                  lineHeight: 1,
-                  userSelect: "none",
-                  flexShrink: 0,
-                }}
-              >
+            <span className="relative group flex items-center justify-center">
+              <span className="w-4 h-4 flex items-center justify-center rounded-full bg-black text-white text-[10px] font-bold cursor-default">
                 i
               </span>
-              <span
-                className="transition-opacity duration-150 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto zabalBoldFont"
-                style={{
-                  position: "absolute",
-                  top: 20,
-                  right: 0,
-                  zIndex: 50,
-                  width: 220,
-                  background: "#ffffff",
-                  color: "#000000",
-                  fontSize: 11,
-                  lineHeight: 1.5,
-                  borderRadius: 8,
-                  padding: "8px 10px",
-                  boxShadow: "0 4px 16px rgba(0,0,0,0.15)",
-                  whiteSpace: "normal",
-                  border: "1px solid #e2e8f0",
-                }}
-              >
+
+              <span className="opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto absolute top-6 right-0 w-52 bg-white text-black text-[11px] leading-relaxed border border-black/10 rounded-lg p-2 shadow-lg z-50">
                 {tooltip}
-                <span
-                  style={{
-                    position: "absolute",
-                    top: -5,
-                    right: 4,
-                    width: 0,
-                    height: 0,
-                    borderLeft: "5px solid transparent",
-                    borderRight: "5px solid transparent",
-                    borderBottom: "5px solid #ffffff",
-                  }}
-                />
+                <span className="absolute -top-1 right-2 w-2 h-2 bg-white rotate-45 border-l border-t border-black/10" />
               </span>
             </span>
           )}
         </div>
       </div>
-      <p className="mt-2 text-3xl font-black leading-none tracking-tight text-ink">
+
+      <p className="mt-2 text-3xl font-black text-black leading-none">
         {value}
       </p>
-      <div className="flex items-center justify-between mt-2">
+
+      <div className="flex items-center justify-between mt-3">
         {delta ? (
           <span
-            className="flex items-center gap-1 text-xs font-bold"
+            className="text-xs font-semibold flex items-center gap-1"
             style={{ color: trendColor }}
           >
             <span>{trendArrow}</span> {delta}
@@ -122,14 +69,16 @@ const StatCard = ({
         ) : (
           <span />
         )}
+
         {sparkline && (
           <Sparkline
             data={sparkline}
-            stroke={trend === "down" ? "#DC2626" : "#7C3AED"}
+            stroke={trend === "down" ? "#000000" : "#000000"}
           />
         )}
       </div>
-      {footer && <div className="mt-3 text-xs text-slate">{footer}</div>}
+
+      {footer && <div className="mt-3 text-xs text-black/60">{footer}</div>}
     </div>
   );
 };

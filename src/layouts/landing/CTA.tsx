@@ -8,7 +8,7 @@ function AppBadge({ store }: { store: string }) {
   return (
     <button
       onClick={() => navigate("/signup")}
-      className="flex items-center gap-3 px-5 py-3 bg-black hover:bg-white transition-colors border border-white/20 hover:border-white/40"
+      className="flex items-center gap-3 px-5 py-3 bg-black  transition-colors border border-white/20 hover:border-white/40"
     >
       {store === "App Store" ? (
         <FaApple className="w-5 h-5 text-white" />

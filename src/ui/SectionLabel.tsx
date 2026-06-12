@@ -5,8 +5,8 @@ export default function SectionLabel({
 }) {
   return (
     <div className="flex items-center gap-2">
-      <span className="w-1 h-4 bg-[#F97316] flex-shrink-0" />
-      <span className="text-[#0F172A] text-[10px] font-bold uppercase tracking-[0.18em]">
+      <span className="w-1 h-4 bg-primary flex-shrink-0" />
+      <span className="text-primary text-[10px] font-bold uppercase tracking-[0.18em]">
         {children}
       </span>
     </div>

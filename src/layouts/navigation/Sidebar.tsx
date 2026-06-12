@@ -65,22 +65,18 @@ const SidebarLink = ({
   return (
     <Link
       to={link.path}
-      className={`flex items-center gap-3 px-4 py-5 mx-3 rounded-2xl transition-all duration-200 ${
-        isActive
-          ? "bg-orange-50 border border-orange-100 text-orange-600"
-          : "text-slate-700 hover:bg-slate-50"
+      className={`flex items-center gap-3 px-4 py-6 mx-3 rounded-xl transition-all duration-200 ${
+        isActive ? "bg-white/10" : "hover:bg-white/5"
       }`}
     >
-      <Icon
-        className={`text-[18px] shrink-0 ${
-          isActive ? "text-orange-600" : "text-slate-500"
-        }`}
-      />
+      <Icon className="text-white text-[18px] shrink-0" />
 
-      <span className="flex-1 text-sm font-medium capitalize">{link.text}</span>
+      <span className="flex-1 text-sm font-medium capitalize text-white">
+        {link.text}
+      </span>
 
       {link.badge && (
-        <span className="min-w-[22px] h-[22px] flex items-center justify-center rounded-full text-[11px] font-semibold bg-orange-100 text-orange-600">
+        <span className="min-w-[22px] h-[22px] flex items-center justify-center rounded-full text-[11px] font-semibold bg-white text-black">
           {link.badge}
         </span>
       )}
@@ -98,15 +94,17 @@ const Sidebar = () => {
     pathname === path || pathname.startsWith(path + "/");
 
   return (
-    <aside className="w-full h-full flex flex-col bg-white border-r border-slate-200 overflow-y-auto">
-      <div className="px-5 py-5 border-b border-slate-200">
+    <aside className="w-full h-full flex flex-col bg-[var(--color-primary)] overflow-y-auto">
+      <div className="px-5 py-5 border-b border-white/10">
         <Link to="/" className="flex items-center gap-3">
-          <h2 className="font-bold text-slate-900 text-base">InTruck</h2>
+          <h2 className="font-bold text-white text-base uppercase tracking-wide">
+            InTruck
+          </h2>
         </Link>
       </div>
 
       <div className="flex-1 py-5">
-        <p className="px-6 mb-3 text-xs font-semibold uppercase tracking-wider text-slate-400">
+        <p className="px-6 mb-3 text-xs font-semibold uppercase tracking-wider text-white/60">
           Overview
         </p>
 
@@ -129,17 +127,17 @@ export default Sidebar;
 export const MobileSidebarWrapper = ({ onClose }: { onClose: () => void }) => {
   return (
     <div className="fixed inset-0 z-50 md:hidden">
-      <div className="absolute inset-0 bg-black/40" onClick={onClose} />
+      <div className="absolute inset-0 bg-black/60" onClick={onClose} />
 
-      <div className="absolute left-0 top-0 h-full w-[260px] bg-white shadow-xl flex flex-col">
+      <div className="absolute left-0 top-0 h-full w-[260px] bg-[var(--color-primary)] flex flex-col">
         <Sidebar />
       </div>
 
       <button
-        className="absolute top-2 right-3 rounded-full h-[42px] w-[42px] bg-white flex items-center justify-center shadow-md"
+        className="absolute top-3 right-3 rounded-full h-[42px] w-[42px] bg-white flex items-center justify-center shadow-md"
         onClick={onClose}
       >
-        <FaTimes color="#0f172a" size={20} />
+        <FaTimes color="#000" size={20} />
       </button>
     </div>
   );

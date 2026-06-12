@@ -70,12 +70,12 @@ export default function Login() {
   return (
     <AuthLayout
       heading={`Welcome\nback.`}
-      subheading="Log in to manage your jobs, track deliveries, and connect with Nigeria's largest InTrucking network."
+      subheading="Log in to manage your jobs, track deliveries, and connect with Nigeria's largest trucking network."
       panelStat={{ value: "48,000+", label: "Trips completed this year" }}
     >
       <div className="mb-8">
         <h1
-          className="text-[#0F172A] uppercase leading-none mb-1"
+          className="text-black uppercase leading-none mb-1"
           style={{
             fontFamily: "'Barlow Condensed', sans-serif",
             fontWeight: 900,
@@ -84,11 +84,12 @@ export default function Login() {
         >
           Sign in
         </h1>
-        <p className="text-[#64748B] text-sm">
+
+        <p className="text-black/60 text-sm">
           Don't have an account?{" "}
           <Link
             to="/signup"
-            className="text-[#F97316] font-semibold hover:text-[#EA6C00] transition-colors"
+            className="text-black font-semibold hover:text-black/70 transition-colors"
           >
             Create one free
           </Link>
@@ -115,6 +116,7 @@ export default function Login() {
           error={errors.email?.message}
           {...register("email", rules.email)}
         />
+
         <Field
           label="Password"
           type="password"
@@ -128,7 +130,7 @@ export default function Login() {
       <div className="flex justify-end mb-6">
         <Link
           to="/forgot-password"
-          className="text-xs text-[#64748B] hover:text-[#F97316] transition-colors"
+          className="text-xs text-black/60 hover:text-black transition-colors"
         >
           Forgot password?
         </Link>
@@ -138,33 +140,34 @@ export default function Login() {
         onClick={handleSubmit(onSubmit)}
         isLoading={isSubmitting}
         variant={role === "merchant" ? "merchant" : "customer"}
+        className="bg-primary"
       >
         {getButtonText()}
       </Button>
 
       <div className="flex items-center gap-3 my-6">
-        <div className="flex-1 h-px bg-slate-200" />
-        <span className="text-[#94A3B8] text-xs uppercase tracking-widest">
+        <div className="flex-1 h-px bg-black/10" />
+        <span className="text-black/40 text-xs uppercase tracking-widest">
           or
         </span>
-        <div className="flex-1 h-px bg-slate-200" />
+        <div className="flex-1 h-px bg-black/10" />
       </div>
 
       <button
         type="button"
-        className="w-full py-3.5 border-2 border-slate-200 hover:border-slate-300 bg-white text-[#0F172A] text-sm font-semibold flex items-center justify-center gap-3 transition-colors"
+        className="w-full py-3.5 border-2 border-black/10 hover:border-black/30 hover:bg-black/5 bg-white text-black text-sm font-semibold flex items-center justify-center gap-3 transition-colors"
       >
         <GoogleIcon />
         Continue with Google
       </button>
 
-      <p className="text-center text-[#94A3B8] text-xs mt-8 leading-relaxed">
+      <p className="text-center text-black/40 text-xs mt-8 leading-relaxed">
         By signing in you agree to InTruck's{" "}
-        <Link to="/terms" className="underline hover:text-[#64748B]">
+        <Link to="/terms" className="underline hover:text-black/60">
           Terms of Service
         </Link>{" "}
         and{" "}
-        <Link to="/privacy" className="underline hover:text-[#64748B]">
+        <Link to="/privacy" className="underline hover:text-black/60">
           Privacy Policy
         </Link>
         .

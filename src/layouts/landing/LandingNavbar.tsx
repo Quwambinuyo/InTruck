@@ -33,7 +33,7 @@ export default function LandingNavbar() {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-[--color-text]/95 backdrop-blur-md shadow-lg shadow-black/20"
+          ? "bg-black/80 backdrop-blur-md shadow-lg shadow-black/30"
           : "bg-transparent"
       }`}
     >
@@ -42,6 +42,7 @@ export default function LandingNavbar() {
           <div className="w-8 h-8 bg-[--color-secondary] flex items-center justify-center rotate-3 group-hover:rotate-0 transition-transform duration-200">
             <TruckIcon className="w-5 h-5 text-white -rotate-3 group-hover:rotate-0 transition-transform duration-200" />
           </div>
+
           <span
             className="text-2xl tracking-tight text-white uppercase"
             style={{
@@ -75,6 +76,7 @@ export default function LandingNavbar() {
           >
             Sign In
           </Button>
+
           <Button
             variant="merchant"
             fullWidth={false}
@@ -91,13 +93,19 @@ export default function LandingNavbar() {
           aria-label="Toggle menu"
         >
           <span
-            className={`block w-5 h-0.5 bg-white transition-all duration-200 ${menuOpen ? "rotate-45 translate-y-2" : ""}`}
+            className={`block w-5 h-0.5 bg-white transition-all duration-200 ${
+              menuOpen ? "rotate-45 translate-y-2" : ""
+            }`}
           />
           <span
-            className={`block w-5 h-0.5 bg-white transition-all duration-200 ${menuOpen ? "opacity-0" : ""}`}
+            className={`block w-5 h-0.5 bg-white transition-all duration-200 ${
+              menuOpen ? "opacity-0" : ""
+            }`}
           />
           <span
-            className={`block w-5 h-0.5 bg-white transition-all duration-200 ${menuOpen ? "-rotate-45 -translate-y-2" : ""}`}
+            className={`block w-5 h-0.5 bg-white transition-all duration-200 ${
+              menuOpen ? "-rotate-45 -translate-y-2" : ""
+            }`}
           />
         </button>
       </nav>
@@ -105,7 +113,7 @@ export default function LandingNavbar() {
       <div
         className={`md:hidden transition-all duration-300 overflow-hidden ${
           menuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
-        } bg-[--color-text]/98 backdrop-blur-md`}
+        } bg-black/90 backdrop-blur-md`}
       >
         <ul className="flex flex-col px-6 py-4 gap-1 border-t border-white/10">
           {navLinks.map((link) => (
@@ -119,30 +127,6 @@ export default function LandingNavbar() {
               </a>
             </li>
           ))}
-          <li className="pt-3 flex flex-col gap-2 border-t border-white/10 mt-2">
-            <Button
-              variant="customer"
-              fullWidth={false}
-              onClick={() => {
-                setMenuOpen(false);
-                navigate("/login");
-              }}
-              className="justify-start px-3 py-2.5 bg-transparent hover:bg-white/10 hover:shadow-none text-white/70 hover:text-white text-sm font-medium normal-case tracking-normal"
-            >
-              Sign In
-            </Button>
-            <Button
-              variant="merchant"
-              fullWidth
-              onClick={() => {
-                setMenuOpen(false);
-                navigate("/signup");
-              }}
-              className="py-2.5 text-sm"
-            >
-              Get Started
-            </Button>
-          </li>
         </ul>
       </div>
     </header>
