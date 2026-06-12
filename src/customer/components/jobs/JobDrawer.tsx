@@ -57,10 +57,12 @@ const JobDrawer = ({
     <div className="fixed inset-0 z-[2000] flex">
       <div className="flex-1 bg-black/40" onClick={onClose} />
 
-      <div className="w-full max-w-[440px] h-full bg-white shadow-xl flex flex-col">
-        <div className="flex-shrink-0 px-5 py-4 border-b border-black/[0.08] flex items-start justify-between">
+      <div className="w-full max-w-[560px] h-full bg-white shadow-xl flex flex-col">
+        <div className="flex-shrink-0 px-6 py-5 border-b border-black/[0.08] flex items-start justify-between">
           <div>
-            <h2 className="text-[15px] font-medium text-black">{job.title}</h2>
+            <h2 className="text-[17px] zabalSemiboldFont text-black">
+              {job.title}
+            </h2>
             <p className="text-[12px] text-black/40 mt-0.5">
               Job details & offers
             </p>
@@ -73,12 +75,12 @@ const JobDrawer = ({
           </button>
         </div>
 
-        <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4">
+        <div className="flex-1 overflow-y-auto px-6 py-5 space-y-4">
           <StatusPill status={job.status} />
 
           <div className="bg-black/[0.03] rounded-xl overflow-hidden border border-black/[0.06]">
-            <div className="px-4 pt-4 pb-3 border-b border-black/[0.06]">
-              <p className="text-[14px] font-medium text-black mb-3">
+            <div className="px-5 pt-4 pb-4 border-b border-black/[0.06]">
+              <p className="text-[14px] zabalSemiboldFont text-black mb-3">
                 {job.cargo}
               </p>
               <div className="flex items-stretch gap-3">
@@ -92,13 +94,13 @@ const JobDrawer = ({
                 </div>
                 <div className="flex flex-col gap-3 flex-1">
                   <div>
-                    <p className="text-[13px] font-medium text-black">
+                    <p className="text-[13px] zabalSemiboldFont text-black">
                       {job.pickup}
                     </p>
                     <p className="text-[11px] text-black/40">Pickup location</p>
                   </div>
                   <div>
-                    <p className="text-[13px] font-medium text-black">
+                    <p className="text-[13px] zabalSemiboldFont text-black">
                       {job.dropoff}
                     </p>
                     <p className="text-[11px] text-black/40">
@@ -109,24 +111,24 @@ const JobDrawer = ({
               </div>
             </div>
             <div className="grid grid-cols-2 divide-x divide-black/[0.06]">
-              <div className="px-4 py-2.5 flex flex-col gap-0.5">
+              <div className="px-5 py-3 flex flex-col gap-0.5">
                 <p className="text-[11px] text-black/40">Truck type</p>
-                <p className="text-[13px] font-medium text-black">
+                <p className="text-[13px] zabalSemiboldFont text-black">
                   {job.truckType}
                 </p>
               </div>
-              <div className="px-4 py-2.5 flex flex-col gap-0.5">
+              <div className="px-5 py-3 flex flex-col gap-0.5">
                 <p className="text-[11px] text-black/40">Cargo weight</p>
-                <p className="text-[13px] font-medium text-black">
+                <p className="text-[13px] zabalSemiboldFont text-black">
                   {job.cargo}
                 </p>
               </div>
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-2">
-            <div className="bg-black/[0.03] border border-black/[0.06] rounded-xl px-4 py-3 flex flex-col gap-1">
-              <p className="text-[11px] text-black/40 flex items-center gap-1">
+          <div className="grid grid-cols-2 gap-3">
+            <div className="bg-black/[0.03] border border-black/[0.06] rounded-xl px-5 py-4 flex flex-col gap-1">
+              <p className="text-[11px] text-black/40 flex items-center gap-1.5">
                 <svg
                   width="11"
                   height="11"
@@ -144,13 +146,13 @@ const JobDrawer = ({
                 </svg>
                 Date
               </p>
-              <p className="text-[20px] font-medium text-black leading-tight">
+              <p className="text-[22px] zabalSemiboldFont text-black leading-tight">
                 {datePart}
               </p>
               <p className="text-[11px] text-black/40">{job.date}</p>
             </div>
-            <div className="bg-black/[0.03] border border-black/[0.06] rounded-xl px-4 py-3 flex flex-col gap-1">
-              <p className="text-[11px] text-black/40 flex items-center gap-1">
+            <div className="bg-black/[0.03] border border-black/[0.06] rounded-xl px-5 py-4 flex flex-col gap-1">
+              <p className="text-[11px] text-black/40 flex items-center gap-1.5">
                 <svg
                   width="11"
                   height="11"
@@ -166,7 +168,7 @@ const JobDrawer = ({
                 </svg>
                 Time
               </p>
-              <p className="text-[20px] font-medium text-black leading-tight">
+              <p className="text-[22px] zabalSemiboldFont text-black leading-tight">
                 {timePart ?? "—"}
               </p>
               <p className="text-[11px] text-black/40">Pickup time</p>
@@ -190,13 +192,13 @@ const JobDrawer = ({
               </svg>
               {job.bids} offers received
             </span>
-            <p className="text-[20px] font-medium text-black">
+            <p className="text-[22px] zabalSemiboldFont text-black">
               {job.price ? `₦${job.price.toLocaleString()}` : "No price set"}
             </p>
           </div>
 
           <div>
-            <p className="text-[11px] font-medium text-black/40 uppercase tracking-wider mb-2.5">
+            <p className="text-[11px]  zabalSemiboldFont text-black/40 uppercase tracking-wider mb-3">
               Offers
             </p>
 
@@ -212,37 +214,37 @@ const JobDrawer = ({
                     <div
                       key={offer.id}
                       onClick={() => setActiveOffer(offer.id)}
-                      className={`rounded-xl border px-3.5 py-3 cursor-pointer transition-colors ${
+                      className={`rounded-xl border px-4 py-3.5 cursor-pointer transition-colors ${
                         isActive
                           ? "bg-black/[0.04] border-black/20"
                           : "bg-white border-black/[0.08] hover:border-black/20"
                       }`}
                     >
-                      <div className="flex items-center justify-between mb-1.5">
-                        <div className="flex items-center gap-2">
-                          <div className="w-7 h-7 rounded-full bg-blue-50 text-blue-700 text-[11px] font-medium flex items-center justify-center flex-shrink-0">
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-2.5">
+                          <div className="w-8 h-8 rounded-full bg-blue-50 text-blue-700 text-[11px] zabalSemiboldFont flex items-center justify-center flex-shrink-0">
                             {getInitials(offer.driver)}
                           </div>
-                          <p className="text-[13px] font-medium text-black">
+                          <p className="zabalSemiboldFont text-[14px] text-black">
                             {offer.driver}
                           </p>
                         </div>
-                        <p className="text-[14px] font-medium text-black">
+                        <p className="text-[15px] zabalSemiboldFont text-black">
                           ₦{offer.price.toLocaleString()}
                         </p>
                       </div>
 
-                      <p className="text-[12px] text-black/50 leading-relaxed mb-2.5">
+                      <p className="text-[12px] text-black/50 leading-relaxed mb-3">
                         {offer.message}
                       </p>
 
-                      <div className="flex gap-1.5">
+                      <div className="flex gap-2">
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
                             onAcceptOffer?.(job.id, offer.id);
                           }}
-                          className="inline-flex items-center gap-1 px-3 py-1 text-[12px] font-medium rounded-lg bg-green-50 text-green-700 border border-green-200 hover:bg-green-100 transition-colors"
+                          className="inline-flex items-center gap-1 px-3.5 py-1.5 text-[12px] rounded-lg bg-green-50 text-green-700 border border-green-200 zabalSemiboldFont hover:bg-green-100 transition-colors"
                         >
                           Accept
                         </button>
@@ -251,7 +253,7 @@ const JobDrawer = ({
                             e.stopPropagation();
                             onRejectOffer?.(job.id, offer.id);
                           }}
-                          className="inline-flex items-center gap-1 px-3 py-1 text-[12px] font-medium rounded-lg bg-red-50 text-red-700 border border-red-200 hover:bg-red-100 transition-colors"
+                          className="inline-flex items-center gap-1 px-3.5 py-1.5 text-[12px] rounded-lg zabalSemiboldFont bg-red-50 text-red-700 border border-red-200 hover:bg-red-100 transition-colors"
                         >
                           Reject
                         </button>
@@ -260,7 +262,7 @@ const JobDrawer = ({
                             e.stopPropagation();
                             onNegotiate?.(job.id, offer.id);
                           }}
-                          className="inline-flex items-center gap-1 px-3 py-1 text-[12px] font-medium rounded-lg bg-black/[0.04] text-black/60 border border-black/[0.08] hover:bg-black/[0.08] transition-colors"
+                          className="inline-flex items-center gap-1 px-3.5 py-1.5 text-[12px] rounded-lg bg-black/[0.04] text-black/60 border border-black/[0.08] zabalSemiboldFont hover:bg-black/[0.08] transition-colors"
                         >
                           Negotiate
                         </button>
@@ -273,10 +275,10 @@ const JobDrawer = ({
           </div>
         </div>
 
-        <div className="flex-shrink-0 px-5 py-4 border-t border-black/[0.08]">
+        <div className="flex-shrink-0 px-6 py-5 border-t border-black/[0.08]">
           <button
             onClick={() => onCloseJob?.(job.id)}
-            className="w-full py-2.5 bg-black text-white text-[13px] font-medium rounded-xl hover:bg-black/80 transition-colors"
+            className="w-full py-3 bg-black zabalBoldFont text-white text-[14px] rounded-xl hover:bg-black/80 transition-colors"
           >
             Close job
           </button>
