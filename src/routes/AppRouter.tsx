@@ -5,9 +5,11 @@ import Login from "../pages/auth/Login";
 import SignUp from "../pages/auth/SignUp";
 import {
   CustomerDashboard,
+  FindDrivers,
   MyJobs,
   PostJob,
   TrackDeliveries,
+  Transactions,
 } from "../customer/components";
 import MerchantDashboard from "../merchants/components/MerchantDashboard";
 
@@ -25,6 +27,8 @@ export default function AppRouter() {
           <Route path="/customer/post-job" element={<PostJob />} />
           <Route path="/customer/jobs" element={<MyJobs />} />
           <Route path="/customer/track" element={<TrackDeliveries />} />
+          <Route path="/customer/transactions" element={<Transactions />} />
+          <Route path="/customer/drivers" element={<FindDrivers />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />

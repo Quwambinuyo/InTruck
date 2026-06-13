@@ -6,6 +6,7 @@ import {
   FaWeightHanging,
   FaBoxOpen,
   FaCheckCircle,
+  FaArrowRight,
 } from "react-icons/fa";
 import {
   getStates,
@@ -296,15 +297,25 @@ const PostJob = () => {
         <div className="max-w-lg mx-auto flex items-center gap-3">
           <div className="flex-1 min-w-0">
             <p className="text-xs text-black/40">Ready to post?</p>
-            <p className="text-sm font-bold text-black truncate mt-0.5">
-              {cargoType || "No cargo selected"} ·{" "}
-              {pickupCity && pickupState
-                ? `${pickupCity}, ${pickupState}`
-                : pickupState || "No pickup"}{" "}
-              →{" "}
-              {dropoffCity && dropoffState
-                ? `${dropoffCity}, ${dropoffState}`
-                : dropoffState || "No dropoff"}
+
+            <div className="flex items-center gap-2 text-sm font-bold text-black mt-0.5 min-w-0">
+              <span className="truncate">
+                {pickupCity && pickupState
+                  ? `${pickupCity}, ${pickupState}`
+                  : pickupState || "No pickup"}
+              </span>
+
+              <FaArrowRight className="flex-shrink-0 text-black/60" />
+
+              <span className="truncate">
+                {dropoffCity && dropoffState
+                  ? `${dropoffCity}, ${dropoffState}`
+                  : dropoffState || "No dropoff"}
+              </span>
+            </div>
+
+            <p className="text-xs text-black/50 truncate mt-1">
+              {cargoType || "No cargo selected"}
             </p>
           </div>
 
