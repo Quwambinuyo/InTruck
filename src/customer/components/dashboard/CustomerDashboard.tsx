@@ -8,6 +8,7 @@ import {
   FaClock,
   FaArrowRight,
   FaPlus,
+  FaHandshake,
 } from "react-icons/fa";
 import StatCard from "../../../ui/StatCard";
 import Button from "../../../ui/Button";
@@ -221,6 +222,16 @@ const CustomerDashboard = () => {
                 icon: <FaClock size={18} />,
                 label: "Track Shipment",
                 desc: "View live location",
+              },
+              {
+                icon: <FaHandshake size={18} />,
+                label: "Negotiate on Price",
+                desc: "Suitable Offers",
+              },
+              {
+                icon: <FaTruck size={18} />,
+                label: "Buy a Truck",
+                desc: "Buy in a Flash",
               },
             ].map((a) => (
               <button

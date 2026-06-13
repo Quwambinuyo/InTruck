@@ -12,6 +12,7 @@ import {
   FaUsers,
   FaTimes,
   FaShoppingBag,
+  FaLayerGroup,
 } from "react-icons/fa";
 
 const customerLinks: {
@@ -26,7 +27,11 @@ const customerLinks: {
   { text: "track deliveries", path: "/customer/track", icon: FaMapMarkerAlt },
   { text: "transactions", path: "/customer/transactions", icon: FaExchangeAlt },
   { text: "find drivers", path: "/customer/drivers", icon: FaUsers },
-  { text: "market place", path: "/customer/marketplace", icon: FaShoppingBag },
+  {
+    text: "market place",
+    path: "/customer/marketplace",
+    icon: FaShoppingBag,
+  },
 ];
 
 const merchantLinks: {
@@ -38,6 +43,7 @@ const merchantLinks: {
   { text: "dashboard", path: "/merchant/dashboard", icon: FaTachometerAlt },
   { text: "list a truck", path: "/merchant/list-truck", icon: FaPlusCircle },
   { text: "my fleet", path: "/merchant/fleet", icon: FaTruck },
+  { text: "my driver", path: "/merchant/driver", icon: FaLayerGroup },
   {
     text: "job requests",
     path: "/merchant/job-requests",
@@ -58,15 +64,18 @@ type SidebarLinkProps = {
 const SidebarLink = ({
   link,
   isActive,
+  onClick,
 }: {
   link: SidebarLinkProps;
   isActive: boolean;
+  onClick?: () => void;
 }) => {
   const Icon = link.icon;
 
   return (
     <Link
       to={link.path}
+      onClick={onClick}
       className={`flex items-center gap-3 px-4 py-6 mx-3 rounded-xl transition-all duration-200 ${
         isActive ? "bg-white/10" : "hover:bg-white/5"
       }`}
@@ -86,7 +95,7 @@ const SidebarLink = ({
   );
 };
 
-const Sidebar = () => {
+const Sidebar = ({ onLinkClick }: { onLinkClick?: () => void }) => {
   const { pathname } = useLocation();
 
   const isMerchant = pathname.includes("/merchant");
@@ -98,7 +107,7 @@ const Sidebar = () => {
   return (
     <aside className="w-full h-full flex flex-col bg-[var(--color-primary)] overflow-y-auto">
       <div className="px-5 py-5 border-b border-white/10">
-        <Link to="/" className="flex items-center gap-3">
+        <Link to="/" className="flex items-center gap-3" onClick={onLinkClick}>
           <h2 className="font-bold text-white text-base uppercase tracking-wide">
             InTruck
           </h2>
@@ -116,6 +125,7 @@ const Sidebar = () => {
               key={link.text}
               link={link}
               isActive={isActive(link.path)}
+              onClick={onLinkClick}
             />
           ))}
         </div>
@@ -128,14 +138,14 @@ export default Sidebar;
 
 export const MobileSidebarWrapper = ({ onClose }: { onClose: () => void }) => {
   return (
-    <div className="fixed inset-0 z-[9999] md:hidden ">
+    <div className="fixed inset-0 z-[9999] md:hidden">
       <div
         className="absolute inset-0 bg-black/60 z-[9998]"
         onClick={onClose}
       />
 
       <div className="absolute left-0 top-0 h-full w-[260px] bg-[var(--color-primary)] flex flex-col z-[9999] shadow-2xl">
-        <Sidebar />
+        <Sidebar onLinkClick={onClose} />
       </div>
 
       <button

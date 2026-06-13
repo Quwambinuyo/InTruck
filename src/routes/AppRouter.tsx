@@ -12,7 +12,7 @@ import {
   TrackDeliveries,
   Transactions,
 } from "../customer/components";
-import MerchantDashboard from "../merchants/components/MerchantDashboard";
+import { ListTruck, MerchantDashboard } from "../merchants/components";
 
 export default function AppRouter() {
   return (
@@ -23,7 +23,11 @@ export default function AppRouter() {
         <Route path="/signup" element={<SignUp />} />
 
         <Route element={<LayoutWrapper />}>
+          {/* Merchant */}
           <Route path="/merchant/dashboard" element={<MerchantDashboard />} />
+          <Route path="/merchant/list-truck" element={<ListTruck />} />
+
+          {/* Customer */}
           <Route path="/customer/dashboard" element={<CustomerDashboard />} />
           <Route path="/customer/post-job" element={<PostJob />} />
           <Route path="/customer/jobs" element={<MyJobs />} />
