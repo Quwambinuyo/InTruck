@@ -11,6 +11,7 @@ import {
   type TxType,
   type TxStatus,
 } from "../../mock/mockTransactions";
+import StatCard from "../../../ui/StatCard";
 
 type FilterType = "all" | TxType;
 type FilterStatus = "all" | TxStatus;
@@ -160,7 +161,7 @@ const Transactions = () => {
 
   return (
     <>
-      <div className="w-full max-w-full overflow-x-hidden space-y-4 pb-24">
+      <div className="w-full max-w-full overflow-x-hidden space-y-4 pb-5">
         <div className="pt-1">
           <h2 className="text-lg font-black text-black">Transactions</h2>
           <p className="text-xs text-black/40 mt-0.5">
@@ -168,29 +169,34 @@ const Transactions = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-2 gap-3">
-          <div className="bg-white border border-black/10 rounded-2xl p-4 space-y-1">
-            <p className="text-xs text-black/40 font-medium">Total funded</p>
-            <div className="flex items-center gap-2">
-              <span className="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center">
-                <FaArrowDown className="text-green-600 text-[10px]" />
-              </span>
-              <p className="text-base font-black text-black">
-                ₦{totalIn.toLocaleString("en-NG")}
-              </p>
-            </div>
-          </div>
-          <div className="bg-white border border-black/10 rounded-2xl p-4 space-y-1">
-            <p className="text-xs text-black/40 font-medium">Total spent</p>
-            <div className="flex items-center gap-2">
-              <span className="w-6 h-6 rounded-full bg-red-100 flex items-center justify-center">
-                <FaArrowUp className="text-red-500 text-[10px]" />
-              </span>
-              <p className="text-base font-black text-black">
-                ₦{totalOut.toLocaleString("en-NG")}
-              </p>
-            </div>
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <StatCard
+            label="Total funded"
+            value={`₦${totalIn.toLocaleString("en-NG")}`}
+            delta={`${
+              MOCK_TRANSACTIONS.filter(
+                (t) => t.amount > 0 && t.status === "completed",
+              ).length
+            } transactions`}
+            trend="up"
+            icon={<FaArrowDown size={12} />}
+            sparkline={[20, 28, 24, 35, 40, 55, 62]}
+            tooltip="Total successful wallet funding transactions credited to your account."
+          />
+
+          <StatCard
+            label="Total spent"
+            value={`₦${totalOut.toLocaleString("en-NG")}`}
+            delta={`${
+              MOCK_TRANSACTIONS.filter(
+                (t) => t.amount < 0 && t.status === "completed",
+              ).length
+            } transactions`}
+            trend="down"
+            icon={<FaArrowUp size={12} />}
+            sparkline={[62, 58, 54, 48, 42, 36, 28]}
+            tooltip="Total successful payments made for haulage jobs and related services."
+          />
         </div>
 
         <div className="bg-white border border-black/10 rounded-2xl p-4 space-y-3">

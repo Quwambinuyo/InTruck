@@ -11,6 +11,7 @@ import {
   FaClipboardList,
   FaUsers,
   FaTimes,
+  FaShoppingBag,
 } from "react-icons/fa";
 
 const customerLinks: {
@@ -25,6 +26,7 @@ const customerLinks: {
   { text: "track deliveries", path: "/customer/track", icon: FaMapMarkerAlt },
   { text: "transactions", path: "/customer/transactions", icon: FaExchangeAlt },
   { text: "find drivers", path: "/customer/drivers", icon: FaUsers },
+  { text: "market place", path: "/customer/marketplace", icon: FaShoppingBag },
 ];
 
 const merchantLinks: {

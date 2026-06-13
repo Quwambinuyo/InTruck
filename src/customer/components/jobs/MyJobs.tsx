@@ -83,7 +83,7 @@ const MyJobs = () => {
     filter === "all" ? MOCK_JOBS : MOCK_JOBS.filter((j) => j.status === filter);
 
   return (
-    <div className="w-full space-y-4 pb-6">
+    <div className="w-full space-y-4 ">
       <div>
         <h2 className="text-xl font-black text-black">My Jobs</h2>
         <p className="text-xs text-black/40">Track all your haulage requests</p>

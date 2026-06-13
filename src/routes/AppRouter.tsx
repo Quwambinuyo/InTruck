@@ -6,6 +6,7 @@ import SignUp from "../pages/auth/SignUp";
 import {
   CustomerDashboard,
   FindDrivers,
+  MarketPlace,
   MyJobs,
   PostJob,
   TrackDeliveries,
@@ -29,6 +30,7 @@ export default function AppRouter() {
           <Route path="/customer/track" element={<TrackDeliveries />} />
           <Route path="/customer/transactions" element={<Transactions />} />
           <Route path="/customer/drivers" element={<FindDrivers />} />
+          <Route path="/customer/marketplace" element={<MarketPlace />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />
