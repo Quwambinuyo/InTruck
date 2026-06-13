@@ -23,7 +23,7 @@ import SuccessScoreChart from "./charts/SuccessChart";
 
 const MerchantDashboard = () => {
   return (
-    <div className="space-y-6 px-4 sm:px-0 max-w-full overflow-x-hidden">
+    <div className="space-y-6  max-w-full overflow-x-hidden">
       <div>
         <h2 className="text-xl font-black text-black zabalBoldFont">
           Dashboard

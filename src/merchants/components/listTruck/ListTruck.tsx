@@ -108,7 +108,7 @@ const ListTruck = () => {
   );
 
   return (
-    <div className="max-w-[1300px] mx-auto px-4 sm:px-0">
+    <div className="max-w-[1300px] mx-auto ">
       <div className="flex items-start justify-between flex-wrap gap-4 mb-5">
         <div>
           <h1 className="text-2xl font-bold text-black">Trucks</h1>
