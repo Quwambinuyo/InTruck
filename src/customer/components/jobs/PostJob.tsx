@@ -2,7 +2,6 @@ import { useState, useMemo } from "react";
 import {
   FaTruck,
   FaMapMarkerAlt,
-  FaCalendarAlt,
   FaWeightHanging,
   FaBoxOpen,
   FaCheckCircle,
@@ -19,6 +18,8 @@ import {
   SelectField,
   TruckSelectCard,
 } from "../../../pages/auth/FormField";
+import { DatePicker } from "../../../ui/DatePicker";
+import { TimePicker } from "../../../ui/TimePicker";
 import Button from "../../../ui/Button";
 
 const TRUCK_TYPES = [
@@ -65,6 +66,8 @@ const PostJob = () => {
   const [dropoffState, setDropoffState] = useState("");
   const [dropoffCity, setDropoffCity] = useState("");
   const [dropoffAddress, setDropoffAddress] = useState("");
+  const [pickupDate, setPickupDate] = useState("");
+  const [pickupTime, setPickupTime] = useState("");
 
   const [cargoOpen, setCargoOpen] = useState(false);
   const [pickupStateOpen, setPickupStateOpen] = useState(false);
@@ -257,24 +260,15 @@ const PostJob = () => {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <Field
+          <DatePicker
             label="Pickup date"
-            type="text"
-            placeholder="DD / MM / YYYY"
-            icon={<FaCalendarAlt />}
-            onFocus={(e) => (e.target.type = "date")}
-            onBlur={(e) => {
-              if (!e.target.value) e.target.type = "text";
-            }}
+            value={pickupDate}
+            onChange={setPickupDate}
           />
-          <Field
+          <TimePicker
             label="Pickup time"
-            type="text"
-            placeholder="HH : MM"
-            onFocus={(e) => (e.target.type = "time")}
-            onBlur={(e) => {
-              if (!e.target.value) e.target.type = "text";
-            }}
+            value={pickupTime}
+            onChange={setPickupTime}
           />
         </div>
       </div>
@@ -286,7 +280,6 @@ const PostJob = () => {
           </span>
           <h3 className="font-bold text-black text-base">Truck type</h3>
         </div>
-
         <TruckSelectCard
           label="Truck type"
           value={truckType}
@@ -302,40 +295,34 @@ const PostJob = () => {
           </span>
           <h3 className="font-bold text-black text-base">Pricing preference</h3>
         </div>
-
         <TruckSelectCard
           label="Pricing preference"
           value={pricingMode}
           onChange={(v) => setPricingMode(v as PricingMode)}
           options={PRICING_OPTIONS}
         />
-
         {pricingMode === "fixed" && (
           <Field label="Your offer (₦)" type="number" placeholder="0.00" />
         )}
       </div>
 
-      <div className="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-black/10 px-4 py-3">
+      <div className="fixed bottom-0 left-0 right-0 z-10 bg-white border-t border-black/10 px-4 py-3">
         <div className="max-w-lg mx-auto flex items-center gap-3">
           <div className="flex-1 min-w-0">
             <p className="text-xs text-black/40">Ready to post?</p>
-
             <div className="flex items-center gap-2 text-sm font-bold text-black mt-0.5 min-w-0">
               <span className="truncate">
                 {pickupCity && pickupState
                   ? `${pickupCity}, ${pickupState}`
                   : pickupState || "No pickup"}
               </span>
-
               <FaArrowRight className="flex-shrink-0 text-black/60" />
-
               <span className="truncate">
                 {dropoffCity && dropoffState
                   ? `${dropoffCity}, ${dropoffState}`
                   : dropoffState || "No dropoff"}
               </span>
             </div>
-
             <p className="text-xs text-black/50 truncate mt-1">
               {cargoType || "No cargo selected"}
             </p>

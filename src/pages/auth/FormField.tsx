@@ -147,7 +147,7 @@ export function SelectField({
     <div
       ref={wrapperRef}
       className={`flex flex-col gap-2 ${className ?? ""}`}
-      style={{ position: "relative", zIndex: open ? 9999 : 1 }}
+      style={{ position: "relative", zIndex: open ? 5 : 1 }}
     >
       <label className="text-xs font-semibold uppercase tracking-[0.12em] text-black/60">
         {label}
@@ -226,7 +226,7 @@ export function SelectField({
               background: "#fff",
               boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
               overflow: "hidden",
-              zIndex: 9999,
+              zIndex: 5,
             }}
           >
             {searchable && (
