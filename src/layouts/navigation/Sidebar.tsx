@@ -128,7 +128,7 @@ export default Sidebar;
 
 export const MobileSidebarWrapper = ({ onClose }: { onClose: () => void }) => {
   return (
-    <div className="fixed inset-0 z-[9999] md:hidden isolate">
+    <div className="fixed inset-0 z-[9999] md:hidden ">
       <div
         className="absolute inset-0 bg-black/60 z-[9998]"
         onClick={onClose}

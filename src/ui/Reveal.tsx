@@ -21,13 +21,23 @@ type Props = {
 
 const INITIAL_STYLES: Record<Animation, string> = {
   "fade-up": "opacity-0 translate-y-8",
-  "fade-down": "opacity-0 -translate-y-8",
+  "fade-down": "opacity-0 translate-y-[-2rem]",
   "fade-left": "opacity-0 translate-x-8",
-  "fade-right": "opacity-0 -translate-x-8",
+  "fade-right": "opacity-0 translate-x-[-2rem]",
   fade: "opacity-0",
   "zoom-in": "opacity-0 scale-95",
   "zoom-out": "opacity-0 scale-105",
 };
+
+const RESET_CLASSES = [
+  "opacity-0",
+  "translate-y-8",
+  "translate-y-[-2rem]",
+  "translate-x-8",
+  "translate-x-[-2rem]",
+  "scale-95",
+  "scale-105",
+];
 
 const Reveal = ({
   children,
@@ -48,15 +58,7 @@ const Reveal = ({
       ([entry]) => {
         if (entry.isIntersecting) {
           el.style.transitionDelay = `${delay}ms`;
-          el.classList.remove(
-            "opacity-0",
-            "translate-y-8",
-            "-translate-y-8",
-            "translate-x-8",
-            "-translate-x-8",
-            "scale-95",
-            "scale-105",
-          );
+          RESET_CLASSES.forEach((cls) => el.classList.remove(cls));
           if (once) observer.disconnect();
         } else if (!once) {
           INITIAL_STYLES[animation].split(" ").forEach((cls) => {

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import {
   FaTruck,
   FaMapMarkerAlt,
@@ -53,17 +53,6 @@ const CARGO_TYPES = [
 
 type PricingMode = "fixed" | "open";
 
-const NG_STATES = [...new Set(getStates())].map((s: string) => ({
-  value: s,
-  label: s,
-}));
-
-function getCities(state: string) {
-  if (!state) return [];
-  const uniqueCities = [...new Set(getCitiesAndTownsByState(state))];
-  return uniqueCities.map((city: string) => ({ value: city, label: city }));
-}
-
 const PostJob = () => {
   const [truckType, setTruckType] = useState("");
   const [pricingMode, setPricingMode] = useState<PricingMode>("open");
@@ -82,6 +71,26 @@ const PostJob = () => {
   const [pickupCityOpen, setPickupCityOpen] = useState(false);
   const [dropoffStateOpen, setDropoffStateOpen] = useState(false);
   const [dropoffCityOpen, setDropoffCityOpen] = useState(false);
+
+  const NG_STATES = useMemo(
+    () =>
+      [...new Set(getStates())].map((s: string) => ({ value: s, label: s })),
+    [],
+  );
+
+  const pickupCities = useMemo(() => {
+    if (!pickupState) return [];
+    return [...new Set(getCitiesAndTownsByState(pickupState))].map(
+      (city: string) => ({ value: city, label: city }),
+    );
+  }, [pickupState]);
+
+  const dropoffCities = useMemo(() => {
+    if (!dropoffState) return [];
+    return [...new Set(getCitiesAndTownsByState(dropoffState))].map(
+      (city: string) => ({ value: city, label: city }),
+    );
+  }, [dropoffState]);
 
   if (submitted) {
     return (
@@ -105,7 +114,7 @@ const PostJob = () => {
   }
 
   return (
-    <div className="w-full max-w-full overflow-x-hidden space-y-4 pb-28">
+    <div className="w-full max-w-full space-y-4 pb-28">
       <div className="flex items-center justify-between pt-1">
         <div>
           <h2 className="text-lg font-black text-black">Post a haulage job</h2>
@@ -192,7 +201,7 @@ const PostJob = () => {
               value={pickupCity}
               placeholder={pickupState ? "Select city" : "Pick state first"}
               onChange={setPickupCity}
-              options={getCities(pickupState)}
+              options={pickupCities}
               open={pickupCityOpen}
               setOpen={(v) => pickupState && setPickupCityOpen(v)}
             />
@@ -232,7 +241,7 @@ const PostJob = () => {
               searchable
               placeholder={dropoffState ? "Select city" : "Pick state first"}
               onChange={setDropoffCity}
-              options={getCities(dropoffState)}
+              options={dropoffCities}
               open={dropoffCityOpen}
               setOpen={(v) => dropoffState && setDropoffCityOpen(v)}
             />
@@ -248,8 +257,25 @@ const PostJob = () => {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <Field label="Pickup date" type="date" icon={<FaCalendarAlt />} />
-          <Field label="Pickup time" type="time" />
+          <Field
+            label="Pickup date"
+            type="text"
+            placeholder="DD / MM / YYYY"
+            icon={<FaCalendarAlt />}
+            onFocus={(e) => (e.target.type = "date")}
+            onBlur={(e) => {
+              if (!e.target.value) e.target.type = "text";
+            }}
+          />
+          <Field
+            label="Pickup time"
+            type="text"
+            placeholder="HH : MM"
+            onFocus={(e) => (e.target.type = "time")}
+            onBlur={(e) => {
+              if (!e.target.value) e.target.type = "text";
+            }}
+          />
         </div>
       </div>
 
@@ -289,7 +315,7 @@ const PostJob = () => {
         )}
       </div>
 
-      <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur border-t border-black/10 px-4 py-3">
+      <div className="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-black/10 px-4 py-3">
         <div className="max-w-lg mx-auto flex items-center gap-3">
           <div className="flex-1 min-w-0">
             <p className="text-xs text-black/40">Ready to post?</p>

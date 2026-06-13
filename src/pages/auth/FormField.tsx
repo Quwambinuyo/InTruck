@@ -3,11 +3,9 @@ import {
   useRef,
   useMemo,
   useState,
-  useCallback,
   type InputHTMLAttributes,
   type TextareaHTMLAttributes,
 } from "react";
-import { createPortal } from "react-dom";
 
 type FieldProps = InputHTMLAttributes<HTMLInputElement> & {
   label: string;
@@ -30,7 +28,6 @@ export function Field({
       <label className="text-xs font-semibold uppercase tracking-[0.12em] text-black/60">
         {label}
       </label>
-
       <div className="relative">
         {icon && (
           <span className="absolute left-3 top-1/2 -translate-y-1/2 text-black/30 text-sm">
@@ -39,7 +36,7 @@ export function Field({
         )}
         <input
           type={type}
-          className={`w-full rounded-xl border bg-white px-4 py-3 text-sm outline-none transition-all duration-200 ${
+          className={`w-full rounded-xl border bg-white px-4 py-3 text-sm outline-none ${
             error
               ? "border-red-500 focus:ring-2 focus:ring-red-500/20"
               : "border-black/15 focus:border-black focus:ring-2 focus:ring-black/10"
@@ -47,7 +44,6 @@ export function Field({
           {...props}
         />
       </div>
-
       {error && <p className="text-xs text-red-500">⚠ {error}</p>}
       {!error && hint && <p className="text-xs text-black/40">{hint}</p>}
     </div>
@@ -71,7 +67,7 @@ export function TextAreaField({
         {label}
       </label>
       <textarea
-        className={`w-full rounded-xl border bg-white px-4 py-3 text-sm outline-none resize-none transition-all duration-200 ${
+        className={`w-full rounded-xl border bg-white px-4 py-3 text-sm outline-none resize-none ${
           error
             ? "border-red-500 focus:ring-2 focus:ring-red-500/20"
             : "border-black/15 focus:border-black focus:ring-2 focus:ring-black/10"
@@ -111,9 +107,7 @@ export function SelectField({
   searchable = false,
 }: SelectFieldProps) {
   const [search, setSearch] = useState("");
-  const buttonRef = useRef<HTMLButtonElement>(null);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  const [rect, setRect] = useState<DOMRect | null>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
   const uniqueOptions = useMemo(() => {
     const seen = new Set<string>();
@@ -135,141 +129,169 @@ export function SelectField({
   const selectedLabel =
     uniqueOptions.find((o) => o.value === value)?.label || placeholder;
 
-  const updateRect = useCallback(() => {
-    if (buttonRef.current) setRect(buttonRef.current.getBoundingClientRect());
-  }, []);
-
   useEffect(() => {
-    if (!open) return;
-    updateRect();
-    window.addEventListener("resize", updateRect);
-    return () => window.removeEventListener("resize", updateRect);
-  }, [open, updateRect]);
-
-  useEffect(() => {
-    if (!open) return;
-
-    const handleClickOutside = (e: MouseEvent) => {
-      const target = e.target as Node;
-      if (
-        !buttonRef.current?.contains(target) &&
-        !dropdownRef.current?.contains(target)
-      ) {
+    if (!open) {
+      setSearch("");
+      return;
+    }
+    const handleOutside = (e: MouseEvent) => {
+      if (!wrapperRef.current?.contains(e.target as Node)) {
         setOpen(false);
-        setSearch("");
       }
     };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener("mousedown", handleOutside);
+    return () => document.removeEventListener("mousedown", handleOutside);
   }, [open, setOpen]);
 
-  const dropdownStyle: React.CSSProperties = rect
-    ? (() => {
-        const spaceBelow = window.innerHeight - rect.bottom;
-        const maxH = 220;
-        if (spaceBelow >= maxH || spaceBelow >= rect.top) {
-          return { top: rect.bottom + 4, left: rect.left, width: rect.width };
-        }
-        return {
-          bottom: window.innerHeight - rect.top + 4,
-          left: rect.left,
-          width: rect.width,
-        };
-      })()
-    : {};
+  return (
+    <div
+      ref={wrapperRef}
+      className={`flex flex-col gap-2 ${className ?? ""}`}
+      style={{ position: "relative", zIndex: open ? 9999 : 1 }}
+    >
+      <label className="text-xs font-semibold uppercase tracking-[0.12em] text-black/60">
+        {label}
+      </label>
 
-  const dropdown =
-    open && rect
-      ? createPortal(
+      <div style={{ position: "relative" }}>
+        {icon && (
+          <span
+            style={{
+              position: "absolute",
+              left: 12,
+              top: "50%",
+              transform: "translateY(-50%)",
+              pointerEvents: "none",
+              color: "rgba(0,0,0,0.3)",
+              fontSize: 14,
+            }}
+          >
+            {icon}
+          </span>
+        )}
+
+        <button
+          type="button"
+          onClick={() => setOpen(!open)}
+          style={{
+            width: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            borderRadius: 12,
+            border: `1px solid ${error ? "#ef4444" : open ? "#000" : "rgba(0,0,0,0.15)"}`,
+            background: "#fff",
+            paddingTop: 12,
+            paddingBottom: 12,
+            paddingLeft: icon ? 36 : 16,
+            paddingRight: 16,
+            fontSize: 14,
+            color: value ? "#000" : "rgba(0,0,0,0.4)",
+            boxShadow: open ? "0 0 0 2px rgba(0,0,0,0.08)" : "none",
+            outline: "none",
+            cursor: "pointer",
+          }}
+        >
+          <span
+            style={{
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+            }}
+          >
+            {selectedLabel}
+          </span>
+          <span
+            style={{
+              marginLeft: 12,
+              flexShrink: 0,
+              color: "rgba(0,0,0,0.4)",
+              transform: open ? "rotate(180deg)" : "rotate(0deg)",
+              transition: "transform 0.2s",
+            }}
+          >
+            <ChevronIcon />
+          </span>
+        </button>
+
+        {open && (
           <div
-            ref={dropdownRef}
-            style={{ position: "fixed", zIndex: 99999, ...dropdownStyle }}
-            className="rounded-xl border border-black/10 bg-white shadow-2xl overflow-hidden"
+            style={{
+              position: "absolute",
+              top: "calc(100% + 4px)",
+              left: 0,
+              right: 0,
+              borderRadius: 12,
+              border: "1px solid rgba(0,0,0,0.1)",
+              background: "#fff",
+              boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
+              overflow: "hidden",
+              zIndex: 9999,
+            }}
           >
             {searchable && (
-              <div className="p-2 border-b border-black/10">
+              <div
+                style={{
+                  padding: 8,
+                  borderBottom: "1px solid rgba(0,0,0,0.08)",
+                }}
+              >
                 <input
-                  autoFocus
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   placeholder={`Search ${label.toLowerCase()}...`}
-                  className="w-full rounded-lg border border-black/10 px-3 py-2 text-sm outline-none focus:border-black"
+                  style={{
+                    width: "100%",
+                    borderRadius: 8,
+                    border: "1px solid rgba(0,0,0,0.1)",
+                    padding: "8px 12px",
+                    fontSize: 14,
+                    outline: "none",
+                    boxSizing: "border-box",
+                  }}
                 />
               </div>
             )}
-            <div className="max-h-52 overflow-y-auto overscroll-contain">
+            <div style={{ maxHeight: 208, overflowY: "auto" }}>
               {filteredOptions.length === 0 && (
-                <div className="px-4 py-3 text-sm text-black/40">
+                <div
+                  style={{
+                    padding: "12px 16px",
+                    fontSize: 14,
+                    color: "rgba(0,0,0,0.4)",
+                  }}
+                >
                   No results found
                 </div>
               )}
-              {filteredOptions.map((option, index) => (
+              {filteredOptions.map((option) => (
                 <button
-                  key={`${option.value}-${index}`}
+                  key={option.value}
                   type="button"
                   onMouseDown={(e) => e.preventDefault()}
                   onClick={() => {
                     onChange(option.value);
-                    setSearch("");
                     setOpen(false);
                   }}
-                  className={`w-full text-left px-4 py-2.5 text-sm transition hover:bg-black/5 ${
-                    value === option.value
-                      ? "bg-black text-white hover:bg-black"
-                      : "text-black"
-                  }`}
+                  style={{
+                    width: "100%",
+                    textAlign: "left",
+                    padding: "10px 16px",
+                    fontSize: 14,
+                    background: value === option.value ? "#000" : "transparent",
+                    color: value === option.value ? "#fff" : "#000",
+                    border: "none",
+                    cursor: "pointer",
+                    display: "block",
+                  }}
                 >
                   {option.label}
                 </button>
               ))}
             </div>
-          </div>,
-          document.body,
-        )
-      : null;
-
-  return (
-    <div className={`flex flex-col gap-2 ${className ?? ""}`}>
-      <label className="text-xs font-semibold uppercase tracking-[0.12em] text-black/60">
-        {label}
-      </label>
-
-      <div className="relative">
-        {icon && (
-          <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-black/30 text-sm">
-            {icon}
-          </span>
+          </div>
         )}
-        <button
-          ref={buttonRef}
-          type="button"
-          onClick={() => {
-            updateRect();
-            setOpen(!open);
-          }}
-          className={`w-full flex items-center justify-between rounded-xl border bg-white py-3 text-sm transition-all duration-200 ${
-            icon ? "pl-9 pr-4" : "px-4"
-          } ${value ? "text-black" : "text-black/40"} ${
-            error
-              ? "border-red-500"
-              : open
-                ? "border-black ring-2 ring-black/10"
-                : "border-black/15 hover:border-black/30"
-          }`}
-        >
-          <span className="truncate">{selectedLabel}</span>
-          <span
-            className={`ml-3 text-black/40 transition-transform duration-200 flex-shrink-0 ${
-              open ? "rotate-180" : ""
-            }`}
-          >
-            <ChevronIcon />
-          </span>
-        </button>
       </div>
-
-      {dropdown}
 
       {error && <p className="text-xs text-red-500">⚠ {error}</p>}
     </div>
