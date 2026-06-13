@@ -18,6 +18,7 @@
     "jspdf": "^4.2.1",
     "leaflet": "^1.9.4",
     "leaflet-routing-machine": "^3.2.12",
+    "nigerian-states-lgas-cities-towns": "^1.0.1",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "react-dropzone": "^15.0.0",

@@ -1,4 +1,9 @@
-import { type InputHTMLAttributes, type TextareaHTMLAttributes } from "react";
+import {
+  useMemo,
+  useState,
+  type InputHTMLAttributes,
+  type TextareaHTMLAttributes,
+} from "react";
 
 type FieldProps = InputHTMLAttributes<HTMLInputElement> & {
   label: string;
@@ -90,6 +95,8 @@ type SelectFieldProps = {
   placeholder?: string;
   onChange: (value: string) => void;
   className?: string;
+  icon?: React.ReactNode;
+  searchable?: boolean;
 };
 
 export function SelectField({
@@ -102,9 +109,34 @@ export function SelectField({
   placeholder,
   onChange,
   className,
+  icon,
+  searchable = false,
 }: SelectFieldProps) {
+  const [search, setSearch] = useState("");
+
+  const uniqueOptions = useMemo(() => {
+    const seen = new Set<string>();
+
+    return options.filter((option) => {
+      const key = option.value.toLowerCase();
+
+      if (seen.has(key)) return false;
+
+      seen.add(key);
+      return true;
+    });
+  }, [options]);
+
+  const filteredOptions = useMemo(() => {
+    if (!searchable || !search.trim()) return uniqueOptions;
+
+    return uniqueOptions.filter((option) =>
+      option.label.toLowerCase().includes(search.toLowerCase()),
+    );
+  }, [search, searchable, uniqueOptions]);
+
   const selectedLabel =
-    options.find((o) => o.value === value)?.label || placeholder;
+    uniqueOptions.find((o) => o.value === value)?.label || placeholder;
 
   return (
     <div className={`flex flex-col gap-2 ${className ?? ""}`}>
@@ -113,12 +145,18 @@ export function SelectField({
       </label>
 
       <div className="relative">
+        {icon && (
+          <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-black/30 text-sm">
+            {icon}
+          </span>
+        )}
+
         <button
           type="button"
           onClick={() => setOpen(!open)}
-          className={`w-full flex items-center justify-between rounded-xl border bg-white px-4 py-3 text-sm transition-all duration-200 ${
-            value ? "text-black" : "text-black/40"
-          } ${
+          className={`w-full flex items-center justify-between rounded-xl border bg-white py-3 text-sm transition-all duration-200 ${
+            icon ? "pl-9 pr-4" : "px-4"
+          } ${value ? "text-black" : "text-black/40"} ${
             error
               ? "border-red-500"
               : "border-black/15 hover:border-black/30 focus:border-black"
@@ -127,7 +165,7 @@ export function SelectField({
           <span className="truncate">{selectedLabel}</span>
 
           <span
-            className={`ml-3 text-black/40 transition-transform duration-200 ${
+            className={`ml-3 text-black/40 transition-transform duration-200 flex-shrink-0 ${
               open ? "rotate-180" : ""
             }`}
           >
@@ -136,24 +174,45 @@ export function SelectField({
         </button>
 
         {open && (
-          <div className="absolute z-50 mt-2 w-full max-h-52 overflow-y-auto rounded-xl border border-black/10 bg-white shadow-lg">
-            {options.map((option) => (
-              <button
-                key={option.value}
-                type="button"
-                onClick={() => {
-                  onChange(option.value);
-                  setOpen(false);
-                }}
-                className={`w-full text-left px-4 py-2.5 text-sm transition hover:bg-black/5 ${
-                  value === option.value
-                    ? "bg-black text-white hover:bg-black"
-                    : "text-black"
-                }`}
-              >
-                {option.label}
-              </button>
-            ))}
+          <div className="absolute z-50 mt-2 w-full rounded-xl border border-black/10 bg-white shadow-lg overflow-hidden">
+            {searchable && (
+              <div className="p-2 border-b border-black/10">
+                <input
+                  autoFocus
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder={`Search ${label.toLowerCase()}...`}
+                  className="w-full rounded-lg border border-black/10 px-3 py-2 text-sm outline-none focus:border-black"
+                />
+              </div>
+            )}
+
+            <div className="max-h-52 overflow-y-auto">
+              {filteredOptions.length === 0 && (
+                <div className="px-4 py-3 text-sm text-black/40">
+                  No results found
+                </div>
+              )}
+
+              {filteredOptions.map((option, index) => (
+                <button
+                  key={`${option.value}-${index}`}
+                  type="button"
+                  onClick={() => {
+                    onChange(option.value);
+                    setSearch("");
+                    setOpen(false);
+                  }}
+                  className={`w-full text-left px-4 py-2.5 text-sm transition hover:bg-black/5 ${
+                    value === option.value
+                      ? "bg-black text-white hover:bg-black"
+                      : "text-black"
+                  }`}
+                >
+                  {option.label}
+                </button>
+              ))}
+            </div>
           </div>
         )}
       </div>

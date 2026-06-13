@@ -110,7 +110,7 @@ function LiveMap() {
 
 const CustomerDashboard = () => {
   return (
-    <div className="w-full max-w-full overflow-x-hidden space-y-6 ">
+    <div className="w-full max-w-full overflow-x-hidden space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-semibold text-black">Overview</h2>
 
@@ -120,8 +120,8 @@ const CustomerDashboard = () => {
         </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-        <div className="min-w-0 overflow-hidden">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 items-stretch">
+        <div className="min-w-0">
           <StatCard
             label="Active Deliveries"
             value="12"
@@ -129,15 +129,17 @@ const CustomerDashboard = () => {
             trend="up"
             icon={<FaTruck size={15} />}
             sparkline={[7, 9, 8, 11, 10, 12, 12]}
+            tooltip="Number of shipments currently on the road. Counts any delivery with status 'In Transit' or 'Loading' at this moment."
           />
         </div>
 
-        <div className="min-w-0 overflow-hidden">
+        <div className="min-w-0">
           <StatCard
             label="Wallet Balance"
             value="₦450,000"
             trend="flat"
             icon={<FaWallet size={15} />}
+            tooltip="Your current InTruck wallet balance. Fund your wallet to pay for truck bookings, deliveries, and other platform services instantly."
             footer={
               <div className="mt-2">
                 <Button
@@ -152,7 +154,7 @@ const CustomerDashboard = () => {
           />
         </div>
 
-        <div className="min-w-0 overflow-hidden">
+        <div className="min-w-0">
           <StatCard
             label="Total Orders"
             value="54"
@@ -160,15 +162,17 @@ const CustomerDashboard = () => {
             trend="up"
             icon={<FaMapMarkerAlt size={15} />}
             sparkline={[40, 44, 46, 48, 50, 52, 54]}
+            tooltip="Cumulative number of orders you have placed on the platform — including truck rentals, material deliveries, and scheduled runs."
           />
         </div>
 
-        <div className="min-w-0 overflow-hidden">
+        <div className="min-w-0">
           <StatCard
             label="Pending Requests"
             value="4"
             trend="flat"
             icon={<FaClock size={15} />}
+            tooltip="Booking requests that have been submitted but not yet confirmed by a truck operator. These are awaiting driver acceptance or admin review."
           />
         </div>
       </div>

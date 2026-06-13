@@ -7,6 +7,10 @@ import {
   FaBoxOpen,
   FaCheckCircle,
 } from "react-icons/fa";
+import {
+  getStates,
+  getCitiesAndTownsByState,
+} from "nigerian-states-lgas-cities-towns";
 
 import {
   Field,
@@ -30,16 +34,8 @@ const TRUCK_TYPES = [
 ];
 
 const PRICING_OPTIONS = [
-  {
-    id: "open",
-    label: "Open to bids",
-    desc: "Drivers propose their price",
-  },
-  {
-    id: "fixed",
-    label: "Set my price",
-    desc: "You name the amount",
-  },
+  { id: "open", label: "Open to bids", desc: "Drivers propose their price" },
+  { id: "fixed", label: "Set my price", desc: "You name the amount" },
 ];
 
 const CARGO_TYPES = [
@@ -56,17 +52,43 @@ const CARGO_TYPES = [
 
 type PricingMode = "fixed" | "open";
 
+const NG_STATES = [...new Set(getStates())].map((s: string) => ({
+  value: s,
+  label: s,
+}));
+
+function getCities(state: string) {
+  if (!state) return [];
+
+  const uniqueCities = [...new Set(getCitiesAndTownsByState(state))];
+
+  return uniqueCities.map((city: string) => ({
+    value: city,
+    label: city,
+  }));
+}
 const PostJob = () => {
   const [truckType, setTruckType] = useState("");
   const [pricingMode, setPricingMode] = useState<PricingMode>("open");
   const [cargoType, setCargoType] = useState("");
-  const [selectOpen, setSelectOpen] = useState(false);
-  // const [pricingOpen, setPricingOpen] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+
+  const [pickupState, setPickupState] = useState("");
+  const [pickupCity, setPickupCity] = useState("");
+  const [pickupAddress, setPickupAddress] = useState("");
+  const [dropoffState, setDropoffState] = useState("");
+  const [dropoffCity, setDropoffCity] = useState("");
+  const [dropoffAddress, setDropoffAddress] = useState("");
+
+  const [cargoOpen, setCargoOpen] = useState(false);
+  const [pickupStateOpen, setPickupStateOpen] = useState(false);
+  const [pickupCityOpen, setPickupCityOpen] = useState(false);
+  const [dropoffStateOpen, setDropoffStateOpen] = useState(false);
+  const [dropoffCityOpen, setDropoffCityOpen] = useState(false);
 
   if (submitted) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] text-center space-y-4 ">
+      <div className="flex flex-col items-center justify-center min-h-[60vh] text-center space-y-4">
         <div className="w-16 h-16 rounded-full bg-black flex items-center justify-center">
           <FaCheckCircle className="text-white text-2xl" />
         </div>
@@ -86,7 +108,7 @@ const PostJob = () => {
   }
 
   return (
-    <div className="w-full max-w-full overflow-x-hidden space-y-4  pb-5">
+    <div className="w-full max-w-full overflow-x-hidden space-y-4 pb-5">
       <div className="flex items-center justify-between pt-1">
         <div>
           <h2 className="text-lg font-black text-black">Post a haulage job</h2>
@@ -112,8 +134,8 @@ const PostJob = () => {
           placeholder="Select cargo type"
           onChange={setCargoType}
           options={CARGO_TYPES.map((c) => ({ value: c, label: c }))}
-          open={selectOpen}
-          setOpen={setSelectOpen}
+          open={cargoOpen}
+          setOpen={setCargoOpen}
         />
 
         <div className="grid grid-cols-2 gap-3">
@@ -124,7 +146,6 @@ const PostJob = () => {
             placeholder="e.g. 10"
             icon={<FaWeightHanging />}
           />
-
           <Field
             label="Quantity (units)"
             type="number"
@@ -149,18 +170,85 @@ const PostJob = () => {
           <h3 className="font-bold text-black text-base">Route & schedule</h3>
         </div>
 
-        <Field
-          label="Pickup location"
-          type="text"
-          placeholder="Street, city or LGA"
-          icon={<FaMapMarkerAlt />}
-        />
+        <div className="space-y-3">
+          <p className="text-xs font-semibold text-black/50 uppercase tracking-wider">
+            Pickup location
+          </p>
+          <div className="grid grid-cols-2 gap-3">
+            <SelectField
+              label="State"
+              searchable
+              value={pickupState}
+              placeholder="Select state"
+              onChange={(v) => {
+                setPickupState(v);
+                setPickupCity("");
+              }}
+              options={NG_STATES}
+              open={pickupStateOpen}
+              setOpen={setPickupStateOpen}
+              icon={<FaMapMarkerAlt />}
+            />
+            <SelectField
+              label="City / Town"
+              searchable
+              value={pickupCity}
+              placeholder={pickupState ? "Select city" : "Pick state first"}
+              onChange={setPickupCity}
+              options={getCities(pickupState)}
+              open={pickupCityOpen}
+              setOpen={(v) => pickupState && setPickupCityOpen(v)}
+            />
+          </div>
+          <Field
+            label="Street address"
+            type="text"
+            placeholder="e.g. 12 Apapa Road, Ikorodu"
+            icon={<FaMapMarkerAlt />}
+            value={pickupAddress}
+            onChange={(e) => setPickupAddress(e.target.value)}
+          />
+        </div>
 
-        <Field
-          label="Dropoff location"
-          type="text"
-          placeholder="Street, city or LGA"
-        />
+        <div className="space-y-3">
+          <p className="text-xs font-semibold text-black/50 uppercase tracking-wider">
+            Dropoff location
+          </p>
+          <div className="grid grid-cols-2 gap-3">
+            <SelectField
+              label="State"
+              value={dropoffState}
+              searchable
+              placeholder="Select state"
+              onChange={(v) => {
+                setDropoffState(v);
+                setDropoffCity("");
+              }}
+              options={NG_STATES}
+              open={dropoffStateOpen}
+              setOpen={setDropoffStateOpen}
+              icon={<FaMapMarkerAlt />}
+            />
+            <SelectField
+              label="City / Town"
+              value={dropoffCity}
+              searchable
+              placeholder={dropoffState ? "Select city" : "Pick state first"}
+              onChange={setDropoffCity}
+              options={getCities(dropoffState)}
+              open={dropoffCityOpen}
+              setOpen={(v) => dropoffState && setDropoffCityOpen(v)}
+            />
+          </div>
+          <Field
+            label="Street address"
+            type="text"
+            placeholder="e.g. Km 5 Ibadan-Lagos Expressway"
+            icon={<FaMapMarkerAlt />}
+            value={dropoffAddress}
+            onChange={(e) => setDropoffAddress(e.target.value)}
+          />
+        </div>
 
         <div className="grid grid-cols-2 gap-3">
           <Field label="Pickup date" type="date" icon={<FaCalendarAlt />} />
@@ -210,9 +298,13 @@ const PostJob = () => {
             <p className="text-xs text-black/40">Ready to post?</p>
             <p className="text-sm font-bold text-black truncate mt-0.5">
               {cargoType || "No cargo selected"} ·{" "}
-              {truckType
-                ? TRUCK_TYPES.find((t) => t.id === truckType)?.label
-                : "Any truck"}
+              {pickupCity && pickupState
+                ? `${pickupCity}, ${pickupState}`
+                : pickupState || "No pickup"}{" "}
+              →{" "}
+              {dropoffCity && dropoffState
+                ? `${dropoffCity}, ${dropoffState}`
+                : dropoffState || "No dropoff"}
             </p>
           </div>
 
