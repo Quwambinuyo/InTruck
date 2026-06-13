@@ -60,14 +60,10 @@ const NG_STATES = [...new Set(getStates())].map((s: string) => ({
 
 function getCities(state: string) {
   if (!state) return [];
-
   const uniqueCities = [...new Set(getCitiesAndTownsByState(state))];
-
-  return uniqueCities.map((city: string) => ({
-    value: city,
-    label: city,
-  }));
+  return uniqueCities.map((city: string) => ({ value: city, label: city }));
 }
+
 const PostJob = () => {
   const [truckType, setTruckType] = useState("");
   const [pricingMode, setPricingMode] = useState<PricingMode>("open");
@@ -109,7 +105,7 @@ const PostJob = () => {
   }
 
   return (
-    <div className="w-full max-w-full overflow-x-hidden space-y-4 pb-5">
+    <div className="w-full max-w-full overflow-x-hidden space-y-4 pb-28">
       <div className="flex items-center justify-between pt-1">
         <div>
           <h2 className="text-lg font-black text-black">Post a haulage job</h2>
@@ -139,7 +135,7 @@ const PostJob = () => {
           setOpen={setCargoOpen}
         />
 
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <Field
             label="Weight (tonnes)"
             type="number"
@@ -175,7 +171,7 @@ const PostJob = () => {
           <p className="text-xs font-semibold text-black/50 uppercase tracking-wider">
             Pickup location
           </p>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <SelectField
               label="State"
               searchable
@@ -215,7 +211,7 @@ const PostJob = () => {
           <p className="text-xs font-semibold text-black/50 uppercase tracking-wider">
             Dropoff location
           </p>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <SelectField
               label="State"
               value={dropoffState}
@@ -251,7 +247,7 @@ const PostJob = () => {
           />
         </div>
 
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <Field label="Pickup date" type="date" icon={<FaCalendarAlt />} />
           <Field label="Pickup time" type="time" />
         </div>

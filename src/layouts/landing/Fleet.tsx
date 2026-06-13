@@ -52,7 +52,7 @@ const materials: Material[] = [
   },
   {
     name: "Custom Load",
-    desc: "Anything else — agricultural produce, machinery, or mixed cargo.",
+    desc: "Anything else  agricultural produce, machinery, or mixed cargo.",
     icon: <FaBox />,
     color: "#1a1a1a",
   },

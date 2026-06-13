@@ -15,7 +15,7 @@ const services: Service[] = [
     title: "Buy a Truck",
     subtitle: "Fleet Ownership",
     description:
-      "Browse verified trucks for sale — tippers, flatbeds, tankers, mixers. Inspected, documented, and ready to earn.",
+      "Browse verified trucks for sale  tippers, flatbeds, tankers, mixers. Inspected, documented, and ready to earn.",
     tag: "Purchase",
     accent: "var(--color-primary)",
   },
@@ -33,7 +33,7 @@ const services: Service[] = [
     title: "Book Delivery",
     subtitle: "InTruckage & Logistics",
     description:
-      "Get sand, stone, granite, laterite, gravel — any bulk material — delivered on your schedule by rated drivers.",
+      "Get sand, stone, granite, laterite, gravel any bulk material  delivered on your schedule by rated drivers.",
     tag: "Logistics",
     accent: "var(--color-success)",
   },

@@ -72,7 +72,7 @@ export default function Drivers() {
 
             <p className="text-[--color-text-secondary] text-base leading-relaxed mb-8 max-w-lg">
               Stop waiting for middlemen to call you. InTruck lets you build
-              your own client base, earn consistently, and grow your business —
+              your own client base, earn consistently, and grow your business
               all from your phone.
             </p>
 

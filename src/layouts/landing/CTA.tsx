@@ -75,7 +75,7 @@ export default function CTA() {
                 <p className="text-white/60 text-sm leading-relaxed">
                   No monthly fees. No platform commission. InTruck is free to
                   join for drivers and clients. We earn only when you complete a
-                  job — and even then, it's a small, transparent fee.
+                  job and even then, it's a small, transparent fee.
                 </p>
               </div>
 

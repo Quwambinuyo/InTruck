@@ -162,7 +162,7 @@ const CustomerDashboard = () => {
             trend="up"
             icon={<FaMapMarkerAlt size={15} />}
             sparkline={[40, 44, 46, 48, 50, 52, 54]}
-            tooltip="Cumulative number of orders you have placed on the platform — including truck rentals, material deliveries, and scheduled runs."
+            tooltip="Cumulative number of orders you have placed on the platform  including truck rentals, material deliveries, and scheduled runs."
           />
         </div>
 

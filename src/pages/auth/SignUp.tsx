@@ -79,7 +79,7 @@ export default function SignUp() {
       subheading={
         isMerchant
           ? "List your trucks, reach thousands of clients, and grow your haulage business across Nigeria."
-          : "Post jobs, find verified drivers, and get your materials delivered — fast."
+          : "Post jobs, find verified drivers, and get your materials delivered  fast."
       }
       panelStat={{
         value: "2,400+",
