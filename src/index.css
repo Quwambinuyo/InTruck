@@ -103,3 +103,14 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+.leaflet-tooltip-custom {
+  background: white;
+  border: 0.5px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 6px 10px;
+  box-shadow: none;
+}
+.leaflet-tooltip-custom::before {
+  display: none;
+}

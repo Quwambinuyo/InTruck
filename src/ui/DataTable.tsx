@@ -30,7 +30,7 @@ const DataTable = <T,>({
   return (
     <div className="overflow-x-auto">
       <div
-        className="grid text-[11px] font-semibold text-black/40 uppercase tracking-wider border-b border-black/[0.08] pb-3 px-3"
+        className="grid text-[11px] font-semibold text-black zabalBoldFont uppercase tracking-wider border-b border-black/[0.08] pb-3 px-3 p-5"
         style={{ gridTemplateColumns, minWidth }}
       >
         {columns.map((col, i) => (

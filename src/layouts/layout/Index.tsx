@@ -12,7 +12,7 @@ const LayoutWrapper = () => {
 
   return (
     <>
-      <div className="  md:ml-[220px] lg:ml-[235px] xl:ml-[256px] px-2 sm:px-3 md:px-5 xl:px-6 pb-8 sm:pb-10  max-w-[1400px] mx-auto bg-[#F0F1FE]">
+      <div className="  md:ml-[220px] lg:ml-[235px] xl:ml-[256px] px-2 sm:px-3 md:px-5 xl:px-6 pb-8 sm:pb-10  max-w-[1400px] mx-auto bg-[#f4f4f4]">
         <div className="block md:hidden">
           <MobileTopbar />
         </div>
