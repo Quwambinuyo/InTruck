@@ -107,15 +107,9 @@ const ListTruck = () => {
     [trucks],
   );
 
-  const sparkTotal = [10, 12, 11, 13, 12, 14, 15];
-  const sparkActive = [5, 6, 7, 8, 8, 9, 10];
-  const sparkIdle = [3, 4, 3, 4, 5, 4, 3];
-  const sparkMaintenance = [2, 2, 3, 3, 2, 2, 3];
-  const sparkUnassigned = [4, 3, 4, 5, 4, 5, 6];
-
   return (
-    <div className="max-w-[1300px] mx-auto">
-      <div className="flex items-start justify-between flex-wrap gap-4 mb-8">
+    <div className="max-w-[1300px] mx-auto px-4 sm:px-0">
+      <div className="flex items-start justify-between flex-wrap gap-4 mb-5">
         <div>
           <h1 className="text-2xl font-bold text-black">Trucks</h1>
           <p className="text-sm text-black/40 mt-1">
@@ -124,11 +118,8 @@ const ListTruck = () => {
         </div>
 
         <div className="flex gap-3">
-          <Button className=" text-[12px] px-5   rounded-md bg-black">
-            Assign driver
-          </Button>
           <Button
-            className="rounded-md text-[12px] px-5  bg-black"
+            className="rounded-md text-[12px] px-5 bg-black"
             variant="merchant"
           >
             + Register truck
@@ -139,56 +130,61 @@ const ListTruck = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-8">
         <StatCard
           label="Total trucks"
-          value={stats.total}
+          value={String(stats.total)}
           tooltip="All registered fleet units"
-          sparkline={sparkTotal}
         />
 
         <StatCard
           label="Active"
-          value={stats.active}
+          value={String(stats.active)}
           tooltip="Currently on delivery or in motion"
           trend="up"
-          delta={`${Math.round((stats.active / stats.total) * 100)}%`}
-          sparkline={sparkActive}
+          delta={
+            stats.total
+              ? `${Math.round((stats.active / stats.total) * 100)}%`
+              : "0%"
+          }
         />
 
         <StatCard
           label="Idle"
-          value={stats.idle}
+          value={String(stats.idle)}
           tooltip="Available but not assigned"
           trend="flat"
-          delta={`${Math.round((stats.idle / stats.total) * 100)}%`}
-          sparkline={sparkIdle}
+          delta={
+            stats.total
+              ? `${Math.round((stats.idle / stats.total) * 100)}%`
+              : "0%"
+          }
         />
 
         <StatCard
           label="Maintenance"
-          value={stats.maintenance}
+          value={String(stats.maintenance)}
           tooltip="Under service or repair"
           trend="down"
-          delta={`${Math.round((stats.maintenance / stats.total) * 100)}%`}
-          sparkline={sparkMaintenance}
+          delta={
+            stats.total
+              ? `${Math.round((stats.maintenance / stats.total) * 100)}%`
+              : "0%"
+          }
         />
 
-        <div className="lg:col-span-2 grid grid-cols-2 gap-3">
-          <StatCard
-            label="Unassigned"
-            value={stats.unassigned}
-            tooltip="Trucks with no driver currently assigned"
-            sparkline={sparkUnassigned}
-          />
+        <StatCard
+          label="Unassigned"
+          value={String(stats.unassigned)}
+          tooltip="Trucks with no driver currently assigned"
+        />
 
-          <StatCard
-            label="Coverage"
-            value={`${Math.round(
-              ((stats.active + stats.idle + stats.maintenance) / stats.total) *
-                100,
-            )}%`}
-            tooltip="Fleet utilization coverage across all trucks"
-            sparkline={sparkTotal}
-          />
-        </div>
+        <StatCard
+          label="Coverage"
+          value={
+            stats.total
+              ? `${Math.round(((stats.active + stats.idle + stats.maintenance) / stats.total) * 100)}%`
+              : "0%"
+          }
+          tooltip="Fleet utilization coverage across all trucks"
+        />
       </div>
 
       <div className="flex gap-3 mb-5 flex-wrap items-end">

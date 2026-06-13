@@ -23,7 +23,7 @@ import SuccessScoreChart from "./charts/SuccessChart";
 
 const MerchantDashboard = () => {
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 px-4 sm:px-0 max-w-full overflow-x-hidden">
       <div>
         <h2 className="text-xl font-black text-black zabalBoldFont">
           Dashboard
@@ -33,14 +33,13 @@ const MerchantDashboard = () => {
         </p>
       </div>
 
-      <div className="flex flex-col lg:grid lg:grid-cols-4 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
         <StatCard
           label="Active Trucks"
           value="12"
           delta="2 this week"
           trend="up"
           icon={<FaTruck size={14} />}
-          sparkline={[8, 9, 10, 9, 11, 12, 12]}
           footer="3 on delivery"
         />
         <StatCard
@@ -49,7 +48,6 @@ const MerchantDashboard = () => {
           delta="5 today"
           trend="up"
           icon={<FaClipboardList size={14} />}
-          sparkline={[3, 5, 4, 6, 7, 5, 8]}
           footer="4 pending review"
         />
         <StatCard
@@ -58,7 +56,6 @@ const MerchantDashboard = () => {
           delta="12% vs last month"
           trend="up"
           icon={<FaMoneyBillWave size={14} />}
-          sparkline={[2800000, 3100000, 2600000, 3800000, 4200000, 3500000]}
           footer="This month"
           tooltip="Net earnings after platform fees and deductions"
         />
@@ -68,7 +65,6 @@ const MerchantDashboard = () => {
           delta="0.1 this week"
           trend="down"
           icon={<FaStar size={14} />}
-          sparkline={[4.9, 4.8, 5.0, 4.7, 4.9, 4.8]}
           footer="From 142 trips"
         />
       </div>
@@ -96,7 +92,7 @@ const MerchantDashboard = () => {
               return (
                 <div
                   key={job.id}
-                  className="flex items-start gap-3 p-3 rounded-xl border border-black/8 hover:border-black/20 hover:bg-black/[0.01] transition cursor-pointer"
+                  className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 p-3 rounded-xl border border-black/8 hover:border-black/20 hover:bg-black/[0.01] transition cursor-pointer"
                 >
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
@@ -115,13 +111,13 @@ const MerchantDashboard = () => {
                       {job.cargo}
                     </p>
 
-                    <div className="flex items-center gap-1.5 mt-1">
-                      <FaMapMarkerAlt className="text-black/30 text-[10px]" />
-                      <span className="text-xs text-black/50 truncate zabalRegFont">
+                    <div className="flex items-center gap-1.5 mt-1 flex-wrap">
+                      <FaMapMarkerAlt className="text-black/30 text-[10px] flex-shrink-0" />
+                      <span className="text-xs text-black/50 max-w-[120px] truncate zabalRegFont">
                         {job.pickup}
                       </span>
-                      <FaChevronRight className="text-black/20 text-[9px]" />
-                      <span className="text-xs text-black/50 truncate zabalRegFont">
+                      <FaChevronRight className="text-black/20 text-[9px] flex-shrink-0" />
+                      <span className="text-xs text-black/50 max-w-[120px] truncate zabalRegFont">
                         {job.dropoff}
                       </span>
                     </div>
@@ -136,17 +132,17 @@ const MerchantDashboard = () => {
                     </div>
                   </div>
 
-                  <div className="flex flex-col items-end gap-2">
+                  <div className="flex sm:flex-col items-start sm:items-end justify-between sm:justify-start gap-2 border-t sm:border-t-0 pt-2 sm:pt-0 border-black/5">
                     <span className="text-[10px] text-black/30 zabalRegFont">
                       {job.time}
                     </span>
 
                     {job.status === "pending" && (
                       <div className="flex gap-1.5">
-                        <button className="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-black text-white">
+                        <button className="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-black text-white whitespace-nowrap">
                           Accept
                         </button>
-                        <button className="text-[11px] font-bold px-2.5 py-1 rounded-lg border border-black/15">
+                        <button className="text-[11px] font-bold px-2.5 py-1 rounded-lg border border-black/15 whitespace-nowrap">
                           Decline
                         </button>
                       </div>
@@ -206,7 +202,7 @@ const MerchantDashboard = () => {
                 </div>
 
                 <div className="space-y-1">
-                  <p className="text-xs text-black/50 zabalRegFont">
+                  <p className="text-xs text-black/50 zabalRegFont truncate">
                     Driver:{" "}
                     <span className="text-black font-semibold zabalSemiboldFont">
                       {truck.driver}
@@ -214,9 +210,9 @@ const MerchantDashboard = () => {
                   </p>
 
                   {truck.route && (
-                    <p className="text-[11px] text-black/40 zabalRegFont flex items-center gap-1">
-                      <FaMapMarkerAlt size={9} />
-                      {truck.route}
+                    <p className="text-[11px] text-black/40 zabalRegFont flex items-center gap-1 truncate">
+                      <FaMapMarkerAlt size={9} className="flex-shrink-0" />
+                      <span className="truncate">{truck.route}</span>
                     </p>
                   )}
                 </div>

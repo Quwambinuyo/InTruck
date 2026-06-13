@@ -12,7 +12,7 @@ import {
   TrackDeliveries,
   Transactions,
 } from "../customer/components";
-import { ListTruck, MerchantDashboard } from "../merchants/components";
+import { ListTruck, MerchantDashboard, MyFleet } from "../merchants/components";
 
 export default function AppRouter() {
   return (
@@ -26,6 +26,7 @@ export default function AppRouter() {
           {/* Merchant */}
           <Route path="/merchant/dashboard" element={<MerchantDashboard />} />
           <Route path="/merchant/list-truck" element={<ListTruck />} />
+          <Route path="/merchant/fleet" element={<MyFleet />} />
 
           {/* Customer */}
           <Route path="/customer/dashboard" element={<CustomerDashboard />} />
