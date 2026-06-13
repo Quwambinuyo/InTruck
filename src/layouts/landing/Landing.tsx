@@ -7,6 +7,7 @@ import Fleet from "./Fleet";
 import Drivers from "./Drivers";
 import Testimonials from "./Testimonials";
 import CTA from "./CTA";
+import Reveal from "../../ui/Reveal";
 
 export default function Landing() {
   return (
@@ -14,12 +15,24 @@ export default function Landing() {
       <Navbar />
       <main>
         <Hero />
-        <Services />
-        <HowItWorks />
-        <Fleet />
-        <Drivers />
-        <Testimonials />
-        <CTA />
+        <Reveal animation="fade-up" duration={700}>
+          <Services />
+        </Reveal>
+        <Reveal animation="fade-left" duration={700} delay={100}>
+          <HowItWorks />
+        </Reveal>
+        <Reveal animation="fade-right" duration={700} delay={100}>
+          <Fleet />
+        </Reveal>
+        <Reveal animation="fade-up" duration={700} delay={100}>
+          <Drivers />
+        </Reveal>
+        <Reveal animation="fade-down" duration={700} delay={100}>
+          <Testimonials />
+        </Reveal>
+        <Reveal animation="fade-up" duration={700} delay={100}>
+          <CTA />
+        </Reveal>
       </main>
       <Footer />
     </div>
