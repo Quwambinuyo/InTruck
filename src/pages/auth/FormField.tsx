@@ -3,9 +3,11 @@ import {
   useRef,
   useMemo,
   useState,
+  useCallback,
   type InputHTMLAttributes,
   type TextareaHTMLAttributes,
 } from "react";
+import { createPortal } from "react-dom";
 
 type FieldProps = InputHTMLAttributes<HTMLInputElement> & {
   label: string;
@@ -35,7 +37,6 @@ export function Field({
             {icon}
           </span>
         )}
-
         <input
           type={type}
           className={`w-full rounded-xl border bg-white px-4 py-3 text-sm outline-none transition-all duration-200 ${
@@ -69,7 +70,6 @@ export function TextAreaField({
       <label className="text-xs font-semibold uppercase tracking-[0.12em] text-black/60">
         {label}
       </label>
-
       <textarea
         className={`w-full rounded-xl border bg-white px-4 py-3 text-sm outline-none resize-none transition-all duration-200 ${
           error
@@ -78,7 +78,6 @@ export function TextAreaField({
         }`}
         {...props}
       />
-
       {error && <p className="text-xs text-red-500">⚠ {error}</p>}
     </div>
   );
@@ -90,10 +89,7 @@ type SelectFieldProps = {
   value: string;
   open: boolean;
   setOpen: (v: boolean) => void;
-  options: {
-    value: string;
-    label: string;
-  }[];
+  options: { value: string; label: string }[];
   placeholder?: string;
   onChange: (value: string) => void;
   className?: string;
@@ -117,122 +113,79 @@ export function SelectField({
   const [search, setSearch] = useState("");
   const buttonRef = useRef<HTMLButtonElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const [dropdownStyle, setDropdownStyle] = useState<React.CSSProperties>({});
+  const [rect, setRect] = useState<DOMRect | null>(null);
 
   const uniqueOptions = useMemo(() => {
     const seen = new Set<string>();
-    return options.filter((option) => {
-      const key = option.value.toLowerCase();
-      if (seen.has(key)) return false;
-      seen.add(key);
+    return options.filter((o) => {
+      const k = o.value.toLowerCase();
+      if (seen.has(k)) return false;
+      seen.add(k);
       return true;
     });
   }, [options]);
 
   const filteredOptions = useMemo(() => {
     if (!searchable || !search.trim()) return uniqueOptions;
-    return uniqueOptions.filter((option) =>
-      option.label.toLowerCase().includes(search.toLowerCase()),
+    return uniqueOptions.filter((o) =>
+      o.label.toLowerCase().includes(search.toLowerCase()),
     );
   }, [search, searchable, uniqueOptions]);
 
   const selectedLabel =
     uniqueOptions.find((o) => o.value === value)?.label || placeholder;
 
-  useEffect(() => {
-    if (!open || !buttonRef.current) return;
-
-    const rect = buttonRef.current.getBoundingClientRect();
-    const spaceBelow = window.innerHeight - rect.bottom;
-    const spaceAbove = rect.top;
-    const dropdownH = Math.min(
-      uniqueOptions.length * 40 + (searchable ? 56 : 0),
-      220,
-    );
-
-    if (spaceBelow >= dropdownH || spaceBelow >= spaceAbove) {
-      setDropdownStyle({
-        position: "fixed",
-        top: rect.bottom + 6,
-        left: rect.left,
-        width: rect.width,
-        zIndex: 9999,
-      });
-    } else {
-      setDropdownStyle({
-        position: "fixed",
-        bottom: window.innerHeight - rect.top + 6,
-        left: rect.left,
-        width: rect.width,
-        zIndex: 9999,
-      });
-    }
-  }, [open, uniqueOptions.length, searchable]);
+  const updateRect = useCallback(() => {
+    if (buttonRef.current) setRect(buttonRef.current.getBoundingClientRect());
+  }, []);
 
   useEffect(() => {
     if (!open) return;
+    updateRect();
+    window.addEventListener("resize", updateRect);
+    return () => window.removeEventListener("resize", updateRect);
+  }, [open, updateRect]);
+
+  useEffect(() => {
+    if (!open) return;
+
     const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as Node;
       if (
-        !buttonRef.current?.contains(e.target as Node) &&
-        !dropdownRef.current?.contains(e.target as Node)
+        !buttonRef.current?.contains(target) &&
+        !dropdownRef.current?.contains(target)
       ) {
         setOpen(false);
         setSearch("");
       }
     };
-    const handleScroll = () => {
-      setOpen(false);
-      setSearch("");
-    };
+
     document.addEventListener("mousedown", handleClickOutside);
-    window.addEventListener("scroll", handleScroll, true);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-      window.removeEventListener("scroll", handleScroll, true);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [open, setOpen]);
 
-  return (
-    <div className={`flex flex-col gap-2 ${className ?? ""}`}>
-      <label className="text-xs font-semibold uppercase tracking-[0.12em] text-black/60">
-        {label}
-      </label>
+  const dropdownStyle: React.CSSProperties = rect
+    ? (() => {
+        const spaceBelow = window.innerHeight - rect.bottom;
+        const maxH = 220;
+        if (spaceBelow >= maxH || spaceBelow >= rect.top) {
+          return { top: rect.bottom + 4, left: rect.left, width: rect.width };
+        }
+        return {
+          bottom: window.innerHeight - rect.top + 4,
+          left: rect.left,
+          width: rect.width,
+        };
+      })()
+    : {};
 
-      <div className="relative">
-        {icon && (
-          <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-black/30 text-sm">
-            {icon}
-          </span>
-        )}
-
-        <button
-          ref={buttonRef}
-          type="button"
-          onClick={() => setOpen(!open)}
-          className={`w-full flex items-center justify-between rounded-xl border bg-white py-3 text-sm transition-all duration-200 ${
-            icon ? "pl-9 pr-4" : "px-4"
-          } ${value ? "text-black" : "text-black/40"} ${
-            error
-              ? "border-red-500"
-              : "border-black/15 hover:border-black/30 focus:border-black"
-          }`}
-        >
-          <span className="truncate">{selectedLabel}</span>
-
-          <span
-            className={`ml-3 text-black/40 transition-transform duration-200 flex-shrink-0 ${
-              open ? "rotate-180" : ""
-            }`}
-          >
-            <ChevronIcon />
-          </span>
-        </button>
-
-        {open && (
+  const dropdown =
+    open && rect
+      ? createPortal(
           <div
             ref={dropdownRef}
-            style={dropdownStyle}
-            className="rounded-xl border border-black/10 bg-white shadow-xl overflow-hidden"
+            style={{ position: "fixed", zIndex: 99999, ...dropdownStyle }}
+            className="rounded-xl border border-black/10 bg-white shadow-2xl overflow-hidden"
           >
             {searchable && (
               <div className="p-2 border-b border-black/10">
@@ -245,18 +198,17 @@ export function SelectField({
                 />
               </div>
             )}
-
-            <div className="max-h-52 overflow-y-auto">
+            <div className="max-h-52 overflow-y-auto overscroll-contain">
               {filteredOptions.length === 0 && (
                 <div className="px-4 py-3 text-sm text-black/40">
                   No results found
                 </div>
               )}
-
               {filteredOptions.map((option, index) => (
                 <button
                   key={`${option.value}-${index}`}
                   type="button"
+                  onMouseDown={(e) => e.preventDefault()}
                   onClick={() => {
                     onChange(option.value);
                     setSearch("");
@@ -272,9 +224,52 @@ export function SelectField({
                 </button>
               ))}
             </div>
-          </div>
+          </div>,
+          document.body,
+        )
+      : null;
+
+  return (
+    <div className={`flex flex-col gap-2 ${className ?? ""}`}>
+      <label className="text-xs font-semibold uppercase tracking-[0.12em] text-black/60">
+        {label}
+      </label>
+
+      <div className="relative">
+        {icon && (
+          <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-black/30 text-sm">
+            {icon}
+          </span>
         )}
+        <button
+          ref={buttonRef}
+          type="button"
+          onClick={() => {
+            updateRect();
+            setOpen(!open);
+          }}
+          className={`w-full flex items-center justify-between rounded-xl border bg-white py-3 text-sm transition-all duration-200 ${
+            icon ? "pl-9 pr-4" : "px-4"
+          } ${value ? "text-black" : "text-black/40"} ${
+            error
+              ? "border-red-500"
+              : open
+                ? "border-black ring-2 ring-black/10"
+                : "border-black/15 hover:border-black/30"
+          }`}
+        >
+          <span className="truncate">{selectedLabel}</span>
+          <span
+            className={`ml-3 text-black/40 transition-transform duration-200 flex-shrink-0 ${
+              open ? "rotate-180" : ""
+            }`}
+          >
+            <ChevronIcon />
+          </span>
+        </button>
       </div>
+
+      {dropdown}
 
       {error && <p className="text-xs text-red-500">⚠ {error}</p>}
     </div>
@@ -307,11 +302,9 @@ export function TruckSelectCard({
       <label className="text-xs font-semibold uppercase tracking-[0.12em] text-black/60">
         {label}
       </label>
-
       <div className="grid grid-cols-2 gap-2.5">
         {options.map((t) => {
           const active = value === t.id;
-
           return (
             <button
               key={t.id}
@@ -325,9 +318,7 @@ export function TruckSelectCard({
             >
               <p className="text-sm font-bold leading-tight">{t.label}</p>
               <p
-                className={`text-xs mt-0.5 ${
-                  active ? "text-white/60" : "text-black/40"
-                }`}
+                className={`text-xs mt-0.5 ${active ? "text-white/60" : "text-black/40"}`}
               >
                 {t.desc}
               </p>
