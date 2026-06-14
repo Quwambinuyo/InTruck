@@ -9,7 +9,7 @@ export type DriverReview = {
   date: string;
 };
 
-export type MyDriver = {
+export type MyDriverType = {
   id: string;
   name: string;
   phone: string;
@@ -34,7 +34,7 @@ export type MyDriver = {
   reviews: DriverReview[];
 };
 
-export const SEED_MY_DRIVERS: MyDriver[] = [
+export const SEED_MY_DRIVERS: MyDriverType[] = [
   {
     id: "DRV-001",
     name: "Emeka Ojo",

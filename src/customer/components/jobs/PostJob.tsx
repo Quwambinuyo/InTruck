@@ -21,43 +21,20 @@ import {
 import { DatePicker } from "../../../ui/DatePicker";
 import { TimePicker } from "../../../ui/TimePicker";
 import Button from "../../../ui/Button";
-
-const TRUCK_TYPES = [
-  { id: "flatbed", label: "Flatbed", desc: "Open deck, heavy loads" },
-  { id: "tipper", label: "Tipper", desc: "Sand, granite, aggregate" },
-  {
-    id: "curtainsider",
-    label: "Curtainsider",
-    desc: "Bagged & palletised goods",
-  },
-  { id: "tanker", label: "Tanker", desc: "Liquids & bulk dry goods" },
-  { id: "lowloader", label: "Low Loader", desc: "Machinery & oversized cargo" },
-  { id: "any", label: "Any available", desc: "Let drivers bid" },
-];
-
-const PRICING_OPTIONS = [
-  { id: "open", label: "Open to bids", desc: "Drivers propose their price" },
-  { id: "fixed", label: "Set my price", desc: "You name the amount" },
-];
-
-const CARGO_TYPES = [
-  "Granite / Gravel",
-  "Sand",
-  "Cement",
-  "Steel / Iron",
-  "Agricultural produce",
-  "Building materials",
-  "Machinery",
-  "Consumer goods",
-  "Other",
-];
-
-type PricingMode = "fixed" | "open";
+import {
+  TRUCK_TYPE_OPTIONS,
+  PRICING_MODE_OPTIONS,
+  CARGO_TYPE_OPTIONS,
+  POST_JOB_PRIORITY_OPTIONS,
+  type PostJobPricingMode,
+  type PostJobPriority,
+} from "../../mock/mockPostJobData";
 
 const PostJob = () => {
   const [truckType, setTruckType] = useState("");
-  const [pricingMode, setPricingMode] = useState<PricingMode>("open");
+  const [pricingMode, setPricingMode] = useState<PostJobPricingMode>("open");
   const [cargoType, setCargoType] = useState("");
+  const [priority, setPriority] = useState<PostJobPriority>("standard");
   const [submitted, setSubmitted] = useState(false);
 
   const [pickupState, setPickupState] = useState("");
@@ -95,6 +72,24 @@ const PostJob = () => {
     );
   }, [dropoffState]);
 
+  const priorityMap: Record<
+    PostJobPriority,
+    { label: string; className: string }
+  > = {
+    urgent: {
+      label: "Urgent",
+      className: "bg-red-50 text-red-600 border-red-100",
+    },
+    standard: {
+      label: "Standard",
+      className: "bg-blue-50 text-blue-600 border-blue-100",
+    },
+    low: {
+      label: "Low",
+      className: "bg-gray-50 text-gray-500 border-gray-100",
+    },
+  };
+
   if (submitted) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] text-center space-y-4">
@@ -117,12 +112,12 @@ const PostJob = () => {
   }
 
   return (
-    <div className="w-full max-w-full space-y-4 pb-28">
+    <div className="w-full max-w-full space-y-4 pb-10">
       <div className="flex items-center justify-between pt-1">
         <div>
           <h2 className="text-lg font-black text-black">Post a haulage job</h2>
           <p className="text-xs text-black/40 mt-0.5">
-            Fill in the details drivers will bid or confirm instantly
+            Fill in the details — drivers will bid or confirm instantly
           </p>
         </div>
       </div>
@@ -142,7 +137,7 @@ const PostJob = () => {
           value={cargoType}
           placeholder="Select cargo type"
           onChange={setCargoType}
-          options={CARGO_TYPES.map((c) => ({ value: c, label: c }))}
+          options={CARGO_TYPE_OPTIONS.map((c) => ({ value: c, label: c }))}
           open={cargoOpen}
           setOpen={setCargoOpen}
         />
@@ -284,7 +279,7 @@ const PostJob = () => {
           label="Truck type"
           value={truckType}
           onChange={setTruckType}
-          options={TRUCK_TYPES}
+          options={TRUCK_TYPE_OPTIONS}
         />
       </div>
 
@@ -293,13 +288,56 @@ const PostJob = () => {
           <span className="w-7 h-7 rounded-full bg-black text-white text-xs font-black flex items-center justify-center">
             4
           </span>
+          <h3 className="font-bold text-black text-base">Priority</h3>
+        </div>
+        <div className="grid grid-cols-3 gap-3">
+          {POST_JOB_PRIORITY_OPTIONS.map((opt) => {
+            const isSelected = priority === opt.value;
+            const meta = priorityMap[opt.value as PostJobPriority];
+            return (
+              <button
+                key={opt.value}
+                onClick={() => setPriority(opt.value as PostJobPriority)}
+                className={`flex flex-col items-start gap-1 px-4 py-3 rounded-xl border text-left transition-all ${
+                  isSelected
+                    ? `${meta.className} border-current`
+                    : "bg-white border-black/10 hover:border-black/20"
+                }`}
+              >
+                <span
+                  className={`text-[11px] font-black uppercase tracking-wide ${
+                    isSelected ? "" : "text-black/40"
+                  }`}
+                >
+                  {opt.label}
+                </span>
+                <span
+                  className={`text-[10px] leading-tight ${
+                    isSelected ? "opacity-70" : "text-black/30"
+                  }`}
+                >
+                  {opt.value === "urgent" && "Time-critical delivery"}
+                  {opt.value === "standard" && "Normal scheduling"}
+                  {opt.value === "low" && "Flexible timeline"}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="bg-white border border-black/10 rounded-2xl p-5 space-y-4">
+        <div className="flex items-center gap-3">
+          <span className="w-7 h-7 rounded-full bg-black text-white text-xs font-black flex items-center justify-center">
+            5
+          </span>
           <h3 className="font-bold text-black text-base">Pricing preference</h3>
         </div>
         <TruckSelectCard
           label="Pricing preference"
           value={pricingMode}
-          onChange={(v) => setPricingMode(v as PricingMode)}
-          options={PRICING_OPTIONS}
+          onChange={(v) => setPricingMode(v as PostJobPricingMode)}
+          options={PRICING_MODE_OPTIONS}
         />
         {pricingMode === "fixed" && (
           <Field label="Your offer (₦)" type="number" placeholder="0.00" />
@@ -309,7 +347,16 @@ const PostJob = () => {
       <div className="fixed bottom-0 left-0 right-0 z-10 bg-white border-t border-black/10 px-4 py-3">
         <div className="max-w-lg mx-auto flex items-center gap-3">
           <div className="flex-1 min-w-0">
-            <p className="text-xs text-black/40">Ready to post?</p>
+            <div className="flex items-center gap-2 mb-0.5">
+              <p className="text-xs text-black/40">Ready to post?</p>
+              {priority && (
+                <span
+                  className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${priorityMap[priority].className}`}
+                >
+                  {priorityMap[priority].label}
+                </span>
+              )}
+            </div>
             <div className="flex items-center gap-2 text-sm font-bold text-black mt-0.5 min-w-0">
               <span className="truncate">
                 {pickupCity && pickupState

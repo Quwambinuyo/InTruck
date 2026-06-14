@@ -11,7 +11,7 @@ import {
   SEED_MY_DRIVERS,
   DRIVER_STATUS_OPTIONS,
   DRIVER_KYC_OPTIONS,
-  type MyDriver,
+  type MyDriverType,
   type KYCStatus,
 } from "../../mock/mockMyDriverData";
 
@@ -40,7 +40,7 @@ const KYCBadge = ({ status }: { status: KYCStatus }) => {
   );
 };
 
-const COLUMNS: ColumnDef<MyDriver>[] = [
+const COLUMNS: ColumnDef<MyDriverType>[] = [
   {
     label: "Driver",
     span: 3,
@@ -119,13 +119,13 @@ const COLUMNS: ColumnDef<MyDriver>[] = [
 ];
 
 const MyDriver = () => {
-  const [drivers] = useState<MyDriver[]>(SEED_MY_DRIVERS);
+  const [drivers] = useState<MyDriverType[]>(SEED_MY_DRIVERS);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   const [statusOpen, setStatusOpen] = useState(false);
   const [kycFilter, setKycFilter] = useState("");
   const [kycOpen, setKycOpen] = useState(false);
-  const [selected, setSelected] = useState<MyDriver | null>(null);
+  const [selected, setSelected] = useState<MyDriverType | null>(null);
 
   const filtered = useMemo(() => {
     const q = search.toLowerCase();
@@ -259,7 +259,7 @@ const MyDriver = () => {
       </div>
 
       <div className="rounded-2xl border border-black/[0.08] bg-white overflow-hidden">
-        <DataTable<MyDriver>
+        <DataTable<MyDriverType>
           columns={COLUMNS}
           rows={filtered}
           getKey={(row) => row.id}

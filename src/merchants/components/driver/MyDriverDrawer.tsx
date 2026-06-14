@@ -11,14 +11,14 @@ import {
   FaTimesCircle,
 } from "react-icons/fa";
 import StatusPill from "../../../ui/StatusPill";
-import type { MyDriver, KYCStatus } from "../../mock/mockMyDriverData";
+import type { MyDriverType, KYCStatus } from "../../mock/mockMyDriverData";
 
 type Props = {
-  driver: MyDriver | null;
+  driver: MyDriverType | null;
   onClose: () => void;
-  onAssignTruck: (driver: MyDriver) => void;
-  onUnassignTruck: (driver: MyDriver) => void;
-  onContact: (driver: MyDriver) => void;
+  onAssignTruck: (driver: MyDriverType) => void;
+  onUnassignTruck: (driver: MyDriverType) => void;
+  onContact: (driver: MyDriverType) => void;
 };
 
 function getInitials(name: string) {

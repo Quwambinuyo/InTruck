@@ -1,29 +1,9 @@
 import { useState } from "react";
 import StatusPill from "../../../ui/StatusPill";
-
-type Offer = {
-  id: string;
-  driver: string;
-  price: number;
-  message: string;
-};
-
-type Job = {
-  id: string;
-  title: string;
-  cargo: string;
-  pickup: string;
-  dropoff: string;
-  date: string;
-  truckType: string;
-  status: string;
-  bids: number;
-  price?: number;
-  offers: Offer[];
-};
+import type { MyJob, Offer } from "../../mock/mockMyJobsData";
 
 type Props = {
-  job: Job | null;
+  job: MyJob | null;
   onClose: () => void;
   onAcceptOffer?: (jobId: string, offerId: string) => void;
   onRejectOffer?: (jobId: string, offerId: string) => void;
@@ -38,6 +18,18 @@ const getInitials = (name: string) =>
     .slice(0, 2)
     .join("")
     .toUpperCase();
+
+const PRIORITY_LABELS: Record<string, string> = {
+  urgent: "Urgent",
+  standard: "Standard",
+  low: "Low",
+};
+
+const PRIORITY_STYLES: Record<string, string> = {
+  urgent: "bg-red-50 text-red-600 border-red-100",
+  standard: "bg-blue-50 text-blue-600 border-blue-100",
+  low: "bg-gray-50 text-gray-500 border-gray-100",
+};
 
 const JobDrawer = ({
   job,
@@ -76,7 +68,14 @@ const JobDrawer = ({
         </div>
 
         <div className="flex-1 overflow-y-auto px-6 py-5 space-y-4">
-          <StatusPill status={job.status} />
+          <div className="flex items-center gap-2 flex-wrap">
+            <StatusPill status={job.postStatus} />
+            <span
+              className={`text-[11px] zabalSemiboldFont px-2.5 py-1 rounded-full border ${PRIORITY_STYLES[job.priority]}`}
+            >
+              {PRIORITY_LABELS[job.priority]} priority
+            </span>
+          </div>
 
           <div className="bg-black/[0.03] rounded-xl overflow-hidden border border-black/[0.06]">
             <div className="px-5 pt-4 pb-4 border-b border-black/[0.06]">
@@ -120,11 +119,36 @@ const JobDrawer = ({
               <div className="px-5 py-3 flex flex-col gap-0.5">
                 <p className="text-[11px] text-black/40">Cargo weight</p>
                 <p className="text-[13px] zabalSemiboldFont text-black">
-                  {job.cargo}
+                  {job.weightKg.toLocaleString()} kg
+                </p>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 divide-x divide-black/[0.06] border-t border-black/[0.06]">
+              <div className="px-5 py-3 flex flex-col gap-0.5">
+                <p className="text-[11px] text-black/40">Quantity / Tonnes</p>
+                <p className="text-[13px] zabalSemiboldFont text-black">
+                  {job.quantity.toLocaleString()} units
+                </p>
+              </div>
+              <div className="px-5 py-3 flex flex-col gap-0.5">
+                <p className="text-[11px] text-black/40">Expected delivery</p>
+                <p className="text-[13px] zabalSemiboldFont text-black">
+                  {timePart ?? "—"}
                 </p>
               </div>
             </div>
           </div>
+
+          {job.notes && (
+            <div className="bg-black/[0.03] border border-black/[0.06] rounded-xl px-5 py-4 space-y-1">
+              <p className="text-[11px] text-black/40 uppercase tracking-wider zabalSemiboldFont">
+                Additional notes
+              </p>
+              <p className="text-[13px] text-black/70 leading-relaxed">
+                {job.notes}
+              </p>
+            </div>
+          )}
 
           <div className="grid grid-cols-2 gap-3">
             <div className="bg-black/[0.03] border border-black/[0.06] rounded-xl px-5 py-4 flex flex-col gap-1">
@@ -208,7 +232,7 @@ const JobDrawer = ({
               </p>
             ) : (
               <div className="space-y-2">
-                {job.offers.map((offer) => {
+                {job.offers.map((offer: Offer) => {
                   const isActive = activeOffer === offer.id;
                   return (
                     <div

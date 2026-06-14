@@ -13,6 +13,8 @@ import {
   Transactions,
 } from "../customer/components";
 import {
+  Earnings,
+  JobRequest,
   ListTruck,
   MerchantDashboard,
   MyDriver,
@@ -33,6 +35,8 @@ export default function AppRouter() {
           <Route path="/merchant/list-truck" element={<ListTruck />} />
           <Route path="/merchant/fleet" element={<MyFleet />} />
           <Route path="/merchant/driver" element={<MyDriver />} />
+          <Route path="/merchant/job-requests" element={<JobRequest />} />
+          <Route path="/merchant/earnings" element={<Earnings />} />
 
           {/* Customer */}
           <Route path="/customer/dashboard" element={<CustomerDashboard />} />

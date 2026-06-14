@@ -2,12 +2,14 @@ type FilterChipProps<T extends string> = {
   options: T[];
   value: T;
   onChange: (value: T) => void;
+  labels?: Partial<Record<T, string>>;
 };
 
 const FilterChip = <T extends string>({
   options,
   value,
   onChange,
+  labels,
 }: FilterChipProps<T>) => {
   return (
     <div className="flex gap-2 overflow-x-auto no-scrollbar">
@@ -21,7 +23,7 @@ const FilterChip = <T extends string>({
               : "bg-white text-black/60 border-black/10 hover:border-black/30"
           }`}
         >
-          {opt.toUpperCase()}
+          {labels?.[opt] ?? opt.toUpperCase()}
         </button>
       ))}
     </div>

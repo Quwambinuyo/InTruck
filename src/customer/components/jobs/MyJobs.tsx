@@ -3,84 +3,22 @@ import { FaTruck, FaMapMarkerAlt, FaCalendarAlt } from "react-icons/fa";
 import FilterChip from "../../../ui/FilterChip";
 import StatusPill from "../../../ui/StatusPill";
 import JobDrawer from "./JobDrawer";
+import {
+  MOCK_MY_JOBS,
+  type MyJob,
+  type MyJobStatus,
+} from "../../mock/mockMyJobsData";
 
-type JobStatus = "active" | "completed" | "cancelled" | "all";
-
-type Offer = {
-  id: string;
-  driver: string;
-  price: number;
-  message: string;
-};
-
-type Job = {
-  id: string;
-  title: string;
-  cargo: string;
-  pickup: string;
-  dropoff: string;
-  date: string;
-  truckType: string;
-  status: Exclude<JobStatus, "all">;
-  bids: number;
-  price?: number;
-  offers: Offer[];
-};
-
-const MOCK_JOBS: Job[] = [
-  {
-    id: "1",
-    title: "Granite delivery",
-    cargo: "Granite / Gravel",
-    pickup: "Ikeja, Lagos",
-    dropoff: "Lekki, Lagos",
-    date: "2026-06-14",
-    truckType: "Tipper",
-    status: "active",
-    bids: 4,
-    offers: [
-      {
-        id: "o1",
-        driver: "John D",
-        price: 120000,
-        message: "Can deliver fast",
-      },
-      { id: "o2", driver: "Ahmed K", price: 115000, message: "Available now" },
-    ],
-  },
-  {
-    id: "2",
-    title: "Cement haulage",
-    cargo: "Cement",
-    pickup: "Apapa, Lagos",
-    dropoff: "Ajah, Lagos",
-    date: "2026-06-10",
-    truckType: "Flatbed",
-    status: "completed",
-    bids: 2,
-    price: 180000,
-    offers: [],
-  },
-  {
-    id: "3",
-    title: "Steel transport",
-    cargo: "Steel / Iron",
-    pickup: "Surulere, Lagos",
-    dropoff: "Victoria Island, Lagos",
-    date: "2026-06-08",
-    truckType: "Low Loader",
-    status: "cancelled",
-    bids: 0,
-    offers: [],
-  },
-];
+type JobFilter = MyJobStatus | "all";
 
 const MyJobs = () => {
-  const [filter, setFilter] = useState<JobStatus>("all");
-  const [selectedJob, setSelectedJob] = useState<Job | null>(null);
+  const [filter, setFilter] = useState<JobFilter>("all");
+  const [selectedJob, setSelectedJob] = useState<MyJob | null>(null);
 
   const filteredJobs =
-    filter === "all" ? MOCK_JOBS : MOCK_JOBS.filter((j) => j.status === filter);
+    filter === "all"
+      ? MOCK_MY_JOBS
+      : MOCK_MY_JOBS.filter((j) => j.status === filter);
 
   return (
     <div className="w-full space-y-4 ">
@@ -108,7 +46,7 @@ const MyJobs = () => {
                 <p className="text-xs text-black/40">{job.cargo}</p>
               </div>
 
-              <StatusPill status={job.status} />
+              <StatusPill status={job.postStatus} />
             </div>
 
             <div className="grid grid-cols-2 gap-3 text-xs text-black/60">
