@@ -2,7 +2,6 @@ import { useState, useMemo } from "react";
 import StatCard from "../../../ui/StatCard";
 import SearchInput from "../../../ui/SearchInput";
 import { SelectField } from "../../../pages/auth/FormField";
-import Button from "../../../ui/Button";
 import DataTable, { type ColumnDef } from "../../../ui/DataTable";
 import JobRequestDrawer from "./JobRequestDrawer";
 import {
@@ -212,14 +211,6 @@ const JobRequest = () => {
           <p className="text-sm text-black/40 mt-1">
             Track and manage all incoming and active logistics requests
           </p>
-        </div>
-        <div className="flex gap-3">
-          <Button
-            className="rounded-md text-[12px] px-5 bg-black"
-            variant="merchant"
-          >
-            + New job request
-          </Button>
         </div>
       </div>
 
