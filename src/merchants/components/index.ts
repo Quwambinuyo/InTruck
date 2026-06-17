@@ -5,3 +5,4 @@ export { default as MyDriver } from "./driver/MyDriver";
 export { default as JobRequest } from "./job/JobRequest";
 export { default as AllJobs } from "./job/AllJobs";
 export { default as Earnings } from "./earnings/Earnings";
+export { default as MerchantTransactions } from "./transactions/MerchantTransactions";

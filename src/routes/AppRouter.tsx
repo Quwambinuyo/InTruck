@@ -20,6 +20,7 @@ import {
   MerchantDashboard,
   MyDriver,
   MyFleet,
+  MerchantTransactions,
 } from "../merchants/components";
 
 export default function AppRouter() {
@@ -38,6 +39,10 @@ export default function AppRouter() {
           <Route path="/merchant/job-requests" element={<JobRequest />} />
           <Route path="/merchant/all-jobs" element={<AllJobs />} />
           <Route path="/merchant/earnings" element={<Earnings />} />
+          <Route
+            path="/merchant/transactions"
+            element={<MerchantTransactions />}
+          />
 
           <Route path="/customer/dashboard" element={<CustomerDashboard />} />
           <Route path="/customer/post-job" element={<PostJob />} />

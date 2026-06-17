@@ -133,11 +133,11 @@ const COLUMNS: ColumnDef<AllJobType>[] = [
   },
   {
     label: "Posted by",
-    span: 2,
+    span: 3,
     render: (row) => (
       <div>
         <p className="text-[12px] font-semibold text-black">{row.postedBy}</p>
-        <p className="text-xs text-black/40 mt-0.5">{row.contactPhone}</p>
+        {/* <p className="text-xs text-black/40 mt-0.5">{row.contactPhone}</p> */}
       </div>
     ),
   },
@@ -152,7 +152,7 @@ const COLUMNS: ColumnDef<AllJobType>[] = [
   },
   {
     label: "Bids",
-    span: 1,
+    span: 2,
     render: (row) => (
       <span
         className={`text-[11px] font-semibold px-2 py-1 rounded-full border ${
@@ -167,7 +167,7 @@ const COLUMNS: ColumnDef<AllJobType>[] = [
   },
   {
     label: "Priority",
-    span: 1,
+    span: 2,
     render: (row) => <PriorityBadge priority={row.priority} />,
   },
   {
