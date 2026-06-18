@@ -1,6 +1,3 @@
-import { useEffect, useRef } from "react";
-import L from "leaflet";
-import "leaflet/dist/leaflet.css";
 import {
   FaTruck,
   FaMapMarkerAlt,
@@ -13,6 +10,7 @@ import {
 import StatCard from "../../../ui/StatCard";
 import Button from "../../../ui/Button";
 import StatusPill from "../../../ui/StatusPill";
+import MapView, { type MapMarker } from "../../../ui/MapView";
 
 const DELIVERIES = [
   {
@@ -57,64 +55,19 @@ const ORDERS = [
   },
 ];
 
-function LiveMap() {
-  const mapRef = useRef<HTMLDivElement>(null);
-  const instanceRef = useRef<L.Map | null>(null);
-
-  useEffect(() => {
-    if (instanceRef.current || !mapRef.current) return;
-
-    const map = L.map(mapRef.current, {
-      center: [8.5, 5.5],
-      zoom: 6,
-      zoomControl: false,
-      attributionControl: false,
-    });
-
-    L.tileLayer(
-      "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
-      { maxZoom: 19 },
-    ).addTo(map);
-
-    L.control.zoom({ position: "bottomright" }).addTo(map);
-
-    const truckIcon = (color: string) =>
-      L.divIcon({
-        className: "",
-        html: `<div style="width:34px;height:34px;border-radius:50%;background:${color};display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.25);">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" viewBox="0 0 640 512">
-            <path d="M48 0C21.5 0 0 21.5 0 48V368c0 26.5 21.5 48 48 48H64c0 53 43 96 96 96s96-43 96-96H384c0 53 43 96 96 96s96-43 96-96h32c17.7 0 32-14.3 32-32V288 256 237.3c0-17-6.7-33.3-18.7-45.3L512 114.7C500 102.7 483.7 96 467.3 96H416V48c0-26.5-21.5-48-48-48H48z"/>
-          </svg>
-        </div>`,
-        iconSize: [34, 34],
-        iconAnchor: [17, 17],
-      });
-
-    L.marker([6.9, 3.9], { icon: truckIcon("#000000") })
-      .addTo(map)
-      .bindPopup("<b>TRK-8821</b><br>Lagos → Ibadan<br>75% complete");
-
-    L.marker([9.05785, 7.49508], { icon: truckIcon("#000000") })
-      .addTo(map)
-      .bindPopup("<b>TRK-8820</b><br>Abuja → Kaduna<br>Loading");
-
-    instanceRef.current = map;
-
-    return () => {
-      map.remove();
-      instanceRef.current = null;
-    };
-  }, []);
-
-  return <div ref={mapRef} className="h-full w-full" />;
-}
+const TRUCK_MARKERS: MapMarker[] = DELIVERIES.map((d) => ({
+  id: d.id,
+  coords: [d.coords[0], d.coords[1]],
+  color: "#000000",
+  label: d.id,
+  sublabel: `${d.route} · ${d.progress}% complete`,
+}));
 
 const CustomerDashboard = () => {
   return (
     <div className="w-full max-w-full overflow-x-hidden space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-semibold text-black">Overview</h2>
-
         <button className="inline-flex items-center gap-2 rounded-xl bg-black px-4 py-2 text-sm font-semibold text-white hover:bg-black/80 transition">
           <FaPlus size={12} />
           Book a Truck
@@ -163,7 +116,7 @@ const CustomerDashboard = () => {
             trend="up"
             icon={<FaMapMarkerAlt size={15} />}
             sparkline={[40, 44, 46, 48, 50, 52, 54]}
-            tooltip="Cumulative number of orders you have placed on the platform  including truck rentals, material deliveries, and scheduled runs."
+            tooltip="Cumulative number of orders you have placed on the platform including truck rentals, material deliveries, and scheduled runs."
           />
         </div>
 
@@ -187,15 +140,17 @@ const CustomerDashboard = () => {
                 2 trucks active right now
               </p>
             </div>
-
             <button className="text-sm font-medium text-black hover:underline">
               Full map
             </button>
           </div>
 
-          <div className="h-[280px] sm:h-[320px]">
-            <LiveMap />
-          </div>
+          <MapView
+            markers={TRUCK_MARKERS}
+            center={[8.5, 5.5]}
+            zoom={6}
+            height={320}
+          />
         </div>
 
         <div className="lg:col-span-2 rounded-2xl border border-black/10 bg-white p-5">
@@ -252,7 +207,6 @@ const CustomerDashboard = () => {
       <div className="rounded-2xl border border-black/10 bg-white p-4 sm:p-6">
         <div className="flex items-center justify-between mb-5">
           <h3 className="font-semibold text-black">Active Deliveries</h3>
-
           <button className="text-sm text-black hover:underline inline-flex items-center gap-1.5">
             View all <FaArrowRight size={11} />
           </button>
@@ -276,7 +230,6 @@ const CustomerDashboard = () => {
                   </div>
                   <p className="text-xs text-black/50 mt-0.5">{d.truck}</p>
                 </div>
-
                 <button className="shrink-0 bg-black text-white px-3 py-1.5 rounded-lg text-xs hover:bg-black/80">
                   Track
                 </button>
@@ -287,7 +240,6 @@ const CustomerDashboard = () => {
                   <span>{d.status}</span>
                   <span>{d.progress}%</span>
                 </div>
-
                 <div className="h-1.5 bg-black/10 rounded-full">
                   <div
                     className="h-1.5 bg-black rounded-full"

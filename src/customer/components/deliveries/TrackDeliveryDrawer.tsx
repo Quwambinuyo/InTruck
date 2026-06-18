@@ -1,7 +1,5 @@
-import { useRef, useEffect } from "react";
-import L from "leaflet";
-import "leaflet/dist/leaflet.css";
 import StatusPill from "../../../ui/StatusPill";
+import MapView from "../../../ui/MapView";
 
 type DeliveryStatus = "pending" | "in_transit" | "delivered" | "cancelled";
 
@@ -39,97 +37,10 @@ const statusColor: Record<DeliveryStatus, string> = {
   cancelled: "#ef4444",
 };
 
+const DEFAULT_PICKUP: [number, number] = [6.4281, 3.4219];
+const DEFAULT_DROPOFF: [number, number] = [6.4698, 3.5852];
+
 const TrackDeliveryDrawer = ({ delivery, onClose }: Props) => {
-  const mapRef = useRef<HTMLDivElement>(null);
-  const mapInstanceRef = useRef<L.Map | null>(null);
-
-  useEffect(() => {
-    if (!delivery || !mapRef.current) return;
-
-    if (mapInstanceRef.current) {
-      mapInstanceRef.current.remove();
-      mapInstanceRef.current = null;
-    }
-
-    const pickupCoords = delivery.pickupCoords ?? [6.4281, 3.4219];
-    const dropoffCoords = delivery.dropoffCoords ?? [6.4698, 3.5852];
-
-    const map = L.map(mapRef.current, { zoomControl: false }).setView(
-      [
-        (pickupCoords[0] + dropoffCoords[0]) / 2,
-        (pickupCoords[1] + dropoffCoords[1]) / 2,
-      ],
-      12,
-    );
-
-    mapInstanceRef.current = map;
-
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      attribution: "© OpenStreetMap",
-    }).addTo(map);
-
-    const pickupIcon = L.divIcon({
-      className: "",
-      html: `<div style="width:12px;height:12px;border-radius:50%;background:#000;border:2px solid #fff;box-shadow:0 0 0 2px #000;"></div>`,
-      iconAnchor: [6, 6],
-    });
-
-    const dropoffIcon = L.divIcon({
-      className: "",
-      html: `<div style="width:12px;height:12px;border-radius:3px;background:rgba(0,0,0,0.4);border:2px solid #fff;box-shadow:0 0 0 2px rgba(0,0,0,0.4);"></div>`,
-      iconAnchor: [6, 6],
-    });
-
-    const truckIcon = L.divIcon({
-      className: "",
-      html: `<div style="width:28px;height:28px;border-radius:50%;background:#000;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.3);">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M1 3h15v13H1zM16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-      </div>`,
-      iconAnchor: [14, 14],
-    });
-
-    L.marker(pickupCoords, { icon: pickupIcon })
-      .addTo(map)
-      .bindPopup(`<b>Pickup</b><br/>${delivery.pickup}`);
-
-    L.marker(dropoffCoords, { icon: dropoffIcon })
-      .addTo(map)
-      .bindPopup(`<b>Drop-off</b><br/>${delivery.dropoff}`);
-
-    const midLat =
-      pickupCoords[0] +
-      (dropoffCoords[0] - pickupCoords[0]) * (delivery.progress / 100);
-    const midLng =
-      pickupCoords[1] +
-      (dropoffCoords[1] - pickupCoords[1]) * (delivery.progress / 100);
-
-    if (delivery.status === "in_transit") {
-      L.marker([midLat, midLng], { icon: truckIcon }).addTo(map);
-    }
-
-    L.polyline([pickupCoords, dropoffCoords], {
-      color: "#000",
-      weight: 2,
-      dashArray: "6 4",
-      opacity: 0.3,
-    }).addTo(map);
-
-    const progressCoords: [number, number][] = [pickupCoords, [midLat, midLng]];
-
-    L.polyline(progressCoords, {
-      color: "#000",
-      weight: 3,
-      opacity: 0.9,
-    }).addTo(map);
-
-    L.control.zoom({ position: "bottomright" }).addTo(map);
-
-    return () => {
-      map.remove();
-      mapInstanceRef.current = null;
-    };
-  }, [delivery]);
-
   if (!delivery) return null;
 
   return (
@@ -155,7 +66,15 @@ const TrackDeliveryDrawer = ({ delivery, onClose }: Props) => {
         </div>
 
         <div className="flex-1 overflow-y-auto">
-          <div ref={mapRef} className="w-full" style={{ height: 240 }} />
+          <MapView
+            pickupCoords={delivery.pickupCoords ?? DEFAULT_PICKUP}
+            dropoffCoords={delivery.dropoffCoords ?? DEFAULT_DROPOFF}
+            pickupLabel={delivery.pickup}
+            dropoffLabel={delivery.dropoff}
+            progress={delivery.progress}
+            showTruck={delivery.status === "in_transit"}
+            height={280}
+          />
 
           <div className="px-6 py-5 space-y-4">
             <div className="flex items-center justify-between">

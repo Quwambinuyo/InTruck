@@ -1,6 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import L from "leaflet";
-import "leaflet/dist/leaflet.css";
+import { useCallback, useMemo, useState } from "react";
 import { FaStar, FaTruck, FaCircle } from "react-icons/fa";
 import { CiLocationOn } from "react-icons/ci";
 import SearchInput from "../../../ui/SearchInput";
@@ -8,6 +6,7 @@ import FilterChip from "../../../ui/FilterChip";
 import StatusPill from "../../../ui/StatusPill";
 import DataTable, { type ColumnDef } from "../../../ui/DataTable";
 import DriverDrawer from "./DriverDrawer";
+import MapView, { type MapMarker } from "../../../ui/MapView";
 import {
   MOCK_DRIVERS,
   type Driver,
@@ -48,29 +47,6 @@ function getInitials(name: string) {
     .toUpperCase();
 }
 
-function makeMarkerIcon(status: DriverStatus, active = false) {
-  const color = STATUS_COLORS[status];
-  const size = active ? 44 : 36;
-  const pinH = active ? 54 : 44;
-  const r = active ? 11 : 9;
-  const cx = size / 2;
-  const svg = `
-    <svg width="${size}" height="${pinH}" viewBox="0 0 ${size} ${pinH}" xmlns="http://www.w3.org/2000/svg">
-      <ellipse cx="${cx}" cy="${pinH - 2}" rx="${active ? 7 : 6}" ry="2" fill="rgba(0,0,0,0.18)"/>
-      <path d="M${cx} 0C${cx - 9.94} 0 0 ${cx - 9.94} 0 ${cx}c0 ${active ? 14.7 : 12} ${cx} ${active ? 32 : 26} ${cx} ${active ? 32 : 26}S${size} ${active ? 37 : 30} ${size} ${cx}C${size} ${cx - 9.94} ${cx + 9.94} 0 ${cx} 0z" fill="${color}"/>
-      ${active ? `<circle cx="${cx}" cy="${cx}" r="${r + 3}" fill="white" opacity="0.25"/>` : ""}
-      <circle cx="${cx}" cy="${cx}" r="${r}" fill="white" opacity="0.9"/>
-    </svg>
-  `;
-  return L.divIcon({
-    html: svg,
-    className: "",
-    iconSize: [size, pinH],
-    iconAnchor: [cx, pinH],
-    popupAnchor: [0, -pinH],
-  });
-}
-
 const COLUMNS: ColumnDef<Driver>[] = [
   {
     label: "Driver",
@@ -105,7 +81,7 @@ const COLUMNS: ColumnDef<Driver>[] = [
     label: "Location",
     span: 2,
     render: (driver) => (
-      <p className="text-[12px] text-blacktruncate flex items-center gap-2 ">
+      <p className="text-[12px] text-black truncate flex items-center gap-2">
         <CiLocationOn className="text-red-600" size={20} /> {driver.location}
       </p>
     ),
@@ -144,11 +120,9 @@ const COLUMNS: ColumnDef<Driver>[] = [
   },
 ];
 
-const FindDrivers = () => {
-  const mapRef = useRef<HTMLDivElement>(null);
-  const mapInstanceRef = useRef<L.Map | null>(null);
-  const markersRef = useRef<Map<string, L.Marker>>(new Map());
+const NIGERIA_CENTER: [number, number] = [9.082, 8.6753];
 
+const FindDrivers = () => {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<FilterStatus>("all");
   const [truckFilter, setTruckFilter] = useState<FilterTruck>("all");
@@ -176,51 +150,28 @@ const FindDrivers = () => {
     [],
   );
 
-  useEffect(() => {
-    if (!mapRef.current || mapInstanceRef.current) return;
-    const map = L.map(mapRef.current, {
-      center: [9.082, 8.6753],
-      zoom: 6,
-      zoomControl: false,
-    });
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      attribution: "© OpenStreetMap contributors",
-    }).addTo(map);
-    L.control.zoom({ position: "bottomright" }).addTo(map);
-    mapInstanceRef.current = map;
-  }, []);
+  const mapMarkers: MapMarker[] = useMemo(
+    () =>
+      availableDrivers.map((d) => ({
+        id: d.id,
+        coords: [d.lat, d.lng],
+        color: STATUS_COLORS[d.status],
+        label: d.name,
+        sublabel: `${d.truckType} · ${d.location}`,
+        active: selectedDriver?.id === d.id,
+        onClick: () => handleRowClick(d),
+      })),
+    [availableDrivers, selectedDriver],
+  );
 
-  useEffect(() => {
-    const map = mapInstanceRef.current;
-    if (!map) return;
-    markersRef.current.forEach((marker) => marker.remove());
-    markersRef.current.clear();
-    availableDrivers.forEach((driver) => {
-      const isActive = selectedDriver?.id === driver.id;
-      const marker = L.marker([driver.lat, driver.lng], {
-        icon: makeMarkerIcon(driver.status, isActive),
-        zIndexOffset: isActive ? 1000 : 0,
-      }).addTo(map);
-      marker.bindTooltip(
-        `<div style="font-size:12px;font-weight:700;color:#000">${driver.name}</div>
-         <div style="font-size:11px;color:#888">${driver.truckType} · ${driver.location}</div>`,
-        {
-          direction: "top",
-          offset: [0, -44],
-          className: "leaflet-tooltip-custom",
-        },
-      );
-      marker.on("click", () => handleRowClick(driver));
-      markersRef.current.set(driver.id, marker);
-    });
-  }, [availableDrivers, selectedDriver]);
+  const mapCenter: [number, number] = selectedDriver
+    ? [selectedDriver.lat, selectedDriver.lng]
+    : NIGERIA_CENTER;
+
+  const mapZoom = selectedDriver ? 10 : 6;
 
   const handleRowClick = useCallback((driver: Driver) => {
     setSelectedDriver(driver);
-    const map = mapInstanceRef.current;
-    if (map && driver.status === "available") {
-      map.flyTo([driver.lat, driver.lng], 10, { duration: 0.8 });
-    }
   }, []);
 
   const handleStatusFilterChange = useCallback((label: string) => {
@@ -243,8 +194,13 @@ const FindDrivers = () => {
           </p>
         </div>
 
-        <div className="relative h-[280px] rounded-2xl overflow-hidden border border-black/10">
-          <div ref={mapRef} className="w-full h-full" />
+        <div className="relative rounded-2xl overflow-hidden border border-black/10">
+          <MapView
+            markers={mapMarkers}
+            center={mapCenter}
+            zoom={mapZoom}
+            height={420}
+          />
 
           <div className="absolute bottom-3 left-3 z-[10] bg-white/95 backdrop-blur border border-black/10 rounded-xl px-3 py-2 flex items-center gap-3">
             {(["available", "busy", "offline"] as DriverStatus[]).map((s) => (
